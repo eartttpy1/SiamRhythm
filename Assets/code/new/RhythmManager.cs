@@ -228,7 +228,7 @@ public class RhythmManager : MonoBehaviour
     void UpdateRating(float distance)
     {
         ratingText.gameObject.SetActive(true);
-        if (distance < 0.3f) {
+        if (distance < 0.1f) {
             ratingText.text = "PERFECT";
             combo++;
             if (sfxSource != null && perfectSound != null)

@@ -1791,7 +1791,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6684430161380966744, guid: 0ea107e6dc32b6b44bd95f469ab2f61e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3896,10 +3896,10 @@ MonoBehaviour:
   musicSource: {fileID: 5052658989627755494}
   bpm: 0
   threshold: 0.01
-  spawnInterval: 0.6
+  spawnInterval: 0.9
   sfxSource: {fileID: 8295109306778630586}
-  perfectSound: {fileID: 0}
-  greatSound: {fileID: 0}
+  perfectSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
+  greatSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
   ratingText: {fileID: 9167379210590831471}
   comboText: {fileID: 2657147946477483468}
   keyJ: 106
@@ -3914,7 +3914,7 @@ MonoBehaviour:
   - {fileID: 5068765924391533978, guid: ce6bc8b106bb56148a3adbf250a35dcd, type: 3}
   - {fileID: 159150440516544221, guid: 210f4272750e64b42a460738195fcca0, type: 3}
   - {fileID: 1395389125096972906, guid: 73509d31c8d7901459d6b350efd249bc, type: 3}
-  noteSpeed: 4
+  noteSpeed: 3
   minAngle: 0
   maxAngle: 180
   statusManager: {fileID: 8611679507051601419}
@@ -4402,7 +4402,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4412,7 +4412,7 @@ AudioSource:
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
-  Pan2D: 0
+  Pan2D: 0.61
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
