@@ -8,12 +8,14 @@ public class PauseManager : MonoBehaviour
     [Header("UI Panels")]
     public GameObject pauseMenuPanel;
     public TextMeshProUGUI countdownText;
+    public GameObject optionPanel; // สำหรับแสดงเมนูตัวเลือก (ถ้ามี)
 
     [Header("References")]
     public AudioSource musicSource; // เพื่อหยุดเพลงชั่วคราว
 
     private bool isPaused = false;
     private bool isCountingDown = false;
+
 
     void Update()
     {
@@ -69,6 +71,11 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f; // ต้องคืนค่าเวลาก่อนโหลดฉากใหม่
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void Option()
+    {
+        Time.timeScale = 1f; // ต้องคืนค่าเวลาก่อนโหลดฉากใหม่
+        optionPanel.SetActive(true); // แสดงเมนูตัวเลือก
     }
 
     public void GoToMainMenu()
