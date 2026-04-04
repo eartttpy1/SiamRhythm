@@ -52,6 +52,10 @@ public class RhythmManager : MonoBehaviour
     [Range(0, 360)] public float minAngle = 0f; // มุมเริ่มต้น (ขวา)
     [Range(0, 360)] public float maxAngle = 360f; // มุมสิ้นสุด (ซ้าย)
 
+    [Header("Professional Beatmap")]
+    private List<float> noteTimestamps = new List<float>(); // รายการวินาทีที่โน้ตจะออก
+    private int currentNoteIndex = 0; // ตัวชี้ว่าตอนนี้เล่นถึงโน้ตตัวที่เท่าไหร่แล้ว
+
     private int combo = 0;
     private readonly float[] samples = new float[512];
     private List<NoteController> activeNotes = new List<NoteController>();
@@ -60,6 +64,7 @@ public class RhythmManager : MonoBehaviour
     void Start()
     {
         // เรียกคำนวณทันทีที่เริ่มด่าน
+        statusManager = FindObjectOfType<GameStatusManager>();
         CalculateAutomaticBalance();
     }
 
@@ -72,14 +77,16 @@ public class RhythmManager : MonoBehaviour
 
     void AnalyzeMusic()
     {
-        // วิเคราะห์ Spectrum ข้อมูลเสียงเพื่อหาจังหวะ Peak
-        musicSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
-        float currentIntensity = samples[10] + samples[20]; // สุ่มเช็คความถี่ช่วงต่ำ/กลาง
+        // เช็คค่า null ป้องกัน Error และเช็คว่าเกมจบหรือยัง
+        if (statusManager == null || statusManager.isGameOver) return;
+        if (currentNoteIndex >= noteTimestamps.Count) return;
 
-        if (currentIntensity > threshold && Time.time >= lastSpawnTime + spawnInterval)
+        // ใช้ while แทน if เพื่อรองรับกรณีที่เครื่องแลคจนโน้ตควรออกพร้อมกันหรือไล่เลี่ยกัน
+        // ระบบจะพ่นโน้ตออกมาจนกว่าจะทันเวลาปัจจุบันของเพลง
+        while (currentNoteIndex < noteTimestamps.Count && musicSource.time >= noteTimestamps[currentNoteIndex])
         {
-            SpawnNote();
-            lastSpawnTime = Time.time;
+            SpawnNote(); // สร้างโน้ต
+            currentNoteIndex++; // ขยับไปรอโน้ตตัวถัดไป
         }
     }
 
@@ -293,26 +300,35 @@ public class RhythmManager : MonoBehaviour
     public void CalculateAutomaticBalance()
     {
         if (musicSource.clip == null) return;
-        totalNotesCount = 0;
-        float clipDuration = musicSource.clip.length;
-        float lastScanTime = -spawnInterval;
 
-        // การสแกนจำลองบีทเพลงเพื่อหาจำนวนโน้ตทั้งหมด
-        // หมายเหตุ: ปัจจัย speednote ไม่กระทบจำนวนโน้ต แต่ threshold และ interval มีผลโดยตรง
-        for (float t = 0; t < clipDuration; t += 0.05f) 
+        noteTimestamps.Clear(); // ล้างค่าเก่า
+        int sampleRate = musicSource.clip.frequency;
+        int channels = musicSource.clip.channels;
+
+        float[] allSamples = new float[musicSource.clip.samples * channels];
+        musicSource.clip.GetData(allSamples, 0);
+
+        int intervalInSamples = (int)(spawnInterval * sampleRate * channels);
+        int lastScanSampleIndex = -intervalInSamples;
+        int step = (int)(sampleRate * channels * 0.01f);
+
+        for (int i = 0; i < allSamples.Length; i += step)
         {
-            // ใช้ Logic เดียวกับ AnalyzeMusic เพื่อให้ได้จำนวนที่ใกล้เคียงการเล่นจริงที่สุด
-            // (ในขั้นตอนนี้เป็นการประมาณการจากไฟล์เสียงดั้งเดิม)
-            if (t >= lastScanTime + spawnInterval)
+            float intensity = Mathf.Abs(allSamples[i]);
+
+            if (intensity > threshold && i >= lastScanSampleIndex + intervalInSamples)
             {
-                totalNotesCount++;
-                lastScanTime = t;
+                // คำนวณวินาทีที่เกิด Peak นี้
+                float timeStamp = (float)i / (sampleRate * channels);
+                noteTimestamps.Add(timeStamp); // เก็บเวลาไว้
+                lastScanSampleIndex = i;
             }
         }
 
-        // ส่งจำนวนโน้ตไปตั้งค่าคะแนนเต็ม 1,000,000
+        totalNotesCount = noteTimestamps.Count; // จำนวนโน้ตจะเท่ากับจำนวนใน List เป๊ะๆ
         statusManager.SetupScoring(totalNotesCount);
-        Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/totalNotesCount}");
+        currentNoteIndex = 0; // รีเซ็ตตัวชี้
+        Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/(totalNotesCount)}");
     }
 
     void OnDrawGizmosSelected()

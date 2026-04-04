@@ -66,8 +66,18 @@ public class GameStatusManager : MonoBehaviour
     {
         currentTime = musicSource.time;
         timeSlider.value = currentTime;
-        currentTimeText.text = (currentTime / 60).ToString("F2");
-        endTimeText.text = (totalSongTime / 60).ToString("F2");
+
+        // แปลงวินาทีทั้งหมดให้เป็น นาที และ วินาที แยกกัน
+        int currentMinutes = Mathf.FloorToInt(currentTime / 60);
+        int currentSeconds = Mathf.FloorToInt(currentTime % 60);
+
+        int totalMinutes = Mathf.FloorToInt(totalSongTime / 60);
+        int totalSeconds = Mathf.FloorToInt(totalSongTime % 60);
+
+        // แสดงผลในรูปแบบ 01:05 (นาที:วินาที) ซึ่งจะดูเป็นสากลกว่า 1.05
+        // ใช้ :00 เพื่อบังคับให้แสดงเลข 0 ข้างหน้าถ้าเลขหลักเดียว
+        currentTimeText.text = string.Format("{0:0}:{1:00}", currentMinutes, currentSeconds);
+        endTimeText.text = string.Format("{0:0}:{1:00}", totalMinutes, totalSeconds);
     }
 
     void UpdateHPOverTime()
@@ -135,7 +145,7 @@ public class GameStatusManager : MonoBehaviour
     void CheckWinLoss()
     {
         // ชนะ: เมื่อเพลงจบและเลือดยังไม่หมด
-        if (currentTime >= totalSongTime - 0.2f && currentHP > 0)
+        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f) && currentHP > 0)
         {
             GameOver(true);
         }
@@ -163,6 +173,7 @@ public class GameStatusManager : MonoBehaviour
         accuracy = Mathf.Clamp(accuracy, 0, 100);
         accuracyText.text = "Acc : " + accuracy.ToString("F2") + "%";
         updateRank(accuracy);
+        Debug.Log($"Note {totalNotesEncountered}: Score Weight={scoreWeight} | Current Accuracy={accuracy}%");
     }
 
     //เปลี่ยนจาก acc เป็น คะแนน 1,000,000
