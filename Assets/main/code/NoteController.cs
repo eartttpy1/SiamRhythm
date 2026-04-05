@@ -26,8 +26,8 @@ public class NoteController : MonoBehaviour
         {
             isMissed = true;
             // สามารถเพิ่ม Logic ลดเลือดหรือรีเซ็ต Combo ตรงนี้ได้
-            Invoke("CallNoteMissed", 0.05f);
-            Destroy(gameObject, 0.05f); // ทำลายโน้ตหลังจากพลาดแล้วเล็กน้อยเพื่อให้เห็นว่าโดนทำลาย
+            Invoke("CallNoteMissed", 0.1f);
+            Destroy(gameObject, 0.1f); // ทำลายโน้ตหลังจากพลาดแล้วเล็กน้อยเพื่อให้เห็นว่าโดนทำลาย
         }
     }
     void CallNoteMissed()
@@ -35,7 +35,7 @@ public class NoteController : MonoBehaviour
         RhythmManager manager = FindObjectOfType<RhythmManager>();
         if (manager != null)
         {
-            manager.NoteMissed();
+            manager.TriggerNoteMissed();
         }
     }
 }

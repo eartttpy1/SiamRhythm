@@ -1118,16 +1118,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStatusManager
   timeSlider: {fileID: 2101451533327518558}
-  timeText: {fileID: 8496714600778960090}
+  currentTimeText: {fileID: 0}
+  endTimeText: {fileID: 0}
   musicSource: {fileID: 2789506445222378038}
+  hpSlider: {fileID: 0}
+  currentHP: 100
+  hpLossOverTime: 1
+  scoreText: {fileID: 0}
   winSFX: {fileID: 8300000, guid: b3e2bcfe64af2774d9c24230657b95ce, type: 3}
   failSFX: {fileID: 8300000, guid: a8dc37a735495be4bab2167b1a4929d0, type: 3}
   fadeDuration: 2
-  phaseSlider: {fileID: 1527781289740033699}
-  currentProgress: 0
-  characterAnimator: {fileID: 9130075562494186096}
   accuracyText: {fileID: 5861119196564012564}
   rankText: {fileID: 2448663415860050166}
+  characterAnimator: {fileID: 9130075562494186096}
+  isGameOver: 0
 --- !u!212 &1766399094461052450
 SpriteRenderer:
   serializedVersion: 2
@@ -2038,7 +2042,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7990087176448652046, guid: 9a5cfb2dbfdeed5459e5371330f8fac2, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 513ef875ae21f194d8dde78fe9959ed9, type: 3}
+  m_Resource: {fileID: 8300000, guid: fee93234b13921d47a5841905954be69, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2777,48 +2781,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4597024969881163559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4620962499567981902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9acdcbe5848b7b94e89417b15a6d419c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RhythmManager
-  currentMode: 1
-  targetLeft: {fileID: 8012624954103446852}
-  radiusL: 4
-  targetRight: {fileID: 916021646}
-  radiusR: 4
-  musicSource: {fileID: 2789506445222378038}
-  bpm: 0
-  threshold: 0.1
-  spawnInterval: 0.7
-  sfxSource: {fileID: 1420553864977156202}
-  perfectSound: {fileID: 8300000, guid: 071de66d1866526428e6debe3de135e3, type: 3}
-  greatSound: {fileID: 8300000, guid: 3161f8ca6cbb6824c9f32532abae6ba2, type: 3}
-  ratingText: {fileID: 2274851159003329215}
-  comboText: {fileID: 4920431335944012828}
-  keyJ: 106
-  keyK: 107
-  keyL: 108
-  keySpace: 32
-  perfectWeight: 0
-  goodWeight: 0
-  totalNotesCount: 0
-  notePrefabs:
-  - {fileID: 6928061168761679527, guid: 442e2ec6c244c024ba72e5695bdcb39d, type: 3}
-  - {fileID: 5068765924391533978, guid: ce6bc8b106bb56148a3adbf250a35dcd, type: 3}
-  - {fileID: 159150440516544221, guid: 210f4272750e64b42a460738195fcca0, type: 3}
-  - {fileID: 1395389125096972906, guid: 73509d31c8d7901459d6b350efd249bc, type: 3}
-  noteSpeed: 3
-  minAngle: 0
-  maxAngle: 360
-  statusManager: {fileID: 1669185246073221083}
 --- !u!222 &4598867525135734950
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2836,11 +2798,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2552047139978315008}
-  - component: {fileID: 4597024969881163559}
   - component: {fileID: 1420553864977156202}
   - component: {fileID: 2188313741560785068}
   - component: {fileID: 1669185246073221083}
   - component: {fileID: 4620962499567981903}
+  - component: {fileID: 4620962499567981904}
   m_Layer: 0
   m_Name: gamemanager
   m_TagString: Untagged
@@ -2862,7 +2824,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
   pauseMenuPanel: {fileID: 6214291964640964312}
   countdownText: {fileID: 6742903220579917566}
+  optionPanel: {fileID: 0}
   musicSource: {fileID: 2789506445222378038}
+--- !u!114 &4620962499567981904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4620962499567981902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0142a8a46361bce44ae950aa88408f3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DualRhythmManager
+  targetLeft: {fileID: 0}
+  radiusL: 3
+  musicSource: {fileID: 0}
+  bpm: 0
+  threshold: 0.5
+  spawnInterval: 0.3
+  sfxSource: {fileID: 0}
+  perfectSound: {fileID: 0}
+  greatSound: {fileID: 0}
+  ratingText: {fileID: 0}
+  comboText: {fileID: 0}
+  keyJ: 106
+  keyK: 107
+  keyL: 108
+  keySpace: 32
+  perfectWeight: 0
+  goodWeight: 0
+  totalNotesCount: 0
+  noteSpeed: 5
+  minAngle: 0
+  maxAngle: 360
+  notePrefabs: []
+  statusManager: {fileID: 0}
+  targetRight: {fileID: 0}
+  radiusR: 3
 --- !u!222 &4657183411033875987
 CanvasRenderer:
   m_ObjectHideFlags: 0

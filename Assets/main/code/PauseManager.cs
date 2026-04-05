@@ -12,7 +12,7 @@ public class PauseManager : MonoBehaviour
 
     [Header("References")]
     public AudioSource musicSource; // เพื่อหยุดเพลงชั่วคราว
-
+    public GameStatusManager statusManager;
     private bool isPaused = false;
     private bool isCountingDown = false;
 
@@ -30,6 +30,7 @@ public class PauseManager : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
+        statusManager.isPaused = true;
         pauseMenuPanel.SetActive(true);
         Time.timeScale = 0f; // หยุดเวลาในเกมทั้งหมด
         musicSource.Pause(); // หยุดเพลง
@@ -64,6 +65,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f; // ปล่อยเวลาให้เดินต่อ
         musicSource.UnPause(); // เล่นเพลงต่อจากจุดเดิม
         isPaused = false;
+        statusManager.isPaused = false;
         isCountingDown = false;
     }
 

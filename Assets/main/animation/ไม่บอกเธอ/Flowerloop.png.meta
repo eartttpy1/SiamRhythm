@@ -1,0 +1,919 @@
+fileFormatVersion: 2
+guid: 6ab48d5419b41474bae6ee15c1c021a2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1505539521117788712
+    second: Flowerloop_0
+  - first:
+      213: 4863592933248029624
+    second: Flowerloop_1
+  - first:
+      213: -6928929326069128341
+    second: Flowerloop_2
+  - first:
+      213: -4467701024144577038
+    second: Flowerloop_3
+  - first:
+      213: 2781824667311301792
+    second: Flowerloop_4
+  - first:
+      213: -6683619896714010228
+    second: Flowerloop_5
+  - first:
+      213: -4588837717064469551
+    second: Flowerloop_6
+  - first:
+      213: -3834155823309360315
+    second: Flowerloop_7
+  - first:
+      213: 1867591101314228748
+    second: Flowerloop_8
+  - first:
+      213: -6288878597578320446
+    second: Flowerloop_9
+  - first:
+      213: 7439471450075833654
+    second: Flowerloop_10
+  - first:
+      213: 601256918972957759
+    second: Flowerloop_11
+  - first:
+      213: -6648059971503146093
+    second: Flowerloop_12
+  - first:
+      213: -7892147646242993639
+    second: Flowerloop_13
+  - first:
+      213: 8233304132493778560
+    second: Flowerloop_14
+  - first:
+      213: 1764146219020823601
+    second: Flowerloop_15
+  - first:
+      213: 5506249629930860820
+    second: Flowerloop_16
+  - first:
+      213: 2220835771293057461
+    second: Flowerloop_17
+  - first:
+      213: 4865019823981801063
+    second: Flowerloop_18
+  - first:
+      213: -8887491691073105650
+    second: Flowerloop_19
+  - first:
+      213: 3519070592088002250
+    second: Flowerloop_20
+  - first:
+      213: 7945351466755647144
+    second: Flowerloop_21
+  - first:
+      213: 2378002255449678401
+    second: Flowerloop_22
+  - first:
+      213: 8270653602493028553
+    second: Flowerloop_23
+  - first:
+      213: -374588803313655320
+    second: Flowerloop_24
+  - first:
+      213: 9080745511065083666
+    second: Flowerloop_25
+  - first:
+      213: -5524593851357838628
+    second: Flowerloop_26
+  - first:
+      213: 329097339707732635
+    second: Flowerloop_27
+  - first:
+      213: -6310616069650970072
+    second: Flowerloop_28
+  - first:
+      213: -3659767359322989703
+    second: Flowerloop_29
+  - first:
+      213: 3626610547057906557
+    second: Flowerloop_30
+  - first:
+      213: -4935374423753500743
+    second: Flowerloop_31
+  - first:
+      213: 524050526229041307
+    second: Flowerloop_32
+  - first:
+      213: -5040707607684248447
+    second: Flowerloop_33
+  - first:
+      213: 8259145950527645994
+    second: Flowerloop_34
+  - first:
+      213: -6045643354943171151
+    second: Flowerloop_35
+  - first:
+      213: 5133429783028285342
+    second: Flowerloop_36
+  - first:
+      213: 5245037217448671502
+    second: Flowerloop_37
+  - first:
+      213: -6127155105260775402
+    second: Flowerloop_38
+  - first:
+      213: -1619707125085015232
+    second: Flowerloop_39
+  - first:
+      213: -7617806448860130787
+    second: Flowerloop_40
+  - first:
+      213: 2189481972073097326
+    second: Flowerloop_41
+  - first:
+      213: 2876903721496069540
+    second: Flowerloop_42
+  - first:
+      213: 7969159202533102362
+    second: Flowerloop_43
+  - first:
+      213: -494207230183303130
+    second: Flowerloop_44
+  - first:
+      213: 1509753456508885342
+    second: Flowerloop_45
+  - first:
+      213: 2206605158300594048
+    second: Flowerloop_46
+  - first:
+      213: 1166301707835155837
+    second: Flowerloop_47
+  - first:
+      213: -3313923864523971199
+    second: Flowerloop_48
+  - first:
+      213: 3620571229989831717
+    second: Flowerloop_49
+  - first:
+      213: 6372318685727165716
+    second: Flowerloop_50
+  - first:
+      213: -2887013348912968100
+    second: Flowerloop_51
+  - first:
+      213: -4301244795217817543
+    second: Flowerloop_52
+  - first:
+      213: 5829707692851111819
+    second: Flowerloop_53
+  - first:
+      213: -8626009821026996819
+    second: Flowerloop_54
+  - first:
+      213: 6140451981937959454
+    second: Flowerloop_55
+  - first:
+      213: 4314189768305631199
+    second: Flowerloop_56
+  - first:
+      213: 7475525617234124122
+    second: Flowerloop_57
+  - first:
+      213: -571972780366884671
+    second: Flowerloop_58
+  - first:
+      213: -1357597726399162166
+    second: Flowerloop_59
+  - first:
+      213: 5725081968772151710
+    second: Flowerloop_60
+  - first:
+      213: -4906654951608552823
+    second: Flowerloop_61
+  - first:
+      213: -3273522029841783722
+    second: Flowerloop_62
+  - first:
+      213: -4639168840871856999
+    second: Flowerloop_63
+  - first:
+      213: 5115520561328670321
+    second: Flowerloop_64
+  - first:
+      213: 8142739146959214220
+    second: Flowerloop_65
+  - first:
+      213: 2386172402739969658
+    second: Flowerloop_66
+  - first:
+      213: 2144486061426343879
+    second: Flowerloop_67
+  - first:
+      213: 8632811000208567263
+    second: Flowerloop_68
+  - first:
+      213: -1080793314066866060
+    second: Flowerloop_69
+  - first:
+      213: 5843982774003830109
+    second: Flowerloop_70
+  - first:
+      213: 5401220049592731620
+    second: Flowerloop_71
+  - first:
+      213: -1189008849545012874
+    second: Flowerloop_72
+  - first:
+      213: 3578356725337740985
+    second: Flowerloop_73
+  - first:
+      213: -314298053322176953
+    second: Flowerloop_74
+  - first:
+      213: 4181970894170640566
+    second: Flowerloop_75
+  - first:
+      213: -3567907040114239137
+    second: Flowerloop_76
+  - first:
+      213: -3503407793711689335
+    second: Flowerloop_77
+  - first:
+      213: 186456907983223553
+    second: Flowerloop_78
+  - first:
+      213: 8241722583309982712
+    second: Flowerloop_79
+  - first:
+      213: 1305784151688448373
+    second: Flowerloop_80
+  - first:
+      213: -640435396595080731
+    second: Flowerloop_81
+  - first:
+      213: -8744165604621439908
+    second: Flowerloop_82
+  - first:
+      213: 5244381601025447818
+    second: Flowerloop_83
+  - first:
+      213: -1946227117881929677
+    second: Flowerloop_84
+  - first:
+      213: -4946830356893505051
+    second: Flowerloop_85
+  - first:
+      213: 5363817350109762312
+    second: Flowerloop_86
+  - first:
+      213: 4149465093923777458
+    second: Flowerloop_87
+  - first:
+      213: -7153747565698476456
+    second: Flowerloop_88
+  - first:
+      213: -5788745204536238895
+    second: Flowerloop_89
+  - first:
+      213: -4219343317043118341
+    second: Flowerloop_90
+  - first:
+      213: 4098844998435056917
+    second: Flowerloop_91
+  - first:
+      213: -3578329592878748069
+    second: Flowerloop_92
+  - first:
+      213: 3871312478153065820
+    second: Flowerloop_93
+  - first:
+      213: 3770113874289471775
+    second: Flowerloop_94
+  - first:
+      213: 2834073855069759598
+    second: Flowerloop_95
+  - first:
+      213: -5201139156114164705
+    second: Flowerloop_96
+  - first:
+      213: 7546978142004151084
+    second: Flowerloop_97
+  - first:
+      213: -7174605193598952624
+    second: Flowerloop_98
+  - first:
+      213: -3933122099884120997
+    second: Flowerloop_99
+  - first:
+      213: -8213633480967637312
+    second: Flowerloop_100
+  - first:
+      213: 7790773350984137420
+    second: Flowerloop_101
+  - first:
+      213: -6665802979018382514
+    second: Flowerloop_102
+  - first:
+      213: 8993071344224079479
+    second: Flowerloop_103
+  - first:
+      213: -900409941160274532
+    second: Flowerloop_104
+  - first:
+      213: 6457238065533118958
+    second: Flowerloop_105
+  - first:
+      213: -507299670029518534
+    second: Flowerloop_106
+  - first:
+      213: -141254437742444033
+    second: Flowerloop_107
+  - first:
+      213: 3892096770428854333
+    second: Flowerloop_108
+  - first:
+      213: -613353475496575358
+    second: Flowerloop_109
+  - first:
+      213: 9220194155568213727
+    second: Flowerloop_110
+  - first:
+      213: 3200787873824421841
+    second: Flowerloop_111
+  - first:
+      213: -4043353838099138989
+    second: Flowerloop_112
+  - first:
+      213: 3769816269469160140
+    second: Flowerloop_113
+  - first:
+      213: -6136332493556718543
+    second: Flowerloop_114
+  - first:
+      213: -5325423576262041345
+    second: Flowerloop_115
+  - first:
+      213: -45237817615809616
+    second: Flowerloop_116
+  - first:
+      213: 2091109000362211645
+    second: Flowerloop_117
+  - first:
+      213: -1983583920345486005
+    second: Flowerloop_118
+  - first:
+      213: 9061320662282315228
+    second: Flowerloop_119
+  - first:
+      213: 5522541477722243051
+    second: Flowerloop_120
+  - first:
+      213: -1326630678554374382
+    second: Flowerloop_121
+  - first:
+      213: 3080056715281666777
+    second: Flowerloop_122
+  - first:
+      213: 6644619609220140415
+    second: Flowerloop_123
+  - first:
+      213: 4035378041155644999
+    second: Flowerloop_124
+  - first:
+      213: 5649684391736260697
+    second: Flowerloop_125
+  - first:
+      213: 6896929091784132403
+    second: Flowerloop_126
+  - first:
+      213: -9042848359524215715
+    second: Flowerloop_127
+  - first:
+      213: -3091416710290540433
+    second: Flowerloop_128
+  - first:
+      213: -8595079409238420266
+    second: Flowerloop_129
+  - first:
+      213: -7198798920539094589
+    second: Flowerloop_130
+  - first:
+      213: -2936371203964976301
+    second: Flowerloop_131
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Flowerloop_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d5667048cf3b1be0800000000000000
+      internalID: -1505539521117788712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_1
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3595e1104fe7340800000000000000
+      internalID: 4863592933248029624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_2
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b63ecdd2d7f77df90800000000000000
+      internalID: -6928929326069128341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_3
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fda635e6998ff1c0800000000000000
+      internalID: -4467701024144577038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_4
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a46282dbc60b9620800000000000000
+      internalID: 2781824667311301792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_5
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 360
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c81e0a28d130f33a0800000000000000
+      internalID: -6683619896714010228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d33576b86c2150c0800000000000000
+      internalID: -4588837717064469551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_7
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 543762ac7975acac0800000000000000
+      internalID: -3834155823309360315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_8
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c02e38336340be910800000000000000
+      internalID: 1867591101314228748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_9
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c599c34c3a69b8a0800000000000000
+      internalID: -6288878597578320446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_10
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6352e6a2edf4e3760800000000000000
+      internalID: 7439471450075833654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_11
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 180
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3401227bf7185800800000000000000
+      internalID: 601256918972957759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39bbf09cda85db3a0800000000000000
+      internalID: -6648059971503146093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_13
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a40c6b785797290800000000000000
+      internalID: -7892147646242993639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_14
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08e1c019c72924270800000000000000
+      internalID: 8233304132493778560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_15
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 0
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13ca59ca3a18b7810800000000000000
+      internalID: 1764146219020823601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flowerloop_16
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 320
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 411b7a47dd02a6c40800000000000000
+      internalID: 5506249629930860820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 320673a391833da47af15fa8eb03bed3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":320.0,"y":180.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Flowerloop_0: -1505539521117788712
+      Flowerloop_1: 4863592933248029624
+      Flowerloop_10: 7439471450075833654
+      Flowerloop_11: 601256918972957759
+      Flowerloop_12: -6648059971503146093
+      Flowerloop_13: -7892147646242993639
+      Flowerloop_14: 8233304132493778560
+      Flowerloop_15: 1764146219020823601
+      Flowerloop_16: 5506249629930860820
+      Flowerloop_2: -6928929326069128341
+      Flowerloop_3: -4467701024144577038
+      Flowerloop_4: 2781824667311301792
+      Flowerloop_5: -6683619896714010228
+      Flowerloop_6: -4588837717064469551
+      Flowerloop_7: -3834155823309360315
+      Flowerloop_8: 1867591101314228748
+      Flowerloop_9: -6288878597578320446
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
