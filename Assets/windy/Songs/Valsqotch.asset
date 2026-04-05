@@ -10,16 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4adeb897064ea544aaa10ec55712d7a, type: 3}
-  m_Name: Ringo Karenka (Karaoke Ver.)
+  m_Name: Valsqotch
   m_EditorClassIdentifier: Assembly-CSharp::Song
-  SongName: Ringo Karenka (Karaoke Ver.)
-  ArtistName: Beat Mario
-  SongClip: {fileID: 8300000, guid: 50b8bb6a8ffeba6428477129351b896f, type: 3}
-  BPM: 144
+  SongName: Valsqotch
+  ArtistName: "owl\uFF0Atree feat.chi\uFF0Atree"
+  SongClip: {fileID: 8300000, guid: bda3946a735c8e140aec139b00da5355, type: 3}
+  BPM: 125
   BeatsPerMeasure: 4
   TimeMusicStartsMs: 0
-  offsetMs: 111
-  notes:
-  - {fileID: 11400000, guid: e139758701ce3b448a071351ea6ace1b, type: 2}
-  - {fileID: 11400000, guid: 3a11d5d793d6ec14bb02b880c7f20a25, type: 2}
-  - {fileID: 11400000, guid: e6e29b2381956754c821f4574c565a65, type: 2}
+  offsetMs: -100

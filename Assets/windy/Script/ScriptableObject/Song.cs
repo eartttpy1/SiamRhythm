@@ -21,4 +21,7 @@ public class Song : ScriptableObject
     public float TimeMusicStartsMs;
 
     public float offsetMs;
+
+    [Header("Note type")]
+    public Notes[] notes;
 }

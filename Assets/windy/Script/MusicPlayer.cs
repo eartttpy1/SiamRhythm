@@ -30,7 +30,7 @@ public class MusicPlayer : MonoBehaviour
         {
             if (audioSource == null)
             {
-                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource = gameObject.GetComponent<AudioSource>();
                 audioSource.clip = currentSong.SongClip;
                 audioSource.Play();
             }
