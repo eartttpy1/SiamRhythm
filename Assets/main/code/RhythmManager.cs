@@ -79,7 +79,7 @@ public class RhythmManager : MonoBehaviour
     {
         // เช็คค่า null ป้องกัน Error และเช็คว่าเกมจบหรือยัง
         if (statusManager == null || statusManager.isGameOver) return;
-        if (currentNoteIndex >= noteTimestamps.Count) return;
+        if (currentNoteIndex >= noteTimestamps.Count && !musicSource.isPlaying) return;
 
         // ใช้ while แทน if เพื่อรองรับกรณีที่เครื่องแลคจนโน้ตควรออกพร้อมกันหรือไล่เลี่ยกัน
         // ระบบจะพ่นโน้ตออกมาจนกว่าจะทันเวลาปัจจุบันของเพลง
@@ -226,7 +226,10 @@ public class RhythmManager : MonoBehaviour
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
     }
-    public void TriggerNoteMissed() { NoteMissed(); }
+    public void TriggerNoteMissed() { 
+        if (statusManager != null && statusManager.isGameOver) return;
+        NoteMissed(); 
+    }
 
     protected void NoteMissed()
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PauseManager : MonoBehaviour
     public GameObject pauseMenuPanel;
     public TextMeshProUGUI countdownText;
     public GameObject optionPanel; // สำหรับแสดงเมนูตัวเลือก (ถ้ามี)
+    public Button pause;
 
     [Header("References")]
     public AudioSource musicSource; // เพื่อหยุดเพลงชั่วคราว
@@ -20,7 +22,7 @@ public class PauseManager : MonoBehaviour
     void Update()
     {
         // ตรวจสอบการกดปุ่ม ESC
-        if (Input.GetKeyDown(KeyCode.Escape) && !isCountingDown)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isCountingDown && !statusManager.isGameOver)
         {
             if (isPaused) ResumeGame();
             else PauseGame();

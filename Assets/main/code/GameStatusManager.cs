@@ -9,7 +9,7 @@ public class GameStatusManager : MonoBehaviour
     [Header("Song Info")]
 [SerializeField] private TextMeshProUGUI songTitleText;
     [Header("Time System")]
-    private float currentTime; 
+    [SerializeField] private float currentTime; 
     [SerializeField] private Slider timeSlider;
     [SerializeField] private TextMeshProUGUI currentTimeText;
     [SerializeField] private TextMeshProUGUI endTimeText;
@@ -163,10 +163,14 @@ public class GameStatusManager : MonoBehaviour
     void CheckWinLoss()
     {
         if (isGameOver || isPaused) return;
+        GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note");
         // ชนะ: เมื่อเพลงจบและเลือดยังไม่หมด
-        if (!musicSource.isPlaying && currentTime > 0 && currentHP > 0)
+        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f) && remainingNotes.Length == 0)
         {
-            GameOver(true);
+            if(currentHP > 0)
+            {
+                GameOver(true);
+            }
         }
     }
     void GameOver(bool isWin)
@@ -174,6 +178,11 @@ public class GameStatusManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
 
+        GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note"); // ตรวจสอบว่าใส่ Tag ที่ Prefab แล้ว
+        foreach (GameObject note in remainingNotes)
+        {
+            Destroy(note);
+        }
         musicSource.Stop();
         if (!isWin) 
         {
@@ -191,15 +200,11 @@ public class GameStatusManager : MonoBehaviour
         if (isWin) StartCoroutine(EndGameSequence(winSFX));
         else StartCoroutine(EndGameSequence(failSFX));
 
-        GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note"); // ตรวจสอบว่าใส่ Tag ที่ Prefab แล้ว
-        foreach (GameObject note in remainingNotes)
-        {
-            Destroy(note);
-        }
     }
 
     public void UpdateAccuracy(float scoreWeight)
     {
+        if (isGameOver || !musicSource.isPlaying) return;
         totalNotesEncountered++;
         currentRawScore += scoreWeight;
         float accuracy = (currentRawScore / totalNotesEncountered) * 100f;
