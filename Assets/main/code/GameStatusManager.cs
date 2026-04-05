@@ -164,10 +164,15 @@ public class GameStatusManager : MonoBehaviour
     {
         if (isGameOver || isPaused) return;
         GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note");
-        // ชนะ: เมื่อเพลงจบและเลือดยังไม่หมด
-        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f) && remainingNotes.Length == 0)
+        
+        if (!musicSource.isPlaying) {
+            Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
+            foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
+        }
+        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f))
         {
-            if(currentHP > 0)
+            
+            if (currentHP > 0 && remainingNotes.Length <= 1)
             {
                 GameOver(true);
             }

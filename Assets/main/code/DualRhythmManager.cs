@@ -25,35 +25,49 @@ public class DualRhythmManager : RhythmManager
         Vector3 spawnPosition = new Vector3(x, y, currentTarget.position.z);
 
         // สุ่มชนิดโน้ตแบบไม่ให้ซ้ำท่าเดิมในมือข้างนั้น
-        int noteType;
-        int lastIndexForThisHand = isLeft ? lastLeftNoteIndex : lastRightNoteIndex;
+        int noteTypeIndex;
+        int maxGestures = currentSongGestures.Length; // ใช้จำนวนท่าจากคลาสแม่
+        if (maxGestures == 0) return;
 
-        do {
-            noteType = Random.Range(0, 3); 
-        } while (noteType == lastIndexForThisHand);
+        // ระบบสุ่มโน้ตรองรับท่าพิเศษ (Index 3) ตามจังหวะเบส
+        if (samples[15] > threshold * 1.5f && maxGestures >= 4)
+        {
+            noteTypeIndex = 3;
+        }
+        else
+        {
+            int lastIndex = isLeft ? lastLeftNoteIndex : lastRightNoteIndex;
+            do {
+                noteTypeIndex = Random.Range(0, Mathf.Min(3, maxGestures));
+            } while (noteTypeIndex == lastIndex && maxGestures > 1);
+        }
 
-        // อัปเดตประวัติท่าล่าสุดแยกมือ
-        if (isLeft) lastLeftNoteIndex = noteType;
-        else lastRightNoteIndex = noteType;
+        if (isLeft) lastLeftNoteIndex = noteTypeIndex;
+        else lastRightNoteIndex = noteTypeIndex;
 
-        // สร้าง Object โน้ต (เรียกใช้ prefabs และ activeNotes จากคลาสแม่)
-        CreateNoteInstance(noteType, spawnPosition, currentTarget);
+        // ใช้ฟังก์ชันสร้างโน้ตจากคลาสแม่ที่ดึง Prefab จาก ScriptableObject
+        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget);
     }
 
     // 2. Override การรับค่า Input: แยกปุ่มฝั่งซ้ายและฝั่งขวา
     protected override void HandleInput()
     {
-        // ฝั่งซ้าย (ใช้ปุ่ม A, S, D, F เป็นตัวอย่างทดสอบแทน AI)
-        if (Input.GetKeyDown(KeyCode.A)) CheckHit(NoteType.J, targetLeft);
-        if (Input.GetKeyDown(KeyCode.S)) CheckHit(NoteType.K, targetLeft);
-        if (Input.GetKeyDown(KeyCode.D)) CheckHit(NoteType.L, targetLeft);
-        if (Input.GetKeyDown(KeyCode.F)) CheckHit(NoteType.Special, targetLeft);
+        for (int i = 0; i < currentSongGestures.Length; i++)
+        {
+            if (Input.GetKeyDown(currentSongGestures[i].keyCodeLeft)) // เช่น A, S, D, F
+            {
+                CheckHit((NoteType)i, targetLeft);
+            }
+        }
 
-        // ฝั่งขวา (ใช้ปุ่ม J, K, L, Space)
-        if (Input.GetKeyDown(KeyCode.J)) CheckHit(NoteType.J, targetRight);
-        if (Input.GetKeyDown(KeyCode.K)) CheckHit(NoteType.K, targetRight);
-        if (Input.GetKeyDown(KeyCode.L)) CheckHit(NoteType.L, targetRight);
-        if (Input.GetKeyDown(KeyCode.Space)) CheckHit(NoteType.Special, targetRight);
+        for (int i = 0; i < currentSongGestures.Length; i++)
+        {
+            if (Input.GetKeyDown(currentSongGestures[i].keyCodeRight)) // เช่น J, K, L, Space
+            {
+                CheckHit((NoteType)i, targetRight);
+            }
+        }
+
     }
 
     // ฟังก์ชันช่วยเช็คการกดแยกฝั่ง (Encapsulation)
@@ -82,7 +96,7 @@ public class DualRhythmManager : RhythmManager
         {
             UpdateRating(minDistance); // ใช้ระบบให้คะแนนจากคลาสแม่
             activeNotes.Remove(targetNote);
-            Destroy(targetNote.gameObject);
+            targetNote.Hit();
         }
     }
     void OnDrawGizmosSelected()

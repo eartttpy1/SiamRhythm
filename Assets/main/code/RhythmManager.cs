@@ -1,8 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
 public class RhythmManager : MonoBehaviour
 {
+    [Header("Current Song Gestures")]
+    public Gesture[] currentSongGestures;
 
     [Header("Single Hand Settings")]
     public Transform targetLeft;  
@@ -28,10 +31,7 @@ public class RhythmManager : MonoBehaviour
     public TextMeshProUGUI comboText;
     
     [Header("Input Settings")]
-    public KeyCode keyJ = KeyCode.J;
-    public KeyCode keyK = KeyCode.K;
-    public KeyCode keyL = KeyCode.L;
-    public KeyCode keySpace = KeyCode.Space;
+    public Gesture[] gestureMapping; // อาร์เรย์สำหรับแมปท่ากับคีย์ (ถ้าใช้ AI)
 
     [Header("Balance Settings")]
     public float perfectWeight; // ค่า % ที่จะเพิ่มเมื่อได้ Perfect
@@ -46,8 +46,7 @@ public class RhythmManager : MonoBehaviour
     [Range(0, 360)] public float minAngle = 0f; // มุมเริ่มต้น (ขวา)
     [Range(0, 360)] public float maxAngle = 360f; // มุมสิ้นสุด (ซ้าย)
 
-    [Header("Protected for Inheritance")] 
-    [SerializeField] protected GameObject[] notePrefabs; 
+    [Header("Protected for Inheritance")]  
     protected List<NoteController> activeNotes = new List<NoteController>();
     protected List<float> noteTimestamps = new List<float>();
     protected int currentNoteIndex = 0;
@@ -56,6 +55,17 @@ public class RhythmManager : MonoBehaviour
 
     void Start()
     {
+        if (currentSongGestures == null || currentSongGestures.Length == 0)
+        {
+            Debug.LogError("No gestures assigned for this song!");
+            return;
+         }
+         if (musicSource.clip == null)
+         {
+             Debug.LogError("No music clip assigned to the AudioSource!");
+             return;
+          }
+         musicSource.Play();
         // เรียกคำนวณทันทีที่เริ่มด่าน
         statusManager = FindObjectOfType<GameStatusManager>();
         CalculateAutomaticBalance();
@@ -79,6 +89,12 @@ public class RhythmManager : MonoBehaviour
     {
         // เช็คค่า null ป้องกัน Error และเช็คว่าเกมจบหรือยัง
         if (statusManager == null || statusManager.isGameOver) return;
+        float timeRemaining = musicSource.clip.length - musicSource.time;
+    
+        if (timeRemaining < 3.0f) 
+        {
+            return; // หยุดปล่อยโน้ตใหม่ทันทีเมื่อเข้าสู่ช่วง 3 วินาทีสุดท้าย
+        }
         if (currentNoteIndex >= noteTimestamps.Count && !musicSource.isPlaying) return;
 
         // ใช้ while แทน if เพื่อรองรับกรณีที่เครื่องแลคจนโน้ตควรออกพร้อมกันหรือไล่เลี่ยกัน
@@ -103,34 +119,34 @@ public class RhythmManager : MonoBehaviour
         float x = currentTarget.position.x + currentRadius * Mathf.Cos(radian);
         float y = currentTarget.position.y + currentRadius * Mathf.Sin(radian);
         Vector3 spawnPosition = new Vector3(x, y, currentTarget.position.z);
+        int noteTypeIndex;
+        int maxGestures = currentSongGestures.Length;
 
+        if (maxGestures == 0) return;
         // 2. สุ่มชนิดโน้ต (Logic พื้นฐาน)
-        int noteType;
-        
-        // ตรวจสอบบีทจาก Spectrum (ถ้ามี)
-        if (samples[15] > threshold * 1.5f) 
+        if (samples[15] > threshold * 1.5f && currentSongGestures.Length >= 4)
         {
-            noteType = 3; 
+            noteTypeIndex = 3; // ท่าลำดับที่ 4 ใน List
         }
-        else 
+        else
         {
-            // สุ่มท่าไม่ให้ซ้ำกับท่าล่าสุด (ใช้มือซ้ายเป็นหลักสำหรับ Single Hand)
+            // สุ่มท่า 0, 1, 2 (ที่ไม่ใช่ท่าพิเศษ)
             do {
-                noteType = Random.Range(0, 3);
-            } while (noteType == lastLeftNoteIndex);
+                noteTypeIndex = Random.Range(0, Mathf.Min(3, currentSongGestures.Length));
+            } while (noteTypeIndex == lastLeftNoteIndex);
         }
-        
-        lastLeftNoteIndex = noteType;
+
+        lastLeftNoteIndex = noteTypeIndex;
 
         // 3. สร้าง Object โน้ต
-        CreateNoteInstance(noteType, spawnPosition, currentTarget);
+        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget);
     }
 
     protected void CreateNoteInstance(int type, Vector3 position, Transform target)
     {
-        if (notePrefabs[type] == null) return;
+        if (currentSongGestures[type].gesturePrefab == null) return;
         
-        GameObject noteObj = Instantiate(notePrefabs[type], position, Quaternion.identity);
+        GameObject noteObj = Instantiate(currentSongGestures[type].gesturePrefab, position, Quaternion.identity);
         NoteController note = noteObj.GetComponent<NoteController>();
         note.Setup(target, noteSpeed, (NoteType)type);
         
@@ -139,10 +155,27 @@ public class RhythmManager : MonoBehaviour
 
     protected virtual void HandleInput()
     {
-            if (Input.GetKeyDown(keyJ)) CheckHit(NoteType.J, targetLeft);
-            if (Input.GetKeyDown(keyK)) CheckHit(NoteType.K, targetLeft);
-            if (Input.GetKeyDown(keyL)) CheckHit(NoteType.L, targetLeft);
-            if (Input.GetKeyDown(keySpace)) CheckHit(NoteType.Special, targetLeft);
+        // 1. ตรวจสอบจาก Keyboard (สำหรับการทดสอบ)
+        for (int i = 0; i < currentSongGestures.Length; i++)
+        {
+            if (Input.GetKeyDown(currentSongGestures[i].keyCodeLeft))
+            {
+                // i คือลำดับท่า (0-3) ซึ่งจะตรงกับ NoteType.Pose0 - Pose3
+                CheckHit((NoteType)i, targetLeft);
+            }
+        }
+        // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
+        // string aiInputFromCamera = YourAISystem.GetDetectedGesture(); 
+        /*
+        foreach (var g in currentSongGestures)
+        {
+            if (aiInputFromCamera == g.aiGesture)
+            {
+                int index = System.Array.IndexOf(currentSongGestures, g);
+                CheckHit((NoteType)index, targetLeft);
+            }
+        }
+        */
     }
 
     protected virtual void CheckHit(NoteType type, Transform targetSide)
@@ -171,7 +204,7 @@ public class RhythmManager : MonoBehaviour
         {
             UpdateRating(minDistance);
             activeNotes.Remove(targetNote);
-            Destroy(targetNote.gameObject);
+            targetNote.Hit();
         }
     }
     protected Vector3 CalculateSpawnPosition(Transform center, float radius)
@@ -181,14 +214,6 @@ public class RhythmManager : MonoBehaviour
         float x = center.position.x + radius * Mathf.Cos(radian);
         float y = center.position.y + radius * Mathf.Sin(radian);
         return new Vector3(x, y, center.position.z);
-    }
-
-    protected void CreateNote(int type, Vector3 pos, Transform target)
-    {
-        GameObject noteObj = Instantiate(notePrefabs[type], pos, Quaternion.identity);
-        NoteController note = noteObj.GetComponent<NoteController>();
-        note.Setup(target, noteSpeed, (NoteType)type);
-        activeNotes.Add(note);
     }
 
     // 3) & 5) ระบบคะแนนและ Combo
@@ -278,12 +303,14 @@ public class RhythmManager : MonoBehaviour
 
         for (int i = 0; i < allSamples.Length; i += step)
         {
+            float timeStamp = (float)i / (sampleRate * channels);
+            // ไม่นับโน้ตที่อยู่ในช่วง 3 วินาทีสุดท้ายของเพลงเข้าสู่ระบบคะแนน
+            if (timeStamp > musicSource.clip.length - 3.0f) break;
             float intensity = Mathf.Abs(allSamples[i]);
 
             if (intensity > threshold && i >= lastScanSampleIndex + intervalInSamples)
             {
                 // คำนวณวินาทีที่เกิด Peak นี้
-                float timeStamp = (float)i / (sampleRate * channels);
                 noteTimestamps.Add(timeStamp); // เก็บเวลาไว้
                 lastScanSampleIndex = i;
             }
@@ -295,5 +322,3 @@ public class RhythmManager : MonoBehaviour
         Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/(totalNotesCount)}");
     }
 }
-
-public enum NoteType { J, K, L, Special }
