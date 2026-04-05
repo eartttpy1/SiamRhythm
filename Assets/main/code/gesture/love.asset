@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e436a7a2200854b829b4c0a189f9ae, type: 3}
   m_Name: love
   m_EditorClassIdentifier: Assembly-CSharp::Gesture
-  gestureName: 
+  gestureName: "\u0E23\u0E31\u0E01"
   gestureIcon: {fileID: 0}
-  keyCode: 0
-  aiGesture: 
+  gesturePrefab: {fileID: 0}
+  keyCodeLeft: 0
+  keyCodeRight: 0
+  aiGestureLeft: love_left
+  aiGestureRight: love_right

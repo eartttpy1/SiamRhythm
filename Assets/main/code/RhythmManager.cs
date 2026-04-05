@@ -6,6 +6,7 @@ public class RhythmManager : MonoBehaviour
 {
     [Header("Current Song Gestures")]
     public Gesture[] currentSongGestures;
+    public GestureReceiver aiReceiver;
 
     [Header("Single Hand Settings")]
     public Transform targetLeft;  
@@ -165,17 +166,18 @@ public class RhythmManager : MonoBehaviour
             }
         }
         // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
-        // string aiInputFromCamera = YourAISystem.GetDetectedGesture(); 
-        /*
-        foreach (var g in currentSongGestures)
-        {
-            if (aiInputFromCamera == g.aiGesture)
-            {
-                int index = System.Array.IndexOf(currentSongGestures, g);
-                CheckHit((NoteType)index, targetLeft);
+          if (aiReceiver != null && aiReceiver.lastGesture != "None") {
+            string aiInput = aiReceiver.lastGesture;
+            for (int i = 0; i < currentSongGestures.Length; i++) {
+                // เช็คว่าชื่อท่าที่ AI ส่งมา ตรงกับท่าในลิสต์เพลงไหม (ทั้งซ้ายและขวา)
+                if (aiInput == currentSongGestures[i].aiGestureLeft || 
+                    aiInput == currentSongGestures[i].aiGestureRight) {
+                    CheckHit((NoteType)i, targetLeft);
+                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
+                    break;
+                }
             }
         }
-        */
     }
 
     protected virtual void CheckHit(NoteType type, Transform targetSide)

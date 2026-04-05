@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e436a7a2200854b829b4c0a189f9ae, type: 3}
   m_Name: "\u0E01\u0E33"
   m_EditorClassIdentifier: Assembly-CSharp::Gesture
-  gestureName: Gumhand
+  gestureName: "\u0E01\u0E33\u0E21\u0E37\u0E2D"
   gestureIcon: {fileID: 8403215288983880825, guid: 4f330141ca302ed41beb1d740f9e6b0a, type: 3}
   gesturePrefab: {fileID: 2687166235769004591, guid: 8c762a1f977b6804f866fd487ec33e27, type: 3}
   keyCodeLeft: 32
   keyCodeRight: 102
-  aiGestureLeft: 
-  aiGestureRight: 
+  aiGestureLeft: close_hand_left
+  aiGestureRight: close_hand_right
