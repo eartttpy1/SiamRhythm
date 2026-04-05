@@ -169,6 +169,7 @@ public class RhythmManager : MonoBehaviour
           if (aiReceiver != null && aiReceiver.lastGesture != "None") {
             string aiInput = aiReceiver.lastGesture;
             for (int i = 0; i < currentSongGestures.Length; i++) {
+                Debug.Log($"Checking AI Gesture: {aiInput} against {currentSongGestures[i].aiGestureLeft} and {currentSongGestures[i].aiGestureRight}");
                 // เช็คว่าชื่อท่าที่ AI ส่งมา ตรงกับท่าในลิสต์เพลงไหม (ทั้งซ้ายและขวา)
                 if (aiInput == currentSongGestures[i].aiGestureLeft || 
                     aiInput == currentSongGestures[i].aiGestureRight) {
