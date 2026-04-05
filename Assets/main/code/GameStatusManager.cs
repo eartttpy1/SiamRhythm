@@ -2,18 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameStatusManager : MonoBehaviour
 {
+    [Header("Song Info")]
+[SerializeField] private TextMeshProUGUI songTitleText;
     [Header("Time System")]
-    private float currentTime; 
+    [SerializeField] private float currentTime; 
     [SerializeField] private Slider timeSlider;
     [SerializeField] private TextMeshProUGUI currentTimeText;
     [SerializeField] private TextMeshProUGUI endTimeText;
     [SerializeField] private AudioSource musicSource;
 
     [Header("HP System (100 HP)")]
-    [SerializeField] private Slider hpSlider; // ลาก Slider เลือดมาใส่
+    [SerializeField] private Slider hpSlider;
+    [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private float currentHP = 100f;
     [SerializeField] private float hpLossOverTime = 1.0f;
 
@@ -36,9 +40,11 @@ public class GameStatusManager : MonoBehaviour
     private float currentRawScore = 0; 
     
     [Header("Phase System (Base on Time)")]
-    [SerializeField] private Animator characterAnimator;
+    [SerializeField] private List<Animator> allAnimators = new List<Animator>();
     private float totalSongTime;
     public bool isGameOver = false;
+    public bool isPaused = false;
+
 
     void Start()
     {
@@ -46,6 +52,9 @@ public class GameStatusManager : MonoBehaviour
         {
             totalSongTime = musicSource.clip.length;
             timeSlider.maxValue = totalSongTime;
+
+            if (songTitleText != null) songTitleText.text = musicSource.clip.name;
+            
         }
         currentHP = 100f;
         hpSlider.maxValue = 100f;
@@ -76,8 +85,8 @@ public class GameStatusManager : MonoBehaviour
 
         // แสดงผลในรูปแบบ 01:05 (นาที:วินาที) ซึ่งจะดูเป็นสากลกว่า 1.05
         // ใช้ :00 เพื่อบังคับให้แสดงเลข 0 ข้างหน้าถ้าเลขหลักเดียว
-        currentTimeText.text = string.Format("{0:0}:{1:00}", currentMinutes, currentSeconds);
-        endTimeText.text = string.Format("{0:0}:{1:00}", totalMinutes, totalSeconds);
+        currentTimeText.text = string.Format("{0}:{1:00}", currentMinutes, currentSeconds);
+        endTimeText.text = string.Format("{0}:{1:00}", totalMinutes, totalSeconds);
     }
 
     void UpdateHPOverTime()
@@ -99,6 +108,8 @@ public class GameStatusManager : MonoBehaviour
         currentHP += amount;
         currentHP = Mathf.Clamp(currentHP, 0, 100);
         hpSlider.value = currentHP;
+        hpText.text = currentHP.ToString("N0");
+
     }
     // ระบบคะแนน (Max 1,000,000)
     public void AddScore(float multiplier)
@@ -116,9 +127,16 @@ public class GameStatusManager : MonoBehaviour
     void UpdatePhaseAnimation()
     {
         float timeProgress = (currentTime / totalSongTime) * 100f;
-        if (timeProgress < 33) characterAnimator.SetInteger("Phase", 1);
-        else if (timeProgress < 66) characterAnimator.SetInteger("Phase", 2);
-        else characterAnimator.SetInteger("Phase", 3);
+        int currentPhase = 1;
+        if (timeProgress < 33) currentPhase = 1;
+        else if (timeProgress < 66) currentPhase = 2;
+        else currentPhase = 3;
+
+        // สั่งงาน Animator ทุกตัวใน List
+        foreach (Animator anim in allAnimators)
+        {
+            if (anim != null) anim.SetInteger("Phase", currentPhase);
+        }
     }
 
     IEnumerator EndGameSequence(AudioClip endSFX)
@@ -144,29 +162,54 @@ public class GameStatusManager : MonoBehaviour
     //เปลี่ยเป็นเพลงจบ win / เลือดหมด lose
     void CheckWinLoss()
     {
-        // ชนะ: เมื่อเพลงจบและเลือดยังไม่หมด
-        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f) && currentHP > 0)
+        if (isGameOver || isPaused) return;
+        GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note");
+        
+        if (!musicSource.isPlaying) {
+            Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
+            foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
+        }
+        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f))
         {
-            GameOver(true);
+            
+            if (currentHP > 0 && remainingNotes.Length <= 1)
+            {
+                GameOver(true);
+            }
         }
     }
     void GameOver(bool isWin)
     {
+        if (isGameOver) return;
         isGameOver = true;
-        if (isWin)
+
+        GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note"); // ตรวจสอบว่าใส่ Tag ที่ Prefab แล้ว
+        foreach (GameObject note in remainingNotes)
         {
-            characterAnimator.SetTrigger("Win");
-            StartCoroutine(EndGameSequence(winSFX));
+            Destroy(note);
         }
-        else
+        musicSource.Stop();
+        if (!isWin) 
         {
-            characterAnimator.SetTrigger("Fail");
-            StartCoroutine(EndGameSequence(failSFX));
+            currentHP = 0;
+            hpSlider.value = 0;
+            hpText.text = "0";
         }
+        string triggerName = isWin ? "Win" : "Fail";
+
+        foreach (Animator anim in allAnimators)
+        {
+            if (anim != null) anim.SetTrigger(triggerName);
+        }
+
+        if (isWin) StartCoroutine(EndGameSequence(winSFX));
+        else StartCoroutine(EndGameSequence(failSFX));
+
     }
 
     public void UpdateAccuracy(float scoreWeight)
     {
+        if (isGameOver || !musicSource.isPlaying) return;
         totalNotesEncountered++;
         currentRawScore += scoreWeight;
         float accuracy = (currentRawScore / totalNotesEncountered) * 100f;

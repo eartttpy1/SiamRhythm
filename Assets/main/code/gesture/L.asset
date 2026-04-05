@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e436a7a2200854b829b4c0a189f9ae, type: 3}
+  m_Name: L
+  m_EditorClassIdentifier: Assembly-CSharp::Gesture
+  gestureName: Lhand
+  gestureIcon: {fileID: 6634731108622235863, guid: 5cf73ef7c2b6bb34d84b0b88d2377bc6, type: 3}
+  gesturePrefab: {fileID: 4992063321798105419, guid: 496f4fa9867482a4db14592cc7401b52, type: 3}
+  keyCodeLeft: 108
+  keyCodeRight: 100
+  aiGestureLeft: 
+  aiGestureRight: 

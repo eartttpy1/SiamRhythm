@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
 {
@@ -9,10 +10,11 @@ public class PauseManager : MonoBehaviour
     public GameObject pauseMenuPanel;
     public TextMeshProUGUI countdownText;
     public GameObject optionPanel; // สำหรับแสดงเมนูตัวเลือก (ถ้ามี)
+    public Button pause;
 
     [Header("References")]
     public AudioSource musicSource; // เพื่อหยุดเพลงชั่วคราว
-
+    public GameStatusManager statusManager;
     private bool isPaused = false;
     private bool isCountingDown = false;
 
@@ -20,7 +22,7 @@ public class PauseManager : MonoBehaviour
     void Update()
     {
         // ตรวจสอบการกดปุ่ม ESC
-        if (Input.GetKeyDown(KeyCode.Escape) && !isCountingDown)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isCountingDown && !statusManager.isGameOver)
         {
             if (isPaused) ResumeGame();
             else PauseGame();
@@ -30,6 +32,7 @@ public class PauseManager : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
+        statusManager.isPaused = true;
         pauseMenuPanel.SetActive(true);
         Time.timeScale = 0f; // หยุดเวลาในเกมทั้งหมด
         musicSource.Pause(); // หยุดเพลง
@@ -64,6 +67,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f; // ปล่อยเวลาให้เดินต่อ
         musicSource.UnPause(); // เล่นเพลงต่อจากจุดเดิม
         isPaused = false;
+        statusManager.isPaused = false;
         isCountingDown = false;
     }
 
