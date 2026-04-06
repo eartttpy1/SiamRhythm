@@ -5,13 +5,15 @@ public class NoteController : MonoBehaviour
     public Transform target;
     private float speed;
     public NoteType type;
+    public Vector3 spawnPoint; // ตำแหน่งที่โน้ตเกิดขึ้น (สำหรับคำนวณ Early/Late)
     private bool isMissed = false;
 
-    public void Setup(Transform targetPoint, float moveSpeed, NoteType nType)
+    public void Setup(Transform targetPoint, float moveSpeed, NoteType nType, Vector3 spawnPos)
     {
-        target = targetPoint;
-        speed = moveSpeed;
-        type = nType;
+        this.target = targetPoint;
+        this.speed = moveSpeed;
+        this.type = nType;
+        this.spawnPoint = spawnPos;
     }
 
     void Update()

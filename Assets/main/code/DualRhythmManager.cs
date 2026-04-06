@@ -121,7 +121,10 @@ public class DualRhythmManager : RhythmManager
 
         if (targetNote != null && minDistance < 1.2f) 
         {
-            UpdateRating(minDistance); // ใช้ระบบให้คะแนนจากคลาสแม่
+            float noteDist = Vector2.Distance(targetNote.transform.position, Vector3.zero);
+            float targetDist = Vector2.Distance(targetSide.position, Vector3.zero);
+            bool isEarly = noteDist > targetDist;
+            UpdateRating(minDistance, isEarly); // ใช้ระบบให้คะแนนจากคลาสแม่
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }

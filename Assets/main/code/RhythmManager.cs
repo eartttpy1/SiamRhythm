@@ -149,7 +149,7 @@ public class RhythmManager : MonoBehaviour
         
         GameObject noteObj = Instantiate(currentSongGestures[type].gesturePrefab, position, Quaternion.identity);
         NoteController note = noteObj.GetComponent<NoteController>();
-        note.Setup(target, noteSpeed, (NoteType)type);
+        note.Setup(target, noteSpeed, (NoteType)type, position);
         
         activeNotes.Add(note);
     }
@@ -205,19 +205,30 @@ public class RhythmManager : MonoBehaviour
 
         if (targetNote != null && minDistance < 1.2f) 
         {
-            UpdateRating(minDistance);
+            // คำนวณ Early/Late: ถ้าโน้ตอยู่ไกลจากจุดศูนย์กลางมากกว่าเป้าหมาย = Early
+            // ระยะทางจาก 'จุดเกิด' ไปถึง 'เป้าหมาย' (ระยะทางเต็ม)
+            float fullDistance = Vector3.Distance(targetNote.spawnPoint, targetSide.position);
+            
+            // ระยะทางจาก 'จุดเกิด' ไปถึง 'ตัวโน้ตในปัจจุบัน'
+            float traveledDistance = Vector3.Distance(targetNote.spawnPoint, targetNote.transform.position);
+
+            // ถ้าระยะที่วิ่งมา "น้อยกว่า" ระยะเต็ม แปลว่า "ยังมาไม่ถึงเป้า" = Early
+            bool isEarly = traveledDistance < fullDistance;
+            Debug.Log($"Distance: {minDistance}, isEarly: {isEarly}");
+            UpdateRating(minDistance, isEarly);
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }
     }
 
     // 3) & 5) ระบบคะแนนและ Combo
-    protected void UpdateRating(float distance)
+    protected void UpdateRating(float distance, bool isEarly)
     {
         ratingText.gameObject.SetActive(true);
-        
+        string rating = "";
         // Perfect: Score x1.0, HP +10
         if (distance < 0.1f) {
+            rating = "PERFECT";
             ratingText.text = "PERFECT";
             combo++;
             PlayHitSound(perfectSound, 1.0f);
@@ -227,6 +238,7 @@ public class RhythmManager : MonoBehaviour
         }
         // Good: Score x0.7, HP +2
         else if (distance < 0.7f) {
+            rating = "GOOD";
             ratingText.text = "GOOD";
             combo++;
             PlayHitSound(greatSound, 0.5f);
@@ -236,12 +248,14 @@ public class RhythmManager : MonoBehaviour
         }
         // Bad: Score x0.4, HP -20
         else {
+            rating = "BAD";
             ratingText.text = "BAD";
             combo = 0;
             statusManager.AddScore(0.4f);
             statusManager.UpdateHP(-20f);
             statusManager.UpdateAccuracy(0f);
         }
+        statusManager.RegisterHit(rating, isEarly, combo + 1);
         comboText.text = "Combo x " + combo;
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
@@ -258,11 +272,10 @@ public class RhythmManager : MonoBehaviour
         comboText.text = "Combo: " + combo;
         ratingText.gameObject.SetActive(true);
         ratingText.text = "MISS"; 
-        
+        statusManager.RegisterHit("MISS", false, 0);
         statusManager.AddScore(0f);
-        statusManager.UpdateHP(-30f);
+        statusManager.UpdateHP(100f);
         statusManager.UpdateAccuracy(0f);
-
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
         activeNotes.RemoveAll(n => n == null);

@@ -82,9 +82,9 @@ public class PauseManager : MonoBehaviour
         optionPanel.SetActive(true); // แสดงเมนูตัวเลือก
     }
 
-    public void GoToMainMenu()
+    public void GoBack()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu"); // ใส่ชื่อซีนเมนูของคุณ
+        SceneManager.LoadScene("MusicSelect"); // ใส่ชื่อซีนเมนูของคุณ
     }
 }

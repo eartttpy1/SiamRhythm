@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class GameStatusManager : MonoBehaviour
 {
     [Header("Song Info")]
-[SerializeField] private TextMeshProUGUI songTitleText;
+    [SerializeField] private TextMeshProUGUI songTitleText;
     [Header("Time System")]
     [SerializeField] private float currentTime; 
     [SerializeField] private Slider timeSlider;
@@ -22,7 +22,7 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private float hpLossOverTime = 1.0f;
 
     [Header("Score System (Max 1,000,000)")]
-    [SerializeField] private TextMeshProUGUI scoreText; // Text แสดงคะแนน
+    [SerializeField] private TextMeshProUGUI scoreText, totalScoreText; // Text แสดงคะแนน
     private float currentScore = 0f;
     private float scorePerNote = 0f;
 
@@ -33,14 +33,36 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private float fadeDuration = 2.0f; // ระยะเวลาในการเฟดเพลงให้เงียบลง (วินาที)
 
 
-    [Header("Rank & Accuracy")]
-    [SerializeField] private TextMeshProUGUI accuracyText; // Text สำหรับโชว์ %
-    [SerializeField] private TextMeshProUGUI rankText;     // Text สำหรับโชว์ S, A, B, C
+    [Header("Accuracy")]
+    [SerializeField] private TextMeshProUGUI accuracyText, acc; // Text สำหรับโชว์ %    // Text สำหรับโชว์ S, A, B, C
     private float totalNotesEncountered = 0;
     private float currentRawScore = 0; 
-    
+
+    [Header("Timing Stats")]
+    [SerializeField] private GameObject failCanvas;
+    [SerializeField] private GameObject statsCanvas;
+    [SerializeField] private TextMeshProUGUI earlyText;
+    [SerializeField] private TextMeshProUGUI lateText;
+    [SerializeField] private TextMeshProUGUI perfectText;
+    [SerializeField] private TextMeshProUGUI goodText;
+    [SerializeField] private TextMeshProUGUI badText;
+    [SerializeField] private TextMeshProUGUI missText;
+    [SerializeField] private TextMeshProUGUI maxComboText;
+    [SerializeField] private TextMeshProUGUI rankText; 
+    // Text สำหรับโชว์สถิติการกด (Early, Late, Perfect, Good, Bad, Miss)
+    public int earlyCount = 0;
+    public int lateCount = 0;
+    public int perfectCount = 0;
+    public int goodCount = 0;
+    public int badCount = 0;
+    public int missCount = 0;
+    public int maxCombo = 0;
+    private float accuracy;
+    private string rank;
+
     [Header("Phase System (Base on Time)")]
     [SerializeField] private List<Animator> allAnimators = new List<Animator>();
+    [SerializeField] private RhythmManager rhythmManager; // เพื่อเช็คจำนวนโน้ตทั้งหมดจากคลาสแม่
     private float totalSongTime;
     public bool isGameOver = false;
     public bool isPaused = false;
@@ -87,6 +109,31 @@ public class GameStatusManager : MonoBehaviour
         // ใช้ :00 เพื่อบังคับให้แสดงเลข 0 ข้างหน้าถ้าเลขหลักเดียว
         currentTimeText.text = string.Format("{0}:{1:00}", currentMinutes, currentSeconds);
         endTimeText.text = string.Format("{0}:{1:00}", totalMinutes, totalSeconds);
+    }
+    public void RegisterHit(string rating, bool isEarly, int currentCombo)
+    {
+        if (isGameOver) return;
+
+        // 1. นับตาม Rating
+        switch (rating)
+        {
+            case "PERFECT": perfectCount++; break;
+            case "GOOD": 
+                goodCount++; 
+                if (isEarly) earlyCount++; else lateCount++; 
+                break;
+            case "BAD": 
+                badCount++; 
+                if (isEarly) earlyCount++; else lateCount++; 
+                break;
+            case "MISS": missCount++; break;
+        }
+
+        // 2. อัปเดต Max Combo
+        if (currentCombo > maxCombo)
+        {
+            maxCombo = currentCombo;
+        }
     }
 
     void UpdateHPOverTime()
@@ -164,12 +211,13 @@ public class GameStatusManager : MonoBehaviour
     {
         if (isGameOver || isPaused) return;
         GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note");
-        
+        // currentTime > (totalSongTime * 0.9f)
+        //totalNotesEncountered == rhythmManager.totalNotesCount
         if (!musicSource.isPlaying) {
             // Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
             // foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
         }
-        if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f))
+        if (!musicSource.isPlaying && totalNotesEncountered >= rhythmManager.totalNotesCount)
         {
             Debug.Log("Mo1");
             
@@ -177,8 +225,29 @@ public class GameStatusManager : MonoBehaviour
             {
                 Debug.Log("Mo2");
                 GameOver(true);
+                return;
             }
+            // --- ระบบ Safety Timeout (ตัวช่วยจบเกม) ---
+            // ถ้าเพลงหยุดไปแล้วระยะหนึ่ง (เช่น 3 วินาที) แต่ยังมีโน้ตค้างอยู่ (อาจเป็นบัค)
+            // เราจะบังคับจบเกมเพื่อไม่ให้ผู้เล่นค้างอยู่ที่หน้าเดิม
+            StartCoroutine(ForcedWinDelay(3.0f));
         }
+    }
+    private bool isWaitingForcedWin = false;
+    IEnumerator ForcedWinDelay(float delay)
+    {
+        if (isWaitingForcedWin) yield break;
+        isWaitingForcedWin = true;
+
+        yield return new WaitForSeconds(delay);
+
+        // ถ้าผ่านไป 3 วินาทีแล้วเกมยังไม่จบ (เพราะโน้ตค้าง) ให้สั่งจบเลย
+        if (!isGameOver && !musicSource.isPlaying)
+        {
+            Debug.LogWarning("Forced Win triggered due to remaining notes stuck on screen.");
+            GameOver(true);
+        }
+        isWaitingForcedWin = false;
     }
     void GameOver(bool isWin)
     {
@@ -204,9 +273,36 @@ public class GameStatusManager : MonoBehaviour
             if (anim != null) anim.SetTrigger(triggerName);
         }
 
-        if (isWin) StartCoroutine(EndGameSequence(winSFX));
-        else StartCoroutine(EndGameSequence(failSFX));
+        if (isWin)
+        {
+            StartCoroutine(EndGameSequence(winSFX));
+            Invoke("DeactivateStatsCanvas", 3.0f);
+        }
+        else
+        {
+            StartCoroutine(EndGameSequence(failSFX));
+            Invoke("DeactivateFailCanvas", 3.0f);            
+        }
 
+    }
+    public void DeactivateStatsCanvas()
+    {
+        statsCanvas.gameObject.SetActive(true);
+
+        totalScoreText.text = currentScore.ToString("N0");
+        acc.text = accuracy.ToString("F2") + "%";
+        earlyText.text = earlyCount.ToString();
+        lateText.text = lateCount.ToString();
+        perfectText.text = perfectCount.ToString();
+        goodText.text = goodCount.ToString();
+        badText.text = badCount.ToString();
+        missText.text = missCount.ToString();
+        maxComboText.text = maxCombo.ToString();
+        rankText.text = rank.ToString();
+    }
+    public void DeactivateFailCanvas()
+    {
+        failCanvas.gameObject.SetActive(true);
     }
 
     public void UpdateAccuracy(float scoreWeight)
@@ -214,7 +310,7 @@ public class GameStatusManager : MonoBehaviour
         if (isGameOver || !musicSource.isPlaying) return;
         totalNotesEncountered++;
         currentRawScore += scoreWeight;
-        float accuracy = (currentRawScore / totalNotesEncountered) * 100f;
+        accuracy = (currentRawScore / totalNotesEncountered) * 100f;
         accuracy = Mathf.Clamp(accuracy, 0, 100);
         accuracyText.text = "Acc : " + accuracy.ToString("F2") + "%";
         updateRank(accuracy);
@@ -224,11 +320,12 @@ public class GameStatusManager : MonoBehaviour
     //เปลี่ยนจาก acc เป็น คะแนน 1,000,000
     void updateRank(float acc)
     {
-        if (acc == 100) rankText.text = "SSS";
-        if (acc >= 95) rankText.text = "S";
-        else if (acc >= 85) rankText.text = "A";
-        else if (acc >= 75) rankText.text = "B";
-        else if (acc >= 60) rankText.text = "C";
-        else rankText.text = "F";
+        rank = " ";
+        if (acc == 100) rank = "SSS";
+        if (acc >= 95) rank = "S";
+        else if (acc >= 85) rank = "A";
+        else if (acc >= 75) rank = "B";
+        else if (acc >= 60) rank = "C";
+        else rank = "F";
     }
 }
