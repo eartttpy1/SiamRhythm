@@ -7,6 +7,9 @@ public class DualRhythmManager : RhythmManager
     [SerializeField] private Transform targetRight; 
     [SerializeField] private float radiusR = 3f;
 
+    [Range(-90, 360)] public float minAngleRight = 180f;
+    [Range(-90, 360)] public float maxAngleRight = 360f;
+
     // 1. Override การเกิดโน้ต: เพิ่ม Logic สลับซ้าย-ขวา และมุม 360 องศา
     protected override void SpawnNote()
     {
@@ -15,9 +18,12 @@ public class DualRhythmManager : RhythmManager
         // เลือกเป้าหมายและรัศมีตามฝั่งที่สุ่มได้
         Transform currentTarget = isLeft ? targetLeft : targetRight;
         float currentRadius = isLeft ? radiusL : radiusR;
+        // เลือกค่า Min/Max Angle แยกซ้าย-ขวา
+        float currentMinAngle = isLeft ? minAngleLeft : minAngleRight; 
+        float currentMaxAngle = isLeft ? maxAngleLeft : maxAngleRight; 
 
-        // คำนวณตำแหน่ง 360 องศารอบตัว
-        float randomAngle = Random.Range(0f, 360f);
+        // คำนวณตำแหน่งตามช่วงมุมที่กำหนด
+        float randomAngle = Random.Range(currentMinAngle, currentMaxAngle);
         float radian = randomAngle * Mathf.Deg2Rad;
 
         float x = currentTarget.position.x + currentRadius * Mathf.Cos(radian);
@@ -68,6 +74,27 @@ public class DualRhythmManager : RhythmManager
             }
         }
 
+        if (aiReceiver != null && aiReceiver.lastGesture != "None") {
+            string aiInput = aiReceiver.lastGesture;
+            for (int i = 0; i < currentSongGestures.Length; i++) {
+                Debug.Log($"Checking AI Gesture: {aiInput} against {currentSongGestures[i].aiGestureLeft} and {currentSongGestures[i].aiGestureRight}");
+                // เช็คว่าชื่อท่าที่ AI ส่งมา ตรงกับท่าในลิสต์เพลงไหม (ทั้งซ้ายและขวา)
+                if (aiInput == currentSongGestures[i].aiGestureLeft) {
+                    CheckHit((NoteType)i, targetLeft);
+                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
+                    break;
+                }
+                if (aiInput == currentSongGestures[i].aiGestureRight) {
+                    CheckHit((NoteType)i, targetRight);
+                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
+                    break;
+                }
+            }
+        }
+
+
+
+
     }
 
     // ฟังก์ชันช่วยเช็คการกดแยกฝั่ง (Encapsulation)
@@ -101,16 +128,31 @@ public class DualRhythmManager : RhythmManager
     }
     void OnDrawGizmosSelected()
     {
+        // วาดขอบเขตฝั่งซ้าย
         if (targetLeft != null)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(targetLeft.position, radiusL);
+            DrawGizmoArc(targetLeft.position, radiusL, minAngleLeft, maxAngleLeft);
         }
+        // วาดขอบเขตฝั่งขวา
         if (targetRight != null)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(targetRight.position, radiusR);
+            DrawGizmoArc(targetRight.position, radiusR, minAngleRight, maxAngleRight);
         }
-        
+    }
+
+    // ฟังก์ชันช่วยวาดเส้นโค้ง
+    void DrawGizmoArc(Vector3 center, float radius, float min, float max)
+    {
+        int segments = 20;
+        Vector3 prevPoint = Vector3.zero;
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = Mathf.Lerp(min, max, (float)i / segments) * Mathf.Deg2Rad;
+            Vector3 point = center + new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0);
+            if (i > 0) Gizmos.DrawLine(prevPoint, point);
+            prevPoint = point;
+        }
     }
 }

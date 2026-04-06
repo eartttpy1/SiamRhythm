@@ -31,8 +31,8 @@ public class RhythmManager : MonoBehaviour
     public TextMeshProUGUI ratingText;
     public TextMeshProUGUI comboText;
     
-    [Header("Input Settings")]
-    public Gesture[] gestureMapping; // อาร์เรย์สำหรับแมปท่ากับคีย์ (ถ้าใช้ AI)
+    // [Header("Input Settings")]
+    // public Gesture[] gestureMapping;
 
     [Header("Balance Settings")]
     public float perfectWeight; // ค่า % ที่จะเพิ่มเมื่อได้ Perfect
@@ -44,8 +44,8 @@ public class RhythmManager : MonoBehaviour
     protected int lastLeftNoteIndex = -1;  // จำท่าล่าสุดของมือซ้าย
     protected int lastRightNoteIndex = -1;
     public float noteSpeed = 5f;
-    [Range(0, 360)] public float minAngle = 0f; // มุมเริ่มต้น (ขวา)
-    [Range(0, 360)] public float maxAngle = 360f; // มุมสิ้นสุด (ซ้าย)
+    [Range(-90, 360)] public float minAngleLeft = 0f; // มุมเริ่มต้น (ขวา)
+    [Range(-90, 360)] public float maxAngleLeft = 180f; // มุมสิ้นสุด (ขวา)
 
     [Header("Protected for Inheritance")]  
     protected List<NoteController> activeNotes = new List<NoteController>();
@@ -114,7 +114,7 @@ public class RhythmManager : MonoBehaviour
         float currentRadius = radiusL;
         
         // 1. คำนวณตำแหน่ง (ใช้ค่า minAngle/maxAngle ที่ตั้งไว้สำหรับมือเดียวใน Inspector)
-        float randomAngle = Random.Range(minAngle, maxAngle);
+        float randomAngle = Random.Range(minAngleLeft, maxAngleLeft);
         float radian = randomAngle * Mathf.Deg2Rad;
 
         float x = currentTarget.position.x + currentRadius * Mathf.Cos(radian);
@@ -166,7 +166,7 @@ public class RhythmManager : MonoBehaviour
             }
         }
         // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
-          if (aiReceiver != null && aiReceiver.lastGesture != "None") {
+        if (aiReceiver != null && aiReceiver.lastGesture != "None") {
             string aiInput = aiReceiver.lastGesture;
             for (int i = 0; i < currentSongGestures.Length; i++) {
                 Debug.Log($"Checking AI Gesture: {aiInput} against {currentSongGestures[i].aiGestureLeft} and {currentSongGestures[i].aiGestureRight}");
@@ -209,14 +209,6 @@ public class RhythmManager : MonoBehaviour
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }
-    }
-    protected Vector3 CalculateSpawnPosition(Transform center, float radius)
-    {
-        float randomAngle = Random.Range(minAngle, maxAngle);
-        float radian = randomAngle * Mathf.Deg2Rad;
-        float x = center.position.x + radius * Mathf.Cos(radian);
-        float y = center.position.y + radius * Mathf.Sin(radian);
-        return new Vector3(x, y, center.position.z);
     }
 
     // 3) & 5) ระบบคะแนนและ Combo

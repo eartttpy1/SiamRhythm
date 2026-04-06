@@ -166,14 +166,16 @@ public class GameStatusManager : MonoBehaviour
         GameObject[] remainingNotes = GameObject.FindGameObjectsWithTag("Note");
         
         if (!musicSource.isPlaying) {
-            Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
-            foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
+            // Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
+            // foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
         }
         if (!musicSource.isPlaying && currentTime > (totalSongTime * 0.9f))
         {
+            Debug.Log("Mo1");
             
-            if (currentHP > 0 && remainingNotes.Length <= 1)
+            if (currentHP > 0 && remainingNotes.Length < 1)
             {
+                Debug.Log("Mo2");
                 GameOver(true);
             }
         }

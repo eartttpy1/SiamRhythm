@@ -15,7 +15,7 @@ MonoBehaviour:
   gestureName: "\u0E15\u0E31\u0E27\u0E41\u0E2D\u0E25"
   gestureIcon: {fileID: 6634731108622235863, guid: 5cf73ef7c2b6bb34d84b0b88d2377bc6, type: 3}
   gesturePrefab: {fileID: 4992063321798105419, guid: 496f4fa9867482a4db14592cc7401b52, type: 3}
-  keyCodeLeft: 108
-  keyCodeRight: 100
+  keyCodeLeft: 100
+  keyCodeRight: 108
   aiGestureLeft: L_left
   aiGestureRight: L_right
