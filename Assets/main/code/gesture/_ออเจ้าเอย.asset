@@ -20,7 +20,7 @@ MonoBehaviour:
   spawnInterval: 3
   currentSongGestures:
   - {fileID: 11400000, guid: 86660ab9c82cd2b4cb4e61c27790b4c8, type: 2}
-  - {fileID: 11400000, guid: 2bf416d2509a8a2469ce05c7b2a7f4cc, type: 2}
+  - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}
   - {fileID: 11400000, guid: 0e9e4af45d2d6f54ba876050f3b31bf9, type: 2}
   - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   phaseAnimatorControllers:

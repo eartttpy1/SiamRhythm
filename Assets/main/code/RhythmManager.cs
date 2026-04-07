@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
 public class RhythmManager : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class RhythmManager : MonoBehaviour
     [Header("Current Song Gestures")]
     public Gesture[] currentSongGestures;
     public GestureReceiver aiReceiver;
-
+    public UnityEngine.UI.Image[] gesturePreview = new UnityEngine.UI.Image[4];
+    public UnityEngine.UI.Image[] gesturePreviewStat = new UnityEngine.UI.Image[4];
+    public TextMeshProUGUI handModeText;
 
     [Header("Single Hand Settings")]
     public Transform targetLeft;  
@@ -70,6 +73,7 @@ public class RhythmManager : MonoBehaviour
             Debug.LogError("No music clip assigned to the AudioSource!");
             return;
         }
+        HandModeTextUpdate();
         musicSource.Play();
         // เรียกคำนวณทันทีที่เริ่มด่าน
         CalculateAutomaticBalance();
@@ -84,10 +88,41 @@ public class RhythmManager : MonoBehaviour
         threshold = data.threshold;
         noteSpeed = data.noteSpeed;
         spawnInterval = data.spawnInterval;
-        statusManager.SetupAllControllers(data.phaseAnimatorControllers, data.loopAnimatorControllers);
+        for (int i = 0; i < 4; i++)
+        {
+            // ตรวจสอบว่ามีข้อมูล Gesture ในลำดับนี้ไหม
+            bool hasData = (i < currentSongGestures.Length && currentSongGestures[i] != null);
+
+            // จัดการชุดที่ 1 (Icon หลัก)
+            if (i < gesturePreview.Length && gesturePreview[i] != null)
+            {
+                if (hasData)
+                {
+                    gesturePreview[i].sprite = currentSongGestures[i].gestureIcon;
+                    gesturePreview[i].gameObject.SetActive(true);
+                }
+                else gesturePreview[i].gameObject.SetActive(false);
+            }
+
+            // จัดการชุดที่ 2 (เช่น แสดงไอคอนปุ่มกด หรือ Sprite อื่นๆ จาก Gesture)
+            if (i < gesturePreviewStat.Length && gesturePreviewStat[i] != null)
+            {
+                if (hasData)
+                {
+                    // ตัวอย่าง: ถ้าใน Gesture.cs มี sprite อีกอันชื่อ buttonIcon
+                    // gesturePreviewStat[i].sprite = currentSongGestures[i].buttonIcon; 
+                    
+                    // หรือถ้าจะใช้รูปเดิมแต่โชว์คนละที่:
+                    gesturePreviewStat[i].sprite = currentSongGestures[i].gestureIcon;
+                    gesturePreviewStat[i].gameObject.SetActive(true);
+                }
+                else gesturePreviewStat[i].gameObject.SetActive(false);
+            }
+        }
         // ตั้งค่าชื่อเพลงใน UI
         if (statusManager != null) {
-            statusManager.SetupScoring(totalNotesCount); // จะถูกเรียกซ้ำใน CalculateAutomaticBalance
+            statusManager.SetupScoring(totalNotesCount); 
+            statusManager.SetupAllControllers(data.phaseAnimatorControllers, data.loopAnimatorControllers);
         }
     }
 
@@ -110,6 +145,10 @@ public class RhythmManager : MonoBehaviour
         // เช็คค่า null ป้องกัน Error และเช็คว่าเกมจบหรือยัง
         if (statusManager == null || statusManager.isGameOver) return;
         float timeRemaining = musicSource.clip.length - musicSource.time;
+        if (musicSource.time < 3.0f) 
+        {
+            return; 
+        }
     
         if (timeRemaining < 3.0f) 
         {
@@ -144,17 +183,11 @@ public class RhythmManager : MonoBehaviour
 
         if (maxGestures == 0) return;
         // 2. สุ่มชนิดโน้ต (Logic พื้นฐาน)
-        if (samples[15] > threshold * 1.5f && currentSongGestures.Length >= 4)
-        {
-            noteTypeIndex = 3; // ท่าลำดับที่ 4 ใน List
-        }
-        else
-        {
-            // สุ่มท่า 0, 1, 2 (ที่ไม่ใช่ท่าพิเศษ)
-            do {
-                noteTypeIndex = Random.Range(0, Mathf.Min(3, currentSongGestures.Length));
-            } while (noteTypeIndex == lastLeftNoteIndex);
-        }
+        do {
+            // จำกัดช่วงการสุ่มไม่ให้เกินจำนวนท่าที่มีจริงใน List (เผื่อบางเพลงมีไม่ถึง 4 ท่า)
+            int rangeLimit = Mathf.Min(4, maxGestures); 
+            noteTypeIndex = Random.Range(0, rangeLimit); 
+        } while (noteTypeIndex == lastLeftNoteIndex && maxGestures > 1);
 
         lastLeftNoteIndex = noteTypeIndex;
 
@@ -321,6 +354,7 @@ public class RhythmManager : MonoBehaviour
         for (int i = 0; i < allSamples.Length; i += step)
         {
             float timeStamp = (float)i / (sampleRate * channels);
+            if (timeStamp < 3.0f) continue;
             // ไม่นับโน้ตที่อยู่ในช่วง 3 วินาทีสุดท้ายของเพลงเข้าสู่ระบบคะแนน
             if (timeStamp > musicSource.clip.length - 3.0f) break;
             float intensity = Mathf.Abs(allSamples[i]);
@@ -337,5 +371,22 @@ public class RhythmManager : MonoBehaviour
         statusManager.SetupScoring(totalNotesCount);
         currentNoteIndex = 0; // รีเซ็ตตัวชี้
         Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/(totalNotesCount)}");
+    }
+
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (targetLeft != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(targetLeft.position, radiusL);
+        }
+    }
+
+    protected virtual void HandModeTextUpdate()
+    {
+        if (handModeText != null)
+        {
+            handModeText.text = "1 Hand";
+        }
     }
 }

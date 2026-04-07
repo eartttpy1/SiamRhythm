@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1c73cf4b0d64ec49a7a8e968c691b5e, type: 3}
-  m_Name: "_\u0E04\u0E07\u0E04\u0E32"
+  m_Name: _GOAGAG
   m_EditorClassIdentifier: Assembly-CSharp::SongData
-  songName: "\u0E04\u0E07\u0E04\u0E32"
-  artistName: "\u0E40\u0E2D\u0E27\u0E32\u0E23\u0E34\u0E19\u0E17\u0E23\u0E4C"
-  audioClip: {fileID: 8300000, guid: b475527e3479d834d8ea8c5fc5024c7c, type: 3}
+  songName: GOAGAG
+  artistName: GOA
+  audioClip: {fileID: 8300000, guid: fee93234b13921d47a5841905954be69, type: 3}
   threshold: 0.01
-  noteSpeed: 6
-  spawnInterval: 3
+  noteSpeed: 7
+  spawnInterval: 1
   currentSongGestures:
-  - {fileID: 11400000, guid: 2bf416d2509a8a2469ce05c7b2a7f4cc, type: 2}
   - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
-  - {fileID: 11400000, guid: ee71f20c9a21e204ab939e2741348c4c, type: 2}
-  - {fileID: 11400000, guid: 0e9e4af45d2d6f54ba876050f3b31bf9, type: 2}
+  - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
+  - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
+  - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   phaseAnimatorControllers:
   - {fileID: 22100000, guid: 03d06c9d8a47f4a4cb67698ed27151f6, type: 2}
   - {fileID: 22100000, guid: 1475e02b655249742918b229039cad56, type: 2}

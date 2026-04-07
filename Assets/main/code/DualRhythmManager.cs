@@ -122,7 +122,7 @@ public class DualRhythmManager : RhythmManager
             targetNote.Hit();
         }
     }
-    void OnDrawGizmosSelected()
+    protected override void OnDrawGizmosSelected()
     {
         // วาดขอบเขตฝั่งซ้าย
         if (targetLeft != null)
@@ -149,6 +149,13 @@ public class DualRhythmManager : RhythmManager
             Vector3 point = center + new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0);
             if (i > 0) Gizmos.DrawLine(prevPoint, point);
             prevPoint = point;
+        }
+    }
+    protected override void HandModeTextUpdate()
+    {
+        if (handModeText != null)
+        {
+            handModeText.text = "2 Hands";
         }
     }
 }
