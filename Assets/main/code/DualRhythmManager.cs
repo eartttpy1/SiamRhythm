@@ -64,10 +64,6 @@ public class DualRhythmManager : RhythmManager
             {
                 CheckHit((NoteType)i, targetLeft);
             }
-        }
-
-        for (int i = 0; i < currentSongGestures.Length; i++)
-        {
             if (Input.GetKeyDown(currentSongGestures[i].keyCodeRight)) // เช่น J, K, L, Space
             {
                 CheckHit((NoteType)i, targetRight);
@@ -121,10 +117,7 @@ public class DualRhythmManager : RhythmManager
 
         if (targetNote != null && minDistance < 1.2f) 
         {
-            float noteDist = Vector2.Distance(targetNote.transform.position, Vector3.zero);
-            float targetDist = Vector2.Distance(targetSide.position, Vector3.zero);
-            bool isEarly = noteDist > targetDist;
-            UpdateRating(minDistance, isEarly); // ใช้ระบบให้คะแนนจากคลาสแม่
+            UpdateRating(minDistance); // ใช้ระบบให้คะแนนจากคลาสแม่
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }

@@ -4,9 +4,13 @@ using System.Collections.Generic;
 public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
 public class RhythmManager : MonoBehaviour
 {
+    [Header("Data Loading")]
+    public SongData selectedSong;
+
     [Header("Current Song Gestures")]
     public Gesture[] currentSongGestures;
     public GestureReceiver aiReceiver;
+
 
     [Header("Single Hand Settings")]
     public Transform targetLeft;  
@@ -60,16 +64,31 @@ public class RhythmManager : MonoBehaviour
         {
             Debug.LogError("No gestures assigned for this song!");
             return;
-         }
-         if (musicSource.clip == null)
-         {
-             Debug.LogError("No music clip assigned to the AudioSource!");
-             return;
-          }
-         musicSource.Play();
+        }
+        if (musicSource.clip == null)
+        {
+            Debug.LogError("No music clip assigned to the AudioSource!");
+            return;
+        }
+        musicSource.Play();
         // เรียกคำนวณทันทีที่เริ่มด่าน
-        statusManager = FindObjectOfType<GameStatusManager>();
         CalculateAutomaticBalance();
+    }
+    public void LoadSongData(SongData data)
+    {
+        if (data == null) return;
+
+        // โหลดค่าพื้นฐานจาก ScriptableObject
+        currentSongGestures = data.currentSongGestures; 
+        musicSource.clip = data.audioClip;
+        threshold = data.threshold;
+        noteSpeed = data.noteSpeed;
+        spawnInterval = data.spawnInterval;
+        statusManager.SetupAllControllers(data.phaseAnimatorControllers, data.loopAnimatorControllers);
+        // ตั้งค่าชื่อเพลงใน UI
+        if (statusManager != null) {
+            statusManager.SetupScoring(totalNotesCount); // จะถูกเรียกซ้ำใน CalculateAutomaticBalance
+        }
     }
 
     protected virtual void Update() // เปลี่ยนเป็น virtual เผื่อลูกอยากแก้ Update
@@ -149,7 +168,7 @@ public class RhythmManager : MonoBehaviour
         
         GameObject noteObj = Instantiate(currentSongGestures[type].gesturePrefab, position, Quaternion.identity);
         NoteController note = noteObj.GetComponent<NoteController>();
-        note.Setup(target, noteSpeed, (NoteType)type, position);
+        note.Setup(target, noteSpeed, (NoteType)type);
         
         activeNotes.Add(note);
     }
@@ -205,24 +224,14 @@ public class RhythmManager : MonoBehaviour
 
         if (targetNote != null && minDistance < 1.2f) 
         {
-            // คำนวณ Early/Late: ถ้าโน้ตอยู่ไกลจากจุดศูนย์กลางมากกว่าเป้าหมาย = Early
-            // ระยะทางจาก 'จุดเกิด' ไปถึง 'เป้าหมาย' (ระยะทางเต็ม)
-            float fullDistance = Vector3.Distance(targetNote.spawnPoint, targetSide.position);
-            
-            // ระยะทางจาก 'จุดเกิด' ไปถึง 'ตัวโน้ตในปัจจุบัน'
-            float traveledDistance = Vector3.Distance(targetNote.spawnPoint, targetNote.transform.position);
-
-            // ถ้าระยะที่วิ่งมา "น้อยกว่า" ระยะเต็ม แปลว่า "ยังมาไม่ถึงเป้า" = Early
-            bool isEarly = traveledDistance < fullDistance;
-            Debug.Log($"Distance: {minDistance}, isEarly: {isEarly}");
-            UpdateRating(minDistance, isEarly);
+            UpdateRating(minDistance);
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }
     }
 
     // 3) & 5) ระบบคะแนนและ Combo
-    protected void UpdateRating(float distance, bool isEarly)
+    protected void UpdateRating(float distance)
     {
         ratingText.gameObject.SetActive(true);
         string rating = "";
@@ -255,7 +264,7 @@ public class RhythmManager : MonoBehaviour
             statusManager.UpdateHP(-20f);
             statusManager.UpdateAccuracy(0f);
         }
-        statusManager.RegisterHit(rating, isEarly, combo + 1);
+        statusManager.RegisterHit(rating, combo + 1);
         comboText.text = "Combo x " + combo;
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
@@ -272,7 +281,7 @@ public class RhythmManager : MonoBehaviour
         comboText.text = "Combo: " + combo;
         ratingText.gameObject.SetActive(true);
         ratingText.text = "MISS"; 
-        statusManager.RegisterHit("MISS", false, 0);
+        statusManager.RegisterHit("MISS", 0);
         statusManager.AddScore(0f);
         statusManager.UpdateHP(100f);
         statusManager.UpdateAccuracy(0f);

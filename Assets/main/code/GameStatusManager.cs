@@ -41,17 +41,14 @@ public class GameStatusManager : MonoBehaviour
     [Header("Timing Stats")]
     [SerializeField] private GameObject failCanvas;
     [SerializeField] private GameObject statsCanvas;
-    [SerializeField] private TextMeshProUGUI earlyText;
-    [SerializeField] private TextMeshProUGUI lateText;
     [SerializeField] private TextMeshProUGUI perfectText;
     [SerializeField] private TextMeshProUGUI goodText;
     [SerializeField] private TextMeshProUGUI badText;
     [SerializeField] private TextMeshProUGUI missText;
     [SerializeField] private TextMeshProUGUI maxComboText;
     [SerializeField] private TextMeshProUGUI rankText; 
+    [SerializeField] private TextMeshProUGUI songStatusText;
     // Text สำหรับโชว์สถิติการกด (Early, Late, Perfect, Good, Bad, Miss)
-    public int earlyCount = 0;
-    public int lateCount = 0;
     public int perfectCount = 0;
     public int goodCount = 0;
     public int badCount = 0;
@@ -61,7 +58,9 @@ public class GameStatusManager : MonoBehaviour
     private string rank;
 
     [Header("Phase System (Base on Time)")]
-    [SerializeField] private List<Animator> allAnimators = new List<Animator>();
+    public List<Animator> phaseAnimators = new List<Animator>();
+    [Header("Ambient / Loop System")]
+    public List<Animator> loopAnimators = new List<Animator>();
     [SerializeField] private RhythmManager rhythmManager; // เพื่อเช็คจำนวนโน้ตทั้งหมดจากคลาสแม่
     private float totalSongTime;
     public bool isGameOver = false;
@@ -75,8 +74,11 @@ public class GameStatusManager : MonoBehaviour
             totalSongTime = musicSource.clip.length;
             timeSlider.maxValue = totalSongTime;
 
-            if (songTitleText != null) songTitleText.text = musicSource.clip.name;
-            
+            if (songTitleText != null) 
+            {
+                songTitleText.text = musicSource.clip.name;
+                songStatusText.text = musicSource.clip.name;
+            }
         }
         currentHP = 100f;
         hpSlider.maxValue = 100f;
@@ -110,7 +112,7 @@ public class GameStatusManager : MonoBehaviour
         currentTimeText.text = string.Format("{0}:{1:00}", currentMinutes, currentSeconds);
         endTimeText.text = string.Format("{0}:{1:00}", totalMinutes, totalSeconds);
     }
-    public void RegisterHit(string rating, bool isEarly, int currentCombo)
+    public void RegisterHit(string rating, int currentCombo)
     {
         if (isGameOver) return;
 
@@ -118,14 +120,8 @@ public class GameStatusManager : MonoBehaviour
         switch (rating)
         {
             case "PERFECT": perfectCount++; break;
-            case "GOOD": 
-                goodCount++; 
-                if (isEarly) earlyCount++; else lateCount++; 
-                break;
-            case "BAD": 
-                badCount++; 
-                if (isEarly) earlyCount++; else lateCount++; 
-                break;
+            case "GOOD": goodCount++; break;
+            case "BAD": badCount++; break;
             case "MISS": missCount++; break;
         }
 
@@ -180,7 +176,7 @@ public class GameStatusManager : MonoBehaviour
         else currentPhase = 3;
 
         // สั่งงาน Animator ทุกตัวใน List
-        foreach (Animator anim in allAnimators)
+        foreach (Animator anim in phaseAnimators)
         {
             if (anim != null) anim.SetInteger("Phase", currentPhase);
         }
@@ -268,7 +264,7 @@ public class GameStatusManager : MonoBehaviour
         }
         string triggerName = isWin ? "Win" : "Fail";
 
-        foreach (Animator anim in allAnimators)
+        foreach (Animator anim in phaseAnimators)
         {
             if (anim != null) anim.SetTrigger(triggerName);
         }
@@ -291,8 +287,6 @@ public class GameStatusManager : MonoBehaviour
 
         totalScoreText.text = currentScore.ToString("N0");
         acc.text = accuracy.ToString("F2") + "%";
-        earlyText.text = earlyCount.ToString();
-        lateText.text = lateCount.ToString();
         perfectText.text = perfectCount.ToString();
         goodText.text = goodCount.ToString();
         badText.text = badCount.ToString();
@@ -327,5 +321,26 @@ public class GameStatusManager : MonoBehaviour
         else if (acc >= 75) rank = "B";
         else if (acc >= 60) rank = "C";
         else rank = "F";
+    }
+
+    public void SetupAllControllers(RuntimeAnimatorController[] phaseControllers, RuntimeAnimatorController[] loopControllers)
+    {
+        // 1. จัดการกลุ่ม Phase
+        for (int i = 0; i < phaseAnimators.Count; i++)
+        {
+            if (phaseControllers != null && i < phaseControllers.Length && phaseAnimators[i] != null)
+            {
+                phaseAnimators[i].runtimeAnimatorController = phaseControllers[i];
+            }
+        }
+
+        // 2. จัดการกลุ่ม Loop (BG)
+        for (int i = 0; i < loopAnimators.Count; i++)
+        {
+            if (loopControllers != null && i < loopControllers.Length && loopAnimators[i] != null)
+            {
+                loopAnimators[i].runtimeAnimatorController = loopControllers[i];
+            }
+        }
     }
 }

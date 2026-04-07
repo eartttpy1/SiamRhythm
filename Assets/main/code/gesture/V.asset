@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e436a7a2200854b829b4c0a189f9ae, type: 3}
-  m_Name: "2\u0E19\u0E34\u0E49\u0E27"
+  m_Name: V
   m_EditorClassIdentifier: Assembly-CSharp::Gesture
   gestureName: "\u0E27\u0E35"
   gestureIcon: {fileID: 8046943847207499418, guid: 8ce474cc44b4e89479d8c7f2b8e4fa4c, type: 3}
