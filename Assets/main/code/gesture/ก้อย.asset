@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\u0E01\u0E49\u0E2D\u0E22"
   m_EditorClassIdentifier: Assembly-CSharp::Gesture
   gestureName: "\u0E01\u0E49\u0E2D\u0E22"
-  gestureIcon: {fileID: 0}
-  gesturePrefab: {fileID: 0}
+  gestureIcon: {fileID: 21300000, guid: 5ad2327c7ee61b74a9936fe1f1376b59, type: 3}
+  gesturePrefab: {fileID: 4024594397462504975, guid: cb28b98e173da384bb5130a49965408b, type: 3}
   keyCodeLeft: 0
   keyCodeRight: 0
   aiGestureLeft: pinky_left

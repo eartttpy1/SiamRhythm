@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: love
   m_EditorClassIdentifier: Assembly-CSharp::Gesture
   gestureName: "\u0E23\u0E31\u0E01"
-  gestureIcon: {fileID: 0}
-  gesturePrefab: {fileID: 0}
-  keyCodeLeft: 0
+  gestureIcon: {fileID: 21300000, guid: 185a47edebb37c5499eeb41d0be5948d, type: 3}
+  gesturePrefab: {fileID: 3975174205445422568, guid: 88d1a1db41018f84090ed0294a25223c, type: 3}
+  keyCodeLeft: 97
   keyCodeRight: 0
   aiGestureLeft: love_left
   aiGestureRight: love_right
