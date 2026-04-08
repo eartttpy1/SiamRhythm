@@ -823,7 +823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &203853028
 Transform:
   m_ObjectHideFlags: 0
@@ -854,12 +854,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DualRhythmManager
   selectedSong: {fileID: 11400000, guid: bb75a581359e1b34c97503c73f54b2d8, type: 2}
-  currentSongGestures:
-  - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
-  - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
-  - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
-  - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   aiReceiver: {fileID: 1229862088}
+  statusManager: {fileID: 8611679507051601419}
+  musicSource: {fileID: 5052658989627755494}
+  sfxSource: {fileID: 8295109306778630586}
+  perfectSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
+  greatSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
+  handModeText: {fileID: 1449040804}
+  ratingText: {fileID: 9167379210590831471}
+  comboText: {fileID: 2657147946477483468}
   gesturePreview:
   - {fileID: 1538223503}
   - {fileID: 1361789203}
@@ -870,27 +873,20 @@ MonoBehaviour:
   - {fileID: 37321601}
   - {fileID: 645954111}
   - {fileID: 1402848901}
-  handModeText: {fileID: 1449040804}
-  targetLeft: {fileID: 2981989479038114114}
-  radiusL: 5
-  musicSource: {fileID: 5052658989627755494}
-  bpm: 0
-  threshold: 0.5
-  spawnInterval: 0.3
-  sfxSource: {fileID: 8295109306778630586}
-  perfectSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
-  greatSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
-  ratingText: {fileID: 9167379210590831471}
-  comboText: {fileID: 2657147946477483468}
-  perfectWeight: 0
-  goodWeight: 0
-  totalNotesCount: 0
+  threshold: 0.01
+  spawnInterval: 3
   noteSpeed: 5
+  totalNotesCount: 0
+  currentSongGestures:
+  - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
+  - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
+  - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
+  - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
+  targetLeft: {fileID: 2981989479038114114}
+  targetRight: {fileID: 8691774760874592430}
+  radius: 5
   minAngleLeft: -90
   maxAngleLeft: 90
-  statusManager: {fileID: 8611679507051601419}
-  targetRight: {fileID: 8691774760874592430}
-  radiusR: 5
   minAngleRight: 90
   maxAngleRight: 270
 --- !u!1 &333235859
@@ -1223,7 +1219,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &398803061
 Transform:
   m_ObjectHideFlags: 0
@@ -1253,12 +1249,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RhythmManager
   selectedSong: {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
-  currentSongGestures:
-  - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
-  - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
-  - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
-  - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   aiReceiver: {fileID: 1229862088}
+  statusManager: {fileID: 8611679507051601419}
+  musicSource: {fileID: 5052658989627755494}
+  sfxSource: {fileID: 8295109306778630586}
+  perfectSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
+  greatSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
+  handModeText: {fileID: 1449040804}
+  ratingText: {fileID: 9167379210590831471}
+  comboText: {fileID: 2657147946477483468}
   gesturePreview:
   - {fileID: 1538223503}
   - {fileID: 1361789203}
@@ -1269,25 +1268,19 @@ MonoBehaviour:
   - {fileID: 37321601}
   - {fileID: 645954111}
   - {fileID: 1402848901}
-  handModeText: {fileID: 1449040804}
-  targetLeft: {fileID: 1124343207792086164}
-  radiusL: 7
-  musicSource: {fileID: 5052658989627755494}
-  bpm: 0
-  threshold: 0.5
-  spawnInterval: 0.3
-  sfxSource: {fileID: 8295109306778630586}
-  perfectSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
-  greatSound: {fileID: 8300000, guid: abe5cb93c8ec95d438764ad5d81191f5, type: 3}
-  ratingText: {fileID: 9167379210590831471}
-  comboText: {fileID: 2657147946477483468}
-  perfectWeight: 0
-  goodWeight: 0
-  totalNotesCount: 0
+  threshold: 0.01
+  spawnInterval: 3
   noteSpeed: 5
+  totalNotesCount: 0
+  currentSongGestures:
+  - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
+  - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
+  - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
+  - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
+  targetLeft: {fileID: 1124343207792086164}
+  radius: 7
   minAngleLeft: 0
   maxAngleLeft: 180
-  statusManager: {fileID: 8611679507051601419}
 --- !u!1 &439900961
 GameObject:
   m_ObjectHideFlags: 0
@@ -10249,7 +10242,7 @@ MonoBehaviour:
   - {fileID: 1754162037}
   loopAnimators:
   - {fileID: 106152053}
-  rhythmManager: {fileID: 398803062}
+  baseRhythmManager: {fileID: 398803062}
   isGameOver: 0
   isPaused: 0
 --- !u!212 &8659143762472732658

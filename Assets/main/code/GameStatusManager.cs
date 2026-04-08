@@ -61,7 +61,7 @@ public class GameStatusManager : MonoBehaviour
     public List<Animator> phaseAnimators = new List<Animator>();
     [Header("Ambient / Loop System")]
     public List<Animator> loopAnimators = new List<Animator>();
-    [SerializeField] private RhythmManager rhythmManager; // เพื่อเช็คจำนวนโน้ตทั้งหมดจากคลาสแม่
+    [SerializeField] private BaseRhythmManager baseRhythmManager; // เพื่อเช็คจำนวนโน้ตทั้งหมดจากคลาสแม่
     private float totalSongTime;
     public bool isGameOver = false;
     public bool isPaused = false;
@@ -213,7 +213,7 @@ public class GameStatusManager : MonoBehaviour
             // Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
             // foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
         }
-        if (!musicSource.isPlaying && totalNotesEncountered >= rhythmManager.totalNotesCount)
+        if (!musicSource.isPlaying && totalNotesEncountered >= baseRhythmManager.totalNotesCount)
         {
             Debug.Log("Mo1");
             

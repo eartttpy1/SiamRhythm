@@ -1,24 +1,34 @@
 using UnityEngine;
 
 // สืบทอดความสามารถทั้งหมดมาจาก RhythmManager
-public class DualRhythmManager : RhythmManager
+public class DualHandManager : BaseRhythmManager
 {
-    [Header("Dual Hand Override Settings")]
+    [Header("Dual Hand Targets")]
+    [SerializeField] private Transform targetLeft;  
     [SerializeField] private Transform targetRight; 
-    [SerializeField] private float radiusR = 3f;
+    [SerializeField] private float radius = 3f;
 
-    [Range(-90, 360)] public float minAngleRight = 180f;
-    [Range(-90, 360)] public float maxAngleRight = 360f;
+    [Header("Angle Settings")]
+    [Range(-90, 360)] public float minAngleLeft = -90f; // มุมเริ่มต้น (ขวา)
+    [Range(-90, 360)] public float maxAngleLeft = 90f; // มุมสิ้นสุด (ขวา)
+    [Range(-90, 360)] public float minAngleRight = 90f;
+    [Range(-90, 360)] public float maxAngleRight = 270f;
+    
+    private int lastLeftNoteIndex = -1, lastRightNoteIndex = -1;
 
-    // 1. Override การเกิดโน้ต: เพิ่ม Logic สลับซ้าย-ขวา และมุม 360 องศา
+    void Start(){ 
+        HandModeTextUpdate();
+        if (musicSource != null && musicSource.clip != null)
+        {
+            musicSource.Play(); 
+        }
+    }
     protected override void SpawnNote()
     {
         bool isLeft = Random.value > 0.5f; // สุ่มฝั่ง
 
         // เลือกเป้าหมายและรัศมีตามฝั่งที่สุ่มได้
         Transform currentTarget = isLeft ? targetLeft : targetRight;
-        float currentRadius = isLeft ? radiusL : radiusR;
-        // เลือกค่า Min/Max Angle แยกซ้าย-ขวา
         float currentMinAngle = isLeft ? minAngleLeft : minAngleRight; 
         float currentMaxAngle = isLeft ? maxAngleLeft : maxAngleRight; 
 
@@ -26,8 +36,8 @@ public class DualRhythmManager : RhythmManager
         float randomAngle = Random.Range(currentMinAngle, currentMaxAngle);
         float radian = randomAngle * Mathf.Deg2Rad;
 
-        float x = currentTarget.position.x + currentRadius * Mathf.Cos(radian);
-        float y = currentTarget.position.y + currentRadius * Mathf.Sin(radian);
+        float x = currentTarget.position.x + radius * Mathf.Cos(radian);
+        float y = currentTarget.position.y + radius * Mathf.Sin(radian);
         Vector3 spawnPosition = new Vector3(x, y, currentTarget.position.z);
 
         // สุ่มชนิดโน้ตแบบไม่ให้ซ้ำท่าเดิมในมือข้างนั้น
@@ -35,18 +45,11 @@ public class DualRhythmManager : RhythmManager
         int maxGestures = currentSongGestures.Length; // ใช้จำนวนท่าจากคลาสแม่
         if (maxGestures == 0) return;
 
-        // ระบบสุ่มโน้ตรองรับท่าพิเศษ (Index 3) ตามจังหวะเบส
-        if (samples[15] > threshold * 1.5f && maxGestures >= 4)
-        {
-            noteTypeIndex = 3;
-        }
-        else
-        {
-            int lastIndex = isLeft ? lastLeftNoteIndex : lastRightNoteIndex;
-            do {
-                noteTypeIndex = Random.Range(0, Mathf.Min(3, maxGestures));
-            } while (noteTypeIndex == lastIndex && maxGestures > 1);
-        }
+        int lastIndex = isLeft ? lastLeftNoteIndex : lastRightNoteIndex;
+        do {
+            int rangeLimit = Mathf.Min(4, maxGestures); 
+            noteTypeIndex = Random.Range(0, rangeLimit); 
+        } while (noteTypeIndex == lastIndex && maxGestures > 1);
 
         if (isLeft) lastLeftNoteIndex = noteTypeIndex;
         else lastRightNoteIndex = noteTypeIndex;
@@ -73,8 +76,6 @@ public class DualRhythmManager : RhythmManager
         if (aiReceiver != null && aiReceiver.lastGesture != "None") {
             string aiInput = aiReceiver.lastGesture;
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                Debug.Log($"Checking AI Gesture: {aiInput} against {currentSongGestures[i].aiGestureLeft} and {currentSongGestures[i].aiGestureRight}");
-                // เช็คว่าชื่อท่าที่ AI ส่งมา ตรงกับท่าในลิสต์เพลงไหม (ทั้งซ้ายและขวา)
                 if (aiInput == currentSongGestures[i].aiGestureLeft) {
                     CheckHit((NoteType)i, targetLeft);
                     aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
@@ -87,10 +88,6 @@ public class DualRhythmManager : RhythmManager
                 }
             }
         }
-
-
-
-
     }
 
     // ฟังก์ชันช่วยเช็คการกดแยกฝั่ง (Encapsulation)
@@ -117,7 +114,7 @@ public class DualRhythmManager : RhythmManager
 
         if (targetNote != null && minDistance < 1.2f) 
         {
-            UpdateRating(minDistance); // ใช้ระบบให้คะแนนจากคลาสแม่
+            UpdateRating(minDistance);
             activeNotes.Remove(targetNote);
             targetNote.Hit();
         }
@@ -128,13 +125,13 @@ public class DualRhythmManager : RhythmManager
         if (targetLeft != null)
         {
             Gizmos.color = Color.cyan;
-            DrawGizmoArc(targetLeft.position, radiusL, minAngleLeft, maxAngleLeft);
+            DrawGizmoArc(targetLeft.position, radius, minAngleLeft, maxAngleLeft);
         }
         // วาดขอบเขตฝั่งขวา
         if (targetRight != null)
         {
             Gizmos.color = Color.magenta;
-            DrawGizmoArc(targetRight.position, radiusR, minAngleRight, maxAngleRight);
+            DrawGizmoArc(targetRight.position, radius, minAngleRight, maxAngleRight);
         }
     }
 

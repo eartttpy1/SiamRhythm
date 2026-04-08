@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameplayControllerSorD : MonoBehaviour
 {
     public SongData selectedSong; // ข้อมูลเพลงที่โหลดมา
-    public RhythmManager singleManager;
-    public DualRhythmManager dualManager;
+    public SingleHandManager singleManager;
+    public DualHandManager dualManager;
     [SerializeField] private GameObject singleManagerObject;
     [SerializeField] private GameObject dualManagerObject; 
     [SerializeField] private bool isDualMode; // ตัวแปรนี้จะกำหนดว่าใช้โหมดไหน (สามารถตั้งค่าได้จาก Inspector หรือ PlayerPrefs)

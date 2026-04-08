@@ -37,7 +37,7 @@ public class NoteController : MonoBehaviour
     }
     void CallNoteMissed()
     {
-        RhythmManager manager = FindObjectOfType<RhythmManager>();
+        BaseRhythmManager manager = FindObjectOfType<BaseRhythmManager>();
         if (manager != null)
         {
             manager.TriggerNoteMissed();
