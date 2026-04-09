@@ -343,4 +343,8 @@ public class GameStatusManager : MonoBehaviour
             }
         }
     }
+
+    public void HandleEventVisuals(int phase, int eventIndex) {
+        // รอเอาไว้ใส่ efx ตอนกด
+    }
 }

@@ -28,13 +28,32 @@ public abstract class BaseRhythmManager : MonoBehaviour
     public float noteSpeed = 5f;
     public float totalNotesCount;
     protected List<NoteController> activeNotes = new List<NoteController>();
-    protected List<float> noteTimestamps = new List<float>();
     protected int currentNoteIndex = 0;
     protected int combo = 0;
     protected float[] samples = new float[512];
     public Gesture[] currentSongGestures;
 
-    protected abstract void SpawnNote();
+    public struct NoteData {
+        public float timestamp;
+        public bool isEventNote;
+        public int eventIndex; // 0, 1, 2, 3
+        public int phase;      // 1, 2, 3
+    }
+    protected List<NoteData> processedNotes = new List<NoteData>();
+
+    [Header("Phase Event Assets")]
+    public GameObject eventNotePrefab; // Prefab ที่มีวงกลม Approach Circle
+    public Vector3[] phase1Positions = new Vector3[4]; // ซ้ายไปขวา
+    public Vector3[] phase2Positions = new Vector3[4]; // กระจาย
+    public Vector3[] phase3Positions = new Vector3[4]; // ขวาไปซ้าย
+
+
+    // [Header("Phase Event Visuals")]
+    // public GameObject coverPrefab; // แผ่นบัง (เช่น Sprite วงกลมสีดำ)
+    // private List<GameObject> activeCovers = new List<GameObject>();
+
+
+    protected abstract void SpawnNote(NoteData data);
     protected abstract void HandleInput();
     protected abstract void CheckHit(NoteType type, Transform targetSide);
     protected abstract void HandModeTextUpdate();
@@ -107,34 +126,51 @@ public abstract class BaseRhythmManager : MonoBehaviour
         float timeRemaining = musicSource.clip.length - musicSource.time;
         if (musicSource.time < 3.0f || timeRemaining < 3.0f) return; 
         
-        if (currentNoteIndex >= noteTimestamps.Count && !musicSource.isPlaying) return;
+        if (currentNoteIndex >= processedNotes.Count && !musicSource.isPlaying) return;
 
         // ใช้ while แทน if เพื่อรองรับกรณีที่เครื่องแลคจนโน้ตควรออกพร้อมกันหรือไล่เลี่ยกัน
         // ระบบจะพ่นโน้ตออกมาจนกว่าจะทันเวลาปัจจุบันของเพลง
-        while (currentNoteIndex < noteTimestamps.Count && musicSource.time >= noteTimestamps[currentNoteIndex])
+        while (currentNoteIndex < processedNotes.Count && musicSource.time >= processedNotes[currentNoteIndex].timestamp)
         {
-            SpawnNote();
-            currentNoteIndex++; // ขยับไปรอโน้ตตัวถัดไป
+            NoteData data = processedNotes[currentNoteIndex];
+
+            if (data.isEventNote && data.eventIndex == 0) // เจอตัวแรกของกลุ่ม Event
+            {
+                // สร้างพร้อมกัน 4 ตัวทันที
+                for (int k = 0; k < 4; k++)
+                {
+                    if (currentNoteIndex + k < processedNotes.Count)
+                    {
+                        SpawnNote(processedNotes[currentNoteIndex + k]);
+                    }
+                }
+                currentNoteIndex += 4; // ข้ามดัชนีไป 4 ตัว
+            }
+            else if (!data.isEventNote)
+            {
+                SpawnNote(data);
+                currentNoteIndex++;
+            }
         }
     }
 
-    protected void CreateNoteInstance(int type, Vector3 position, Transform target)
+    protected void CreateNoteInstance(int type, Vector3 position, Transform target, GameObject prefabToInstantiate, bool isStatic, int phase, int eventIndex)
     {
-        if (currentSongGestures[type].gesturePrefab == null) return;
+        if (prefabToInstantiate == null) return;
         
-        GameObject noteObj = Instantiate(currentSongGestures[type].gesturePrefab, position, Quaternion.identity);
+        GameObject noteObj = Instantiate(prefabToInstantiate, position, Quaternion.identity);
         NoteController note = noteObj.GetComponent<NoteController>();
-        note.Setup(target, noteSpeed, (NoteType)type);
+        note.Setup(target, noteSpeed, (NoteType)type, isStatic, phase, eventIndex);
         
         activeNotes.Add(note);
     }
 
-    protected void UpdateRating(float distance)
+    protected void UpdateRating(float distance = 99f, float scaleDiff = 99f)
     {
         ratingText.gameObject.SetActive(true);
         string rating = "";
         // Perfect: Score x1.0, HP +10
-        if (distance < 0.1f) {
+        if (distance < 0.1f || scaleDiff <= 0.005f) {
             rating = "PERFECT";
             ratingText.text = "PERFECT";
             combo++;
@@ -144,7 +180,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             statusManager.UpdateAccuracy(1.0f);
         }
         // Good: Score x0.7, HP +2
-        else if (distance < 0.7f) {
+        else if (distance < 0.7f || scaleDiff <= 0.012f) {
             rating = "GOOD";
             ratingText.text = "GOOD";
             combo++;
@@ -205,7 +241,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
     {
         if (musicSource.clip == null) return;
 
-        noteTimestamps.Clear(); // ล้างค่าเก่า
+        processedNotes.Clear(); // ล้างค่าเก่า
         int sampleRate = musicSource.clip.frequency;
         int channels = musicSource.clip.channels;
 
@@ -215,6 +251,9 @@ public abstract class BaseRhythmManager : MonoBehaviour
         int intervalInSamples = (int)(spawnInterval * sampleRate * channels);
         int lastScanSampleIndex = -intervalInSamples;
         int step = (int)(sampleRate * channels * 0.01f);
+
+        int lastPhase = 0;      // ใช้จำว่าโน้ตตัวก่อนหน้าอยู่เฟสไหน
+        int eventCounter = 0;   // ใช้ประทับตราโน้ต Event 4 ตัวแรกของแต่ละเฟส
 
         for (int i = 0; i < allSamples.Length; i += step)
         {
@@ -226,15 +265,52 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
             if (intensity > threshold && i >= lastScanSampleIndex + intervalInSamples)
             {
+                // คำนวณเฟส ณ ช่วงเวลานั้น
+                float progress = (timeStamp / musicSource.clip.length) * 100f;
+                int currentPhase = progress < 33 ? 1 : (progress < 66 ? 2 : 3);
+
+                // ถ้าเริ่มเฟสใหม่ ให้รีเซ็ตตัวนับโน้ต Event
+                if (currentPhase != lastPhase) {
+                    eventCounter = 0;
+                    lastPhase = currentPhase;
+                }
+
+                NoteData data = new NoteData { 
+                    timestamp = timeStamp, 
+                    phase = currentPhase 
+                };
+
+                // ถ้าเป็น 4 ตัวแรกของเฟส ให้ทำเครื่องหมายเป็น Event Note
+                if (eventCounter < 4) {
+                    data.isEventNote = true;
+                    data.eventIndex = eventCounter;
+                    eventCounter++;
+                }
                 // คำนวณวินาทีที่เกิด Peak นี้
-                noteTimestamps.Add(timeStamp); // เก็บเวลาไว้
+                processedNotes.Add(data); // เก็บข้อมูลโน้ตไว้
                 lastScanSampleIndex = i;
             }
         }
 
-        totalNotesCount = noteTimestamps.Count; // จำนวนโน้ตจะเท่ากับจำนวนใน List เป๊ะๆ
+        totalNotesCount = processedNotes.Count; // จำนวนโน้ตจะเท่ากับจำนวนใน List เป๊ะๆ
         statusManager.SetupScoring(totalNotesCount);
         currentNoteIndex = 0; // รีเซ็ตตัวชี้
         Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/(totalNotesCount)}");
     }
+
+    // public void SpawnCover(Vector3 position, bool isDark)
+    // {
+    //     GameObject cover = Instantiate(coverPrefab, position, Quaternion.identity);
+    //     SpriteRenderer sr = cover.GetComponent<SpriteRenderer>();
+        
+    //     if (sr != null)
+    //     {
+    //         // ปรับความโปร่งใสตามประเภท
+    //         sr.color = isDark ? Color.black : new Color(0, 0, 0, 0.6f); 
+    //     }
+        
+    //     activeCovers.Add(cover);
+    //     // สั่งทำลายแผ่นบังหลังจากจบ Event (เช่น 2 วินาที)
+    //     Destroy(cover, 2.0f); 
+    // }
 }
