@@ -42,10 +42,10 @@ public class DualHandManager : BaseRhythmManager
 
             if (currentTarget != null) currentTarget.gameObject.SetActive(false);
             // 2. กำหนดชนิดโน้ตตามลำดับ 0, 1, 2, 3 เพื่อให้ผู้เล่นจำท่าได้
-            noteTypeIndex = data.eventIndex; 
+            noteTypeIndex = data.noteTypeIndex;
 
-            // 3. แจ้ง GameStatusManager ให้เปิดแผ่นฟิล์มบังตา
-            // statusManager.HandleEventVisuals(data.phase, data.eventIndex);
+            lastLeftNoteIndex = noteTypeIndex;
+            lastRightNoteIndex = noteTypeIndex;
         }
         else{
             if (currentTarget != null && !currentTarget.gameObject.activeSelf) 
@@ -58,16 +58,7 @@ public class DualHandManager : BaseRhythmManager
             float y = currentTarget.position.y + radius * Mathf.Sin(radian);
             spawnPosition = new Vector3(x, y, currentTarget.position.z);
 
-            // สุ่มชนิดโน้ตแบบไม่ให้ซ้ำท่าเดิมในมือข้างนั้น
-            int maxGestures = currentSongGestures.Length; // ใช้จำนวนท่าจากคลาสแม่
-            if (maxGestures == 0) return;
-
-            int lastIndex = isLeft ? lastLeftNoteIndex : lastRightNoteIndex;
-            do {
-                int rangeLimit = Mathf.Min(4, maxGestures); 
-                noteTypeIndex = Random.Range(0, rangeLimit); 
-            } while (noteTypeIndex == lastIndex && maxGestures > 1);
-
+            noteTypeIndex = data.noteTypeIndex;
             if (isLeft) lastLeftNoteIndex = noteTypeIndex;
             else lastRightNoteIndex = noteTypeIndex;
         }

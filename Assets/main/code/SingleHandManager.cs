@@ -33,12 +33,11 @@ public class SingleHandManager : BaseRhythmManager
             
             if (currentTarget != null) currentTarget.gameObject.SetActive(false);
             // 2. กำหนดชนิดโน้ตตามลำดับ 0, 1, 2, 3 เพื่อให้ผู้เล่นจำท่าได้
-            noteTypeIndex = data.eventIndex; 
+            noteTypeIndex = data.noteTypeIndex; 
 
-            // 3. แจ้ง GameStatusManager ให้เปิดแผ่นฟิล์มบังตา
-            // statusManager.HandleEventVisuals(data.phase, data.eventIndex);
-        }
-            
+            // เก็บค่าไว้ว่าโน้ตตัวล่าสุด (ของ Event) คือท่าอะไร เพื่อไม่ให้โน้ตปกติถัดไปมาซ้ำ
+            lastLeftNoteIndex = noteTypeIndex;
+        }  
         else{
             if (currentTarget != null && !currentTarget.gameObject.activeSelf) 
             currentTarget.gameObject.SetActive(true);
@@ -50,16 +49,7 @@ public class SingleHandManager : BaseRhythmManager
             float y = currentTarget.position.y + radius * Mathf.Sin(radian);
             spawnPosition = new Vector3(x, y, currentTarget.position.z);
             
-            int maxGestures = currentSongGestures.Length;
-
-            if (maxGestures == 0) return;
-            // 2. สุ่มชนิดโน้ต (Logic พื้นฐาน)
-            do {
-                // จำกัดช่วงการสุ่มไม่ให้เกินจำนวนท่าที่มีจริงใน List (เผื่อบางเพลงมีไม่ถึง 4 ท่า)
-                int rangeLimit = Mathf.Min(4, maxGestures); 
-                noteTypeIndex = Random.Range(0, rangeLimit); 
-            } while (noteTypeIndex == lastLeftNoteIndex && maxGestures > 1);
-
+            noteTypeIndex = data.noteTypeIndex;
             lastLeftNoteIndex = noteTypeIndex;
         }
         GameObject prefab = data.isEventNote ? eventNotePrefab : currentSongGestures[noteTypeIndex].gesturePrefab;

@@ -37,6 +37,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         public float timestamp;
         public bool isEventNote;
         public int eventIndex; // 0, 1, 2, 3
+        public int noteTypeIndex;
         public int phase;      // 1, 2, 3
     }
     protected List<NoteData> processedNotes = new List<NoteData>();
@@ -136,16 +137,16 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
             if (data.isEventNote && (data.eventIndex == 0 || data.eventIndex == 3))
             {
-                // ปล่อยโน้ตชุดปัจจุบันออกไป 4 ตัว
-                for (int k = 0; k < 4; k++)
-                {
-                    if (currentNoteIndex + k < processedNotes.Count)
+                    for (int k = 0; k < 4; k++)
                     {
-                        SpawnNote(processedNotes[currentNoteIndex + k]);
+                        if (currentNoteIndex + k < processedNotes.Count)
+                        {
+                            SpawnNote(processedNotes[currentNoteIndex + k]);
+                        }
                     }
-                }
-                // ข้าม Index ไป 4 เพื่อรอจังหวะ timestamp ของชุดถัดไป (หรือโน้ตปกติ)
-                currentNoteIndex += 4; 
+                    // ข้าม Index ไป 4 เพื่อรอจังหวะ timestamp ของชุดถัดไป (หรือโน้ตปกติ)
+                    currentNoteIndex += 4; 
+                
             }
             else if (!data.isEventNote)
             {
@@ -284,32 +285,46 @@ public abstract class BaseRhythmManager : MonoBehaviour
                 // --- ส่วนที่แก้ไข: จัดการเฟส 2 และ 3 ให้เล่น 2 รอบ ---
                 if ((currentPhase == 2 || currentPhase == 3) && eventCounter == 0) 
                 {
+                    int lastNoteType = -1;
+                    if (processedNotes.Count > 0) {
+                        lastNoteType = processedNotes[processedNotes.Count - 1].noteTypeIndex;; 
+                    }
+
+                    // 2. กำหนดค่าการขยับลำดับ (Offset)
+                    // ถ้าท่าแรกของ Event (e=0) ซ้ำกับท่าล่าสุด ให้เริ่มที่ 1 แทน หรือบวกเพิ่มไป
+                    int startOffset = (lastNoteType == 0) ? 1 : 0;
                     float gap = 1.0f;
+                    float setGap = 2.0f;  // ระยะห่างระหว่าง "จบชุดแรก" ไป "เริ่มชุดสอง"
                     // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
                     for (int e = 0; e < 4; e++) {
+                        int shiftedIndex = (e + startOffset) % 4;  // ใช้ (e + startOffset) % 4 เพื่อให้วนอยู่ใน 0-3 แต่ไม่ซ้ำตัวเดิม
                         processedNotes.Add(new NoteData { 
                             timestamp = timeStamp + (e * gap), // หน่วงเวลาห่างกันตัวละ 1.5 วินาที
                             isEventNote = true,
                             eventIndex = e, // 0, 1, 2, 3
+                            noteTypeIndex = shiftedIndex, // ท่าทางจริง (Pose0 - Pose3)
                             phase = currentPhase
                         });
                     }
 
                     // รอบที่ 2: ลำดับ 3 -> 2 -> 1 -> 0 (ขวาไปซ้าย)
                     // เริ่มต้นหลังจากโน้ตตัวที่ 4 ของชุดแรก (3 * gap) + เผื่อเวลาให้กดเสร็จ (เช่น 2 วินาที)
-                    float secondRoundStart = timeStamp + (3 * gap) + 1.0f;
+                    float secondRoundStart = timeStamp + (3 * gap) + setGap;
                     for (int e = 0; e < 4; e++) {
+                        int shiftedIndex = (3 - e + startOffset) % 4;
                         processedNotes.Add(new NoteData { 
                             timestamp = secondRoundStart + (e * gap),
                             isEventNote = true,
-                            eventIndex = 3 - e, 
+                            eventIndex = 3-e, 
+                            noteTypeIndex = shiftedIndex,
                             phase = currentPhase
                         });
                     }
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
                     // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
-                    lastScanSampleIndex = i + (int)(10.0f * sampleRate * channels); 
+                    lastScanSampleIndex = i + (int)((10.0f) * sampleRate * channels); 
+                    i = lastScanSampleIndex;
                 }
                 // --- เฟส 1 หรือโน้ตปกติ ---
                 else if (eventCounter < 4 && currentPhase == 1) 
@@ -318,16 +333,25 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         timestamp = timeStamp, 
                         isEventNote = true,
                         eventIndex = eventCounter,
+                        noteTypeIndex = eventCounter,
                         phase = currentPhase 
                     });
                     eventCounter++;
                     lastScanSampleIndex = i;
                 }
+                //ปกติ
                 else if (eventCounter >= 4 || (currentPhase > 1 && eventCounter >= 8))
                 {
+                    // ดึงท่าทางล่าสุดจาก List มาเช็ค
+                    int prevPose = (processedNotes.Count > 0) ? processedNotes[processedNotes.Count - 1].noteTypeIndex : -1;    
+                    int simulatedType;
+                    do {
+                        simulatedType = Random.Range(0, Mathf.Min(4, currentSongGestures.Length));
+                    } while (simulatedType == prevPose && currentSongGestures.Length > 1);
                     processedNotes.Add(new NoteData { 
                         timestamp = timeStamp, 
                         isEventNote = false,
+                        noteTypeIndex = simulatedType,
                         phase = currentPhase 
                     });
                     lastScanSampleIndex = i;
