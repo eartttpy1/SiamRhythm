@@ -11,7 +11,7 @@ public class NoteController : MonoBehaviour
 
     [Header("Event Note Settings")]
     public GameObject approachCircle; // ลาก Object วงกลมใน Prefab มาใส่
-    public GameObject myCover;
+    // public GameObject myCover;
     private Vector3 initialCircleScale;
     private Vector3 spawnPosition;
     private float totalDistance;
@@ -21,7 +21,7 @@ public class NoteController : MonoBehaviour
     public int eventIndex;
     
 
-    public void Setup(Transform targetPoint, float moveSpeed, NoteType nType, bool isStatic, int phase, int eventIndex)
+    public void Setup(Transform targetPoint, float moveSpeed, NoteType nType, bool isStatic, int phase, int eventIndex, float targetTimestamp)
     {
         this.target = targetPoint;
         this.speed = moveSpeed;
@@ -37,7 +37,7 @@ public class NoteController : MonoBehaviour
         else
         {
             float appearanceDelay = eventIndex * 0.7f;
-            this.startTime = Time.time + appearanceDelay; // บันทึกเวลาที่โน้ตเกิด
+            this.startTime = targetTimestamp - perfectWindowTime; // บันทึกเวลาที่โน้ตเกิด
         }
 
         manager = Object.FindAnyObjectByType<BaseRhythmManager>();
@@ -59,32 +59,32 @@ public class NoteController : MonoBehaviour
             initialCircleScale = new Vector3(0.07f, 0.07f, 0f);
             approachCircle.transform.localScale = initialCircleScale;
         }
-        if (myCover != null)
-        {
-            myCover.SetActive(false); // ปิดไว้ก่อนเป็นค่าเริ่มต้น
-            SpriteRenderer coverRenderer = myCover.GetComponent<SpriteRenderer>();
-            if (isStatic && coverRenderer != null)
-            {
-                if (phase == 2 && eventIndex >= 1) 
-                {
-                    myCover.SetActive(true); // เปิดแผ่นบัง (ตั้งสีโปร่งแสงใน Prefab)
-                    coverRenderer.color = new Color(0, 0, 0, 0.6f);
-                }
-                else if (phase == 3) 
-                {
-                    if (eventIndex == 1) // ตัวที่ 2 ของเฟส
-                    {
-                        myCover.SetActive(true);
-                        coverRenderer.color = new Color(0, 0, 0, 0.6f); // สีดำจาง
-                    }
-                    else if (eventIndex >= 2) // ตัวที่ 3 และ 4 ของเฟส
-                    {
-                        myCover.SetActive(true);
-                        coverRenderer.color = Color.black; // สีดำทึบ (Alpha = 1.0f)
-                    }
-                }
-            }
-        }
+        // if (myCover != null)
+        // {
+        //     myCover.SetActive(false); // ปิดไว้ก่อนเป็นค่าเริ่มต้น
+        //     SpriteRenderer coverRenderer = myCover.GetComponent<SpriteRenderer>();
+        //     if (isStatic && coverRenderer != null)
+        //     {
+        //         if (phase == 2 && eventIndex >= 1) 
+        //         {
+        //             myCover.SetActive(true); // เปิดแผ่นบัง (ตั้งสีโปร่งแสงใน Prefab)
+        //             coverRenderer.color = new Color(0, 0, 0, 0.6f);
+        //         }
+        //         else if (phase == 3) 
+        //         {
+        //             if (eventIndex == 1) // ตัวที่ 2 ของเฟส
+        //             {
+        //                 myCover.SetActive(true);
+        //                 coverRenderer.color = new Color(0, 0, 0, 0.6f); // สีดำจาง
+        //             }
+        //             else if (eventIndex >= 2) // ตัวที่ 3 และ 4 ของเฟส
+        //             {
+        //                 myCover.SetActive(true);
+        //                 coverRenderer.color = Color.black; // สีดำทึบ (Alpha = 1.0f)
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     void Update()

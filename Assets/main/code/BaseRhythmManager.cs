@@ -134,9 +134,9 @@ public abstract class BaseRhythmManager : MonoBehaviour
         {
             NoteData data = processedNotes[currentNoteIndex];
 
-            if (data.isEventNote && data.eventIndex == 0) // เจอตัวแรกของกลุ่ม Event
+            if (data.isEventNote && (data.eventIndex == 0 || data.eventIndex == 3))
             {
-                // สร้างพร้อมกัน 4 ตัวทันที
+                // ปล่อยโน้ตชุดปัจจุบันออกไป 4 ตัว
                 for (int k = 0; k < 4; k++)
                 {
                     if (currentNoteIndex + k < processedNotes.Count)
@@ -144,23 +144,29 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         SpawnNote(processedNotes[currentNoteIndex + k]);
                     }
                 }
-                currentNoteIndex += 4; // ข้ามดัชนีไป 4 ตัว
+                // ข้าม Index ไป 4 เพื่อรอจังหวะ timestamp ของชุดถัดไป (หรือโน้ตปกติ)
+                currentNoteIndex += 4; 
             }
             else if (!data.isEventNote)
             {
                 SpawnNote(data);
                 currentNoteIndex++;
             }
+            else
+            {
+                // ป้องกัน Infinity Loop ในกรณีที่ข้อมูล Index ไม่ตรงล็อค
+                currentNoteIndex++;
+            }
         }
     }
 
-    protected void CreateNoteInstance(int type, Vector3 position, Transform target, GameObject prefabToInstantiate, bool isStatic, int phase, int eventIndex)
+    protected void CreateNoteInstance(int type, Vector3 position, Transform target, GameObject prefabToInstantiate, bool isStatic, int phase, int eventIndex, float timestamp)
     {
         if (prefabToInstantiate == null) return;
         
         GameObject noteObj = Instantiate(prefabToInstantiate, position, Quaternion.identity);
         NoteController note = noteObj.GetComponent<NoteController>();
-        note.Setup(target, noteSpeed, (NoteType)type, isStatic, phase, eventIndex);
+        note.Setup(target, noteSpeed, (NoteType)type, isStatic, phase, eventIndex, timestamp);
         
         activeNotes.Add(note);
     }
@@ -275,20 +281,57 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     lastPhase = currentPhase;
                 }
 
-                NoteData data = new NoteData { 
-                    timestamp = timeStamp, 
-                    phase = currentPhase 
-                };
+                // --- ส่วนที่แก้ไข: จัดการเฟส 2 และ 3 ให้เล่น 2 รอบ ---
+                if ((currentPhase == 2 || currentPhase == 3) && eventCounter == 0) 
+                {
+                    float gap = 1.0f;
+                    // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
+                    for (int e = 0; e < 4; e++) {
+                        processedNotes.Add(new NoteData { 
+                            timestamp = timeStamp + (e * gap), // หน่วงเวลาห่างกันตัวละ 1.5 วินาที
+                            isEventNote = true,
+                            eventIndex = e, // 0, 1, 2, 3
+                            phase = currentPhase
+                        });
+                    }
 
-                // ถ้าเป็น 4 ตัวแรกของเฟส ให้ทำเครื่องหมายเป็น Event Note
-                if (eventCounter < 4) {
-                    data.isEventNote = true;
-                    data.eventIndex = eventCounter;
-                    eventCounter++;
+                    // รอบที่ 2: ลำดับ 3 -> 2 -> 1 -> 0 (ขวาไปซ้าย)
+                    // เริ่มต้นหลังจากโน้ตตัวที่ 4 ของชุดแรก (3 * gap) + เผื่อเวลาให้กดเสร็จ (เช่น 2 วินาที)
+                    float secondRoundStart = timeStamp + (3 * gap) + 1.0f;
+                    for (int e = 0; e < 4; e++) {
+                        processedNotes.Add(new NoteData { 
+                            timestamp = secondRoundStart + (e * gap),
+                            isEventNote = true,
+                            eventIndex = 3 - e, 
+                            phase = currentPhase
+                        });
+                    }
+
+                    eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
+                    // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
+                    lastScanSampleIndex = i + (int)(10.0f * sampleRate * channels); 
                 }
-                // คำนวณวินาทีที่เกิด Peak นี้
-                processedNotes.Add(data); // เก็บข้อมูลโน้ตไว้
-                lastScanSampleIndex = i;
+                // --- เฟส 1 หรือโน้ตปกติ ---
+                else if (eventCounter < 4 && currentPhase == 1) 
+                {
+                    processedNotes.Add(new NoteData { 
+                        timestamp = timeStamp, 
+                        isEventNote = true,
+                        eventIndex = eventCounter,
+                        phase = currentPhase 
+                    });
+                    eventCounter++;
+                    lastScanSampleIndex = i;
+                }
+                else if (eventCounter >= 4 || (currentPhase > 1 && eventCounter >= 8))
+                {
+                    processedNotes.Add(new NoteData { 
+                        timestamp = timeStamp, 
+                        isEventNote = false,
+                        phase = currentPhase 
+                    });
+                    lastScanSampleIndex = i;
+                }
             }
         }
 

@@ -73,7 +73,7 @@ public class DualHandManager : BaseRhythmManager
         }
         GameObject prefab = data.isEventNote ? eventNotePrefab : currentSongGestures[noteTypeIndex].gesturePrefab;
         // ใช้ฟังก์ชันสร้างโน้ตจากคลาสแม่ที่ดึง Prefab จาก ScriptableObject
-        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget, prefab, data.isEventNote, data.phase, data.eventIndex);
+        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget, prefab, data.isEventNote, data.phase, data.eventIndex, data.timestamp);
     }
 
     // 2. Override การรับค่า Input: แยกปุ่มฝั่งซ้ายและฝั่งขวา

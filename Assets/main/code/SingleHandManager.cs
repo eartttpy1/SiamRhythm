@@ -64,7 +64,7 @@ public class SingleHandManager : BaseRhythmManager
         }
         GameObject prefab = data.isEventNote ? eventNotePrefab : currentSongGestures[noteTypeIndex].gesturePrefab;
         // 3. สร้าง Object โน้ต
-        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget, prefab, data.isEventNote, data.phase, data.eventIndex);
+        CreateNoteInstance(noteTypeIndex, spawnPosition, currentTarget, prefab, data.isEventNote, data.phase, data.eventIndex, data.timestamp);
     }
 
     protected override void HandleInput()
