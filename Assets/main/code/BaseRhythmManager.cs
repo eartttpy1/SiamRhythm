@@ -60,15 +60,24 @@ public abstract class BaseRhythmManager : MonoBehaviour
     protected abstract void HandModeTextUpdate();
     protected abstract void OnDrawGizmosSelected();
     
-    public void LoadSongData(SongData data)
+    public void LoadSongData(SongData data, string difficulty)
     {
         if (data == null) return;
         selectedSong = data;
         currentSongGestures = data.currentSongGestures; 
         musicSource.clip = data.audioClip;
-        threshold = data.threshold;
-        noteSpeed = data.noteSpeed;
-        spawnInterval = data.spawnInterval;
+        // เลือกใช้ค่าตามความยากที่ส่งมาจาก Selector
+        SongData.DifficultySettings settings;
+        switch (difficulty) {
+            case "Easy": settings = data.easy; break;
+            case "Medium": settings = data.medium; break;
+            case "Hard": settings = data.hard; break;
+            default: settings = data.easy; break;
+        }
+
+    threshold = settings.threshold;
+    noteSpeed = settings.noteSpeed;
+    spawnInterval = settings.spawnInterval;
         
         UpdateIconPreviews();
         CalculateAutomaticBalance();

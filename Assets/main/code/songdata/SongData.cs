@@ -9,10 +9,16 @@ public class SongData : ScriptableObject
     public string artistName;
     public AudioClip audioClip;
     
-    [Header("Difficulty Settings")]
-    public float threshold = 0.5f;
-    public float noteSpeed = 5f;
-    public float spawnInterval = 0.3f;
+    [System.Serializable]
+    public struct DifficultySettings {
+        public float threshold;
+        public float spawnInterval;
+        public float noteSpeed;
+    }
+
+    public DifficultySettings easy;
+    public DifficultySettings medium;
+    public DifficultySettings hard;
     
     public Gesture[] currentSongGestures;
     

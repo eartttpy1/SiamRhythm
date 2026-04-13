@@ -1,31 +1,37 @@
-using Unity.VisualScripting;
 using UnityEngine;
-
 
 public class GameplayControllerSorD : MonoBehaviour
 {
-    public SongData selectedSong; // ข้อมูลเพลงที่โหลดมา
     public SingleHandManager singleManager;
     public DualHandManager dualManager;
     [SerializeField] private GameObject singleManagerObject;
     [SerializeField] private GameObject dualManagerObject; 
-    [SerializeField] private bool isDualMode; // ตัวแปรนี้จะกำหนดว่าใช้โหมดไหน (สามารถตั้งค่าได้จาก Inspector หรือ PlayerPrefs)
-    void Awake()
-    {
-        // สมมติว่ารับค่า isDualMode มาจาก Static Variable หรือ PlayerPrefs
-        // bool isDual = PlayerPrefs.GetInt("IsDualMode", 0) == 1;
 
+    void Start() // ใช้ Start เพื่อให้มั่นใจว่า Manager ต่างๆ Ready แล้ว
+    {
+        // 1. ดึงข้อมูลที่เลือกไว้จาก Static Variable ในสคริปต์ Selected
+        SongData song = Selected.SelectedSong;
+        string difficulty = Selected.SelectedDifficulty;
+        bool isDualMode = Selected.PlayMode == "2Hand";
+
+        // 2. ตรวจสอบป้องกัน Error กรณีเปิดฉากตรงๆ โดยไม่ผ่านเมนู
+        if (song == null) {
+            Debug.LogError("No song selected! Please start from the Menu.");
+            return;
+        }
+
+        // 3. เปิด Object และโหลดข้อมูลตามโหมดที่เลือก
         if (isDualMode)
         {
             singleManagerObject.SetActive(false);
             dualManagerObject.SetActive(true);
-            dualManager.LoadSongData(selectedSong);
+            dualManager.LoadSongData(song, difficulty); // ส่งความยากไปด้วย
         }
         else
         {
             dualManagerObject.SetActive(false);
             singleManagerObject.SetActive(true);
-            singleManager.LoadSongData(selectedSong);
+            singleManager.LoadSongData(song, difficulty); // ส่งความยากไปด้วย
         }
     }
 }
