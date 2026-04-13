@@ -148,7 +148,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         // เช็คค่า null ป้องกัน Error และเช็คว่าเกมจบหรือยัง
         if (statusManager == null || statusManager.isGameOver) return;
         float timeRemaining = musicSource.clip.length - musicSource.time;
-        if (musicSource.time < 3.0f || timeRemaining < 3.0f) return; 
+        if (musicSource.time < 3.0f || timeRemaining < 3.0f) return;
         
         if (currentNoteIndex >= processedNotes.Count && !musicSource.isPlaying) return;
 
@@ -288,7 +288,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         for (int i = 0; i < allSamples.Length; i += step)
         {
             float timeStamp = (float)i / (sampleRate * channels);
-            if (timeStamp < 2.0f) continue;
+            if (timeStamp < 3.0f) continue;
             // ไม่นับโน้ตที่อยู่ในช่วง 3 วินาทีสุดท้ายของเพลงเข้าสู่ระบบคะแนน
             if (timeStamp > musicSource.clip.length - 3.0f) break;
             float intensity = Mathf.Abs(allSamples[i]);
@@ -310,14 +310,14 @@ public abstract class BaseRhythmManager : MonoBehaviour
                 {
                     int lastNoteType = -1;
                     if (processedNotes.Count > 0) {
-                        lastNoteType = processedNotes[processedNotes.Count - 1].noteTypeIndex;; 
+                        lastNoteType = processedNotes[processedNotes.Count - 1].noteTypeIndex;
                     }
 
                     // 2. กำหนดค่าการขยับลำดับ (Offset)
                     // ถ้าท่าแรกของ Event (e=0) ซ้ำกับท่าล่าสุด ให้เริ่มที่ 1 แทน หรือบวกเพิ่มไป
                     int startOffset = (lastNoteType == 0) ? 1 : 0;
-                    float gap = 1.0f;
-                    float setGap = 2.0f;  // ระยะห่างระหว่าง "จบชุดแรก" ไป "เริ่มชุดสอง"
+                    float gap = spawnInterval * 0.5f;
+                    float setGap = spawnInterval * 2.0f;  // ระยะห่างระหว่าง "จบชุดแรก" ไป "เริ่มชุดสอง"
                     // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
                     for (int e = 0; e < 4; e++) {
                         int shiftedIndex = (e + startOffset) % 4;  // ใช้ (e + startOffset) % 4 เพื่อให้วนอยู่ใน 0-3 แต่ไม่ซ้ำตัวเดิม
@@ -346,8 +346,9 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
                     float lastNoteTime = secondRoundStart + (3 * gap);
+                    Debug.Log(lastNoteTime);
                     // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
-                    lastScanSampleIndex = (int)(lastNoteTime * sampleRate * channels); 
+                    lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples); 
                     // i = lastScanSampleIndex;
                 }
                 // --- เฟส 1 หรือโน้ตปกติ ---
@@ -361,7 +362,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         phase = currentPhase 
                     });
                     eventCounter++;
-                    lastScanSampleIndex = i;
+                    lastScanSampleIndex = i + (intervalInSamples * 2);
                 }
                 //ปกติ
                 else if (eventCounter >= 4 || (currentPhase > 1 && eventCounter >= 8))
@@ -379,6 +380,11 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         phase = currentPhase 
                     });
                     lastScanSampleIndex = i;
+                }
+                else 
+                {
+                    // ถ้ายังไม่ครบ 4 ตัวในเฟส 1 ให้ใช้ i ปกติเพื่อให้ Note Event ออกตามจังหวะบีท
+                    lastScanSampleIndex = i; 
                 }
             }
         }

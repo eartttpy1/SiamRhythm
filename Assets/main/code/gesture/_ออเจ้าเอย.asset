@@ -15,9 +15,18 @@ MonoBehaviour:
   songName: "\u0E2D\u0E2D\u0E40\u0E08\u0E49\u0E32\u0E40\u0E2D\u0E22"
   artistName: "\u0E1E\u0E35\u0E17 \u0E1E\u0E25"
   audioClip: {fileID: 8300000, guid: 09026f41539e29e46b943b69285dac4e, type: 3}
-  threshold: 0.01
-  noteSpeed: 5
-  spawnInterval: 3
+  easy:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  medium:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  hard:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
   currentSongGestures:
   - {fileID: 11400000, guid: 86660ab9c82cd2b4cb4e61c27790b4c8, type: 2}
   - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}

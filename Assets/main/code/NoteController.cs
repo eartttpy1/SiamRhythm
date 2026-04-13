@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class NoteController : MonoBehaviour
@@ -19,6 +20,8 @@ public class NoteController : MonoBehaviour
     private float startTime;
     public float perfectWindowTime; // ระยะเวลาที่วงกลมจะใช้หดจนเท่าตัวโน้ตพอดี (1 วินาที)
     public int eventIndex;
+
+    private bool isInitialized = false; // ตัวแปรตรวจสอบว่าโน้ตถูกตั้งค่าแล้วหรือยัง
     
 
     public void Setup(Transform targetPoint, float moveSpeed, NoteType nType, bool isStatic, int phase, int eventIndex, float targetTimestamp)
@@ -40,7 +43,7 @@ public class NoteController : MonoBehaviour
             this.startTime = targetTimestamp - perfectWindowTime; // บันทึกเวลาที่โน้ตเกิด
         }
 
-        manager = Object.FindAnyObjectByType<BaseRhythmManager>();
+        manager = FindAnyObjectByType<BaseRhythmManager>();
         if (manager != null)
         {
             int index = (int)nType;
@@ -85,10 +88,13 @@ public class NoteController : MonoBehaviour
         //         }
         //     }
         // }
+
+        isInitialized = true; // ตั้งค่าสถานะว่าโน้ตถูกตั้งค่าเรียบร้อยแล้ว
     }
 
     void Update()
     {
+        if (!isInitialized) return; // ป้องกันการทำงานก่อนที่โน้ตจะถูกตั้งค่า
         if (target == null || manager == null || manager.musicSource == null) return;
 
         if(isStaticEvent)
@@ -98,11 +104,12 @@ public class NoteController : MonoBehaviour
             if (approachCircle != null)
             {
                 // สำหรับโน้ต Event แบบ Static: หดวงกลมลงตามเวลาที่ผ่านไป
-                float elapsed = currentMusicTime - startTime;
+                float elapsed = currentMusicTime - startTime - perfectWindowTime;
                 float t = Mathf.Clamp01(elapsed / perfectWindowTime); // 0 ถึง 1 ตามเวลาที่ผ่านไป
                 Vector3 targetScale = new Vector3(0.03f, 0.03f, 1f);
                 approachCircle.transform.localScale = Vector3.Lerp(initialCircleScale, targetScale, t);
 
+                // Debug.Log($"Event Note {eventIndex} Elapsed: {elapsed:F2}s, Scale: {perfectWindowTime:F2}, startTime: {startTime:F2}, currentMusicTime: {currentMusicTime:F2}");
                 // ถ้าเวลาผ่านไปเกิน perfect window แล้วถือว่าเป็นพลาด
                 if (elapsed > perfectWindowTime && !isMissed)
                 {
@@ -135,7 +142,6 @@ public class NoteController : MonoBehaviour
     {
         if (manager != null)
         {
-            Debug.Log("Note Missed: " + type.ToString());
             manager.TriggerNoteMissed();
         }
     }
