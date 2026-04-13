@@ -95,22 +95,32 @@ public class GameStatusManager : MonoBehaviour
         CheckWinLoss();
     }
 
+    public void SetupTimer(float duration)
+    {
+        if (timeSlider == null) return;
+
+        totalSongTime = duration;
+        timeSlider.maxValue = totalSongTime; // ตั้งค่าสูงสุดตามความยาวเพลงจริง
+        timeSlider.value = 0;
+
+        // อัปเดต Text เวลาจบเพลงทันที
+        int totalMinutes = Mathf.FloorToInt(totalSongTime / 60);
+        int totalSeconds = Mathf.FloorToInt(totalSongTime % 60);
+        endTimeText.text = string.Format("{0}:{1:00}", totalMinutes, totalSeconds);
+    }
     void UpdateTimer()
     {
+        if (musicSource == null || musicSource.clip == null) return;
         currentTime = musicSource.time;
-        timeSlider.value = currentTime;
+        timeSlider.value = Mathf.Clamp(currentTime, 0, totalSongTime);
 
         // แปลงวินาทีทั้งหมดให้เป็น นาที และ วินาที แยกกัน
         int currentMinutes = Mathf.FloorToInt(currentTime / 60);
         int currentSeconds = Mathf.FloorToInt(currentTime % 60);
 
-        int totalMinutes = Mathf.FloorToInt(totalSongTime / 60);
-        int totalSeconds = Mathf.FloorToInt(totalSongTime % 60);
-
         // แสดงผลในรูปแบบ 01:05 (นาที:วินาที) ซึ่งจะดูเป็นสากลกว่า 1.05
         // ใช้ :00 เพื่อบังคับให้แสดงเลข 0 ข้างหน้าถ้าเลขหลักเดียว
         currentTimeText.text = string.Format("{0}:{1:00}", currentMinutes, currentSeconds);
-        endTimeText.text = string.Format("{0}:{1:00}", totalMinutes, totalSeconds);
     }
     public void RegisterHit(string rating, int currentCombo)
     {

@@ -7332,7 +7332,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10446,7 +10446,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 7990087176448652046, guid: 9a5cfb2dbfdeed5459e5371330f8fac2, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
@@ -11597,7 +11597,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -11822,12 +11822,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203dfc131f281374da2503a9662458e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayControllerSorD
-  selectedSong: {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
   singleManager: {fileID: 398803062}
   dualManager: {fileID: 203853029}
   singleManagerObject: {fileID: 398803060}
   dualManagerObject: {fileID: 203853027}
-  isDualMode: 0
 --- !u!114 &9167379210590831471
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -63,6 +63,14 @@ public abstract class BaseRhythmManager : MonoBehaviour
     public void LoadSongData(SongData data, string difficulty)
     {
         if (data == null) return;
+
+        // รีเซ็ตค่าเดิมก่อนโหลดเพลงใหม่
+        musicSource.Stop(); 
+        musicSource.clip = null; // เคลียร์คลิปเก่าออกก่อน
+        musicSource.time = 0; 
+        processedNotes.Clear();
+        currentNoteIndex = 0;
+
         selectedSong = data;
         currentSongGestures = data.currentSongGestures; 
         musicSource.clip = data.audioClip;
@@ -75,15 +83,21 @@ public abstract class BaseRhythmManager : MonoBehaviour
             default: settings = data.easy; break;
         }
 
-    threshold = settings.threshold;
-    noteSpeed = settings.noteSpeed;
-    spawnInterval = settings.spawnInterval;
+        threshold = settings.threshold;
+        noteSpeed = settings.noteSpeed;
+        spawnInterval = settings.spawnInterval;
+
         
         UpdateIconPreviews();
         CalculateAutomaticBalance();
         if (statusManager != null) {
+            statusManager.SetupTimer(musicSource.clip.length);
             statusManager.SetupScoring(totalNotesCount); 
             statusManager.SetupAllControllers(data.phaseAnimatorControllers, data.loopAnimatorControllers);
+        }
+
+        if (musicSource.clip != null) {
+            musicSource.Play();
         }
     }
     private void UpdateIconPreviews()
@@ -140,7 +154,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
         // ใช้ while แทน if เพื่อรองรับกรณีที่เครื่องแลคจนโน้ตควรออกพร้อมกันหรือไล่เลี่ยกัน
         // ระบบจะพ่นโน้ตออกมาจนกว่าจะทันเวลาปัจจุบันของเพลง
-        while (currentNoteIndex < processedNotes.Count && musicSource.time >= processedNotes[currentNoteIndex].timestamp)
+        while (currentNoteIndex < processedNotes.Count && musicSource.time >= (processedNotes[currentNoteIndex].timestamp- 3.0f))
         {
             NoteData data = processedNotes[currentNoteIndex];
 
@@ -274,7 +288,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         for (int i = 0; i < allSamples.Length; i += step)
         {
             float timeStamp = (float)i / (sampleRate * channels);
-            if (timeStamp < 3.0f) continue;
+            if (timeStamp < 2.0f) continue;
             // ไม่นับโน้ตที่อยู่ในช่วง 3 วินาทีสุดท้ายของเพลงเข้าสู่ระบบคะแนน
             if (timeStamp > musicSource.clip.length - 3.0f) break;
             float intensity = Mathf.Abs(allSamples[i]);
@@ -331,9 +345,10 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     }
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
+                    float lastNoteTime = secondRoundStart + (3 * gap);
                     // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
-                    lastScanSampleIndex = i + (int)((10.0f) * sampleRate * channels); 
-                    i = lastScanSampleIndex;
+                    lastScanSampleIndex = (int)(lastNoteTime * sampleRate * channels); 
+                    // i = lastScanSampleIndex;
                 }
                 // --- เฟส 1 หรือโน้ตปกติ ---
                 else if (eventCounter < 4 && currentPhase == 1) 

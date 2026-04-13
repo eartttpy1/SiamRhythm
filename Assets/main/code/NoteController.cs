@@ -17,7 +17,7 @@ public class NoteController : MonoBehaviour
     private float totalDistance;
     public bool isStaticEvent = false;
     private float startTime;
-    public float perfectWindowTime = 1.0f; // ระยะเวลาที่วงกลมจะใช้หดจนเท่าตัวโน้ตพอดี (1 วินาที)
+    public float perfectWindowTime; // ระยะเวลาที่วงกลมจะใช้หดจนเท่าตัวโน้ตพอดี (1 วินาที)
     public int eventIndex;
     
 
@@ -36,7 +36,7 @@ public class NoteController : MonoBehaviour
         }
         else
         {
-            float appearanceDelay = eventIndex * 0.7f;
+            this.perfectWindowTime = 1.5f;
             this.startTime = targetTimestamp - perfectWindowTime; // บันทึกเวลาที่โน้ตเกิด
         }
 
@@ -89,15 +89,16 @@ public class NoteController : MonoBehaviour
 
     void Update()
     {
-        if (target == null) return;
+        if (target == null || manager == null || manager.musicSource == null) return;
 
         if(isStaticEvent)
         {
-            if (Time.time < startTime) return;
+            float currentMusicTime = manager.musicSource.time;
+            if (currentMusicTime < startTime) return;
             if (approachCircle != null)
             {
                 // สำหรับโน้ต Event แบบ Static: หดวงกลมลงตามเวลาที่ผ่านไป
-                float elapsed = Time.time - startTime;
+                float elapsed = currentMusicTime - startTime;
                 float t = Mathf.Clamp01(elapsed / perfectWindowTime); // 0 ถึง 1 ตามเวลาที่ผ่านไป
                 Vector3 targetScale = new Vector3(0.03f, 0.03f, 1f);
                 approachCircle.transform.localScale = Vector3.Lerp(initialCircleScale, targetScale, t);
@@ -134,6 +135,7 @@ public class NoteController : MonoBehaviour
     {
         if (manager != null)
         {
+            Debug.Log("Note Missed: " + type.ToString());
             manager.TriggerNoteMissed();
         }
     }

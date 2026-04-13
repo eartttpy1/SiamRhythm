@@ -15,9 +15,18 @@ MonoBehaviour:
   songName: "\u0E44\u0E21\u0E48\u0E1A\u0E2D\u0E01\u0E40\u0E18\u0E2D"
   artistName: Bedroom Audio Ost.Hormones cover by Jannine Weigel
   audioClip: {fileID: 8300000, guid: c36b1bbb44a350c4ebfb6c69d2b8f5d2, type: 3}
-  threshold: 0.01
-  noteSpeed: 7
-  spawnInterval: 2
+  easy:
+    threshold: 0.01
+    spawnInterval: 5
+    noteSpeed: 4
+  medium:
+    threshold: 0.01
+    spawnInterval: 3
+    noteSpeed: 5
+  hard:
+    threshold: 0.01
+    spawnInterval: 2
+    noteSpeed: 7
   currentSongGestures:
   - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

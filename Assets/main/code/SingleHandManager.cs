@@ -15,10 +15,6 @@ public class SingleHandManager : BaseRhythmManager
 
     void Start(){ 
         HandModeTextUpdate();
-        if (musicSource != null && musicSource.clip != null)
-        {
-            musicSource.Play(); 
-        }
     }
     protected override void SpawnNote(NoteData data)
     {
