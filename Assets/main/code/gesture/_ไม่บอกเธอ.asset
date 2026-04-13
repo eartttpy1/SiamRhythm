@@ -17,7 +17,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: c36b1bbb44a350c4ebfb6c69d2b8f5d2, type: 3}
   threshold: 0.01
   noteSpeed: 7
-  spawnInterval: 1
+  spawnInterval: 2
   currentSongGestures:
   - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
