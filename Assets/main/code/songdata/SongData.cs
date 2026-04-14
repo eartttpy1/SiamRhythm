@@ -7,6 +7,8 @@ public class SongData : ScriptableObject
     [Header("General Info")]
     public string songName;
     public string artistName;
+    public Sprite pictureSong;
+    public Sprite pictureSongParallelogram;
     public AudioClip audioClip;
     
     [System.Serializable]

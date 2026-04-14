@@ -325,8 +325,8 @@ public class GameStatusManager : MonoBehaviour
     void updateRank(float acc)
     {
         rank = " ";
-        if (acc == 100) rank = "SSS";
-        if (acc >= 95) rank = "S";
+        if (acc == 100) rank = "K";
+        else if (acc >= 90) rank = "S";
         else if (acc >= 85) rank = "A";
         else if (acc >= 75) rank = "B";
         else if (acc >= 60) rank = "C";
