@@ -4692,7 +4692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1037899269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8673,7 +8673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &2099202826
 SpriteRenderer:
   serializedVersion: 2
@@ -8976,9 +8976,9 @@ RectTransform:
   m_Children:
   - {fileID: 6215017428801794922}
   - {fileID: 8129667497020232714}
-  - {fileID: 4760756887758133847}
   - {fileID: 439900962}
   - {fileID: 1292674226}
+  - {fileID: 4760756887758133847}
   m_Father: {fileID: 5722446357785612006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
