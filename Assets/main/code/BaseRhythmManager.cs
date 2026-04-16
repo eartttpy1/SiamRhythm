@@ -316,8 +316,10 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     // 2. กำหนดค่าการขยับลำดับ (Offset)
                     // ถ้าท่าแรกของ Event (e=0) ซ้ำกับท่าล่าสุด ให้เริ่มที่ 1 แทน หรือบวกเพิ่มไป
                     int startOffset = (lastNoteType == 0) ? 1 : 0;
-                    float gap = spawnInterval * 0.5f;
-                    float setGap = spawnInterval * 2.0f;  // ระยะห่างระหว่าง "จบชุดแรก" ไป "เริ่มชุดสอง"
+                    // float gap = spawnInterval * 0.5f;
+                    float setGap = spawnInterval * 2.5f;
+                    float gap = spawnInterval;
+                    // float setGap = spawnInterval;
                     // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
                     for (int e = 0; e < 4; e++) {
                         int shiftedIndex = (e + startOffset) % 4;  // ใช้ (e + startOffset) % 4 เพื่อให้วนอยู่ใน 0-3 แต่ไม่ซ้ำตัวเดิม
@@ -346,9 +348,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
                     float lastNoteTime = secondRoundStart + (3 * gap);
-                    Debug.Log(lastNoteTime);
-                    // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
+                    if (eventCounter == 8) {
+                        lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
+                    }
+                    else
+                    {
                     lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples); 
+                    }
+                    // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
+                    // lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels));
                     // i = lastScanSampleIndex;
                 }
                 // --- เฟส 1 หรือโน้ตปกติ ---
@@ -362,7 +370,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         phase = currentPhase 
                     });
                     eventCounter++;
-                    lastScanSampleIndex = i + (intervalInSamples * 2);
+                    // lastScanSampleIndex = i + intervalInSamples;
+                    if (eventCounter == 4) {
+                        lastScanSampleIndex = i + intervalInSamples*2; 
+                    }
+                    else
+                    {
+                        lastScanSampleIndex = i;
+                    }
+                    Debug.Log(intervalInSamples);
                 }
                 //ปกติ
                 else if (eventCounter >= 4 || (currentPhase > 1 && eventCounter >= 8))

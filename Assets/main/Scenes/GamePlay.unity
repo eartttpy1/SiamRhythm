@@ -4778,7 +4778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1037899269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11980,6 +11980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SettingsManager
   mainMixer: {fileID: 24100000, guid: 9a5cfb2dbfdeed5459e5371330f8fac2, type: 2}
   musicSlider: {fileID: 7874948333916847177}
+  optionPanel: {fileID: 0}
 --- !u!114 &9148644834473417085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11994,7 +11995,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
   pauseMenuPanel: {fileID: 139091389}
   countdownText: {fileID: 546772528}
-  optionPanel: {fileID: 0}
   pause: {fileID: 1251028806}
   musicSource: {fileID: 5052658989627755494}
   statusManager: {fileID: 8611679507051601419}
