@@ -17,6 +17,7 @@ MonoBehaviour:
   pictureSong: {fileID: -6032596148678175637, guid: a5f70f2d63d890344bbb530b772147ad, type: 3}
   pictureSongParallelogram: {fileID: 7608004383065208429, guid: 3bf28f2287315854b883306f847e1baf, type: 3}
   audioClip: {fileID: 8300000, guid: 09026f41539e29e46b943b69285dac4e, type: 3}
+  previewStartTime: 53
   easy:
     threshold: 0
     spawnInterval: 0

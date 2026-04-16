@@ -10,6 +10,7 @@ public class SongData : ScriptableObject
     public Sprite pictureSong;
     public Sprite pictureSongParallelogram;
     public AudioClip audioClip;
+    public float previewStartTime;
     
     [System.Serializable]
     public struct DifficultySettings {

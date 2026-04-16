@@ -14,10 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E02\u0E49\u0E32\u0E21\u0E40\u0E27\u0E25\u0E32"
   artistName: Violette Wautier
+  pictureSong: {fileID: 0}
+  pictureSongParallelogram: {fileID: 0}
   audioClip: {fileID: 8300000, guid: aef221944d1d9dd4d8afb826cbcd6ac6, type: 3}
-  threshold: 0.01
-  noteSpeed: 6
-  spawnInterval: 3
+  previewStartTime: 76
+  easy:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  medium:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  hard:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
   currentSongGestures:
   - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

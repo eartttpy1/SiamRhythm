@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Selected : MonoBehaviour
 {
@@ -23,26 +24,71 @@ public class Selected : MonoBehaviour
     [SerializeField] private Sprite playButtonpicture;
     [SerializeField] private Sprite lockButtonpicture;
     [SerializeField] private GameObject buyButton;
-    [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI rpBalanceText; // แสดงเงินปัจจุบัน
     [SerializeField] private TextMeshProUGUI levelText; // แสดงเลเวลปัจจุบัน
     public Image[] menuGestureIcons = new Image[4];
     [SerializeField] private GameObject bgImage;
     [SerializeField] private Image bgImageParallelogram;
 
+    [Header("Song List")]
+    [SerializeField] private List<SongData> playlist;
+    [SerializeField] private AudioSource menuAudioSource;
+
+    [Header("First Button Reference")]
+    [SerializeField] private SongInMenu firstSongButton;
+
     void Start()
     {
-        // 3. กำหนดเพลงแรกเป็น Default (ถ้ามี)
-        // คุณสามารถลาก SongData เพลงแรกมาใส่ใน Inspector หรือดึงจากลิสต์เพลงก็ได้
-        if (SelectedSong != null) SetPreviewSong(SelectedSong);
+        if (playlist != null && playlist.Count > 0) {
+            SetPreviewSong(playlist[0]);
+            // เพิ่ม: สั่งให้ปุ่มต่างๆ อัปเดตหน้าตาเพื่อให้ปุ่มแรกค้างสถานะ Selected
+            if (firstSongButton != null)
+            {
+                firstSongButton.SetUIAppearance(true);
+            }
+        }
+        else if (SelectedSong != null) 
+        {
+            SetPreviewSong(SelectedSong);
+        }
+        DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
+        foreach (var btn in allBtns)
+        {
+            btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
+        }
         UpdateRPUI();
     }
 
     public void SetPreviewSong(SongData song)
     {
+        if (song == null) return;
         SelectedSong = song;
+        
+
+        StopAllCoroutines(); // หยุดการ Fade เก่าถ้ามี
+        StartCoroutine(PlayPreviewWithFade(song));
         UpdatePreviewUI();
         UpdateMenuGestureIcons(song);
+    }
+    private IEnumerator PlayPreviewWithFade(SongData song)
+    {
+        float targetVolume = 0.3f;
+
+        menuAudioSource.Stop();
+        menuAudioSource.volume = 0;
+        menuAudioSource.clip = song.audioClip;
+        menuAudioSource.time = song.previewStartTime;
+        menuAudioSource.Play();
+
+        float duration = 1.0f; // ระยะเวลา Fade-in 1 วินาที
+        float currentTime = 0;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            menuAudioSource.volume = Mathf.Lerp(0, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        menuAudioSource.volume = targetVolume;
     }
     private void UpdateMenuGestureIcons(SongData song)
     {
@@ -85,7 +131,6 @@ public class Selected : MonoBehaviour
         if (isUnlocked) playButton.sprite = playButtonpicture;
         else playButton.sprite = lockButtonpicture;
         buyButton.SetActive(!isUnlocked);
-        priceText.text = "100 RP";
     }
 
     public void BuySong()
@@ -96,6 +141,8 @@ public class Selected : MonoBehaviour
             UnlockedSongs.Add(SelectedSong); // เพิ่มเข้าลิสต์เพลงที่ปลดล็อก
             UpdateRPUI();
             UpdatePreviewUI();
+            SongInMenu[] allItems = FindObjectsByType<SongInMenu>(FindObjectsSortMode.None);
+            foreach (var item in allItems) item.UpdatePriceDisplay();
         }
     }
 
@@ -112,5 +159,9 @@ public class Selected : MonoBehaviour
     {
         if (SelectedSong != null && CheckIfUnlocked(SelectedSong))
             UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
+    }
+    public void SetDifficulty(string difficulty)
+    {
+        SelectedDifficulty = difficulty; 
     }
 }

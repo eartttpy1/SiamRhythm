@@ -41,6 +41,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         public int phase;      // 1, 2, 3
     }
     protected List<NoteData> processedNotes = new List<NoteData>();
+    public string currentDifficulty;
 
     [Header("Phase Event Assets")]
     public GameObject eventNotePrefab; // Prefab ที่มีวงกลม Approach Circle
@@ -62,6 +63,8 @@ public abstract class BaseRhythmManager : MonoBehaviour
     
     public void LoadSongData(SongData data, string difficulty)
     {
+        this.currentDifficulty = difficulty;
+
         if (data == null) return;
 
         // รีเซ็ตค่าเดิมก่อนโหลดเพลงใหม่
@@ -316,10 +319,20 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     // 2. กำหนดค่าการขยับลำดับ (Offset)
                     // ถ้าท่าแรกของ Event (e=0) ซ้ำกับท่าล่าสุด ให้เริ่มที่ 1 แทน หรือบวกเพิ่มไป
                     int startOffset = (lastNoteType == 0) ? 1 : 0;
-                    // float gap = spawnInterval * 0.5f;
-                    float setGap = spawnInterval * 2.5f;
-                    float gap = spawnInterval;
-                    // float setGap = spawnInterval;
+                    float setGap;
+                    float gap;
+                    if (currentDifficulty == "Easy") {
+                        gap = spawnInterval;
+                        setGap = spawnInterval * 2.5f; 
+                    } 
+                    else if (currentDifficulty == "Medium") {
+                        gap = spawnInterval;
+                        setGap = spawnInterval * 3.0f;
+                    } 
+                    else {
+                        gap = spawnInterval * 1.5f;
+                        setGap = spawnInterval * 4.5f;
+                    }
                     // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
                     for (int e = 0; e < 4; e++) {
                         int shiftedIndex = (e + startOffset) % 4;  // ใช้ (e + startOffset) % 4 เพื่อให้วนอยู่ใน 0-3 แต่ไม่ซ้ำตัวเดิม
@@ -348,12 +361,24 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
                     float lastNoteTime = secondRoundStart + (3 * gap);
-                    if (eventCounter == 8) {
-                        lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
+                    if(currentDifficulty == "Easy" || currentDifficulty == "Medium"){
+                        if (eventCounter == 8) {
+                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
+                        }
+                        else
+                        {
+                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples); 
+                        }
                     }
                     else
                     {
-                    lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples); 
+                        if (eventCounter == 8) {
+                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*4); 
+                        }
+                        else
+                        {
+                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
+                        }
                     }
                     // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
                     // lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels));
@@ -370,13 +395,35 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         phase = currentPhase 
                     });
                     eventCounter++;
-                    // lastScanSampleIndex = i + intervalInSamples;
-                    if (eventCounter == 4) {
-                        lastScanSampleIndex = i + intervalInSamples*2; 
+                    if (currentDifficulty == "Easy")
+                    {
+                        if (eventCounter == 4) {
+                            lastScanSampleIndex = i + intervalInSamples*2; 
+                        }
+                        else
+                        {
+                            lastScanSampleIndex = i;
+                        } 
+                    }
+                    else if(currentDifficulty == "Medium")
+                    {
+                        if (eventCounter == 4) {
+                            lastScanSampleIndex = i + intervalInSamples*3; 
+                        }
+                        else
+                        {
+                            lastScanSampleIndex = i;
+                        } 
                     }
                     else
                     {
-                        lastScanSampleIndex = i;
+                        if (eventCounter == 4) {
+                            lastScanSampleIndex = i + intervalInSamples*4; 
+                        }
+                        else
+                        {
+                            lastScanSampleIndex = i + intervalInSamples/2;
+                        } 
                     }
                     Debug.Log(intervalInSamples);
                 }

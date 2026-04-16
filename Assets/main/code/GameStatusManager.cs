@@ -48,6 +48,11 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxComboText;
     [SerializeField] private TextMeshProUGUI rankText; 
     [SerializeField] private TextMeshProUGUI songStatusText;
+    [SerializeField] private TextMeshProUGUI handText;
+    [SerializeField] private Image Difficulty;
+    [SerializeField] private Sprite easy;
+    [SerializeField] private Sprite medium;
+    [SerializeField] private Sprite hard;
     // Text สำหรับโชว์สถิติการกด (Early, Late, Perfect, Good, Bad, Miss)
     public int perfectCount = 0;
     public int goodCount = 0;
@@ -303,6 +308,29 @@ public class GameStatusManager : MonoBehaviour
         missText.text = missCount.ToString();
         maxComboText.text = maxCombo.ToString();
         rankText.text = rank.ToString();
+
+        if(baseRhythmManager.currentDifficulty == "Easy")
+        {
+            Difficulty.sprite = easy;
+        }
+        else if(baseRhythmManager.currentDifficulty == "Medium")
+        {
+            Difficulty.sprite = medium;
+        }
+        else
+        {
+            Difficulty.sprite = hard;
+        }
+
+        if (handText != null)
+        {
+            string mode = Selected.PlayMode; // จะได้ค่า "1Hand" หรือ "2Hand"
+            
+            // ปรับการแสดงผลให้สวยงาม (Optional)
+            if (mode == "1Hand") handText.text = "1 Hand";
+            else if (mode == "2Hand") handText.text = "2 Hands";
+            else handText.text = mode;
+        }
     }
     public void DeactivateFailCanvas()
     {
