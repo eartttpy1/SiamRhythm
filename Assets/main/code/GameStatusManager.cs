@@ -49,6 +49,7 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rankText; 
     [SerializeField] private TextMeshProUGUI songStatusText;
     [SerializeField] private TextMeshProUGUI handText;
+    [SerializeField] private Image pictureSong;
     [SerializeField] private Image Difficulty;
     [SerializeField] private Sprite easy;
     [SerializeField] private Sprite medium;
@@ -312,6 +313,7 @@ public class GameStatusManager : MonoBehaviour
         missText.text = missCount.ToString();
         maxComboText.text = maxCombo.ToString();
         rankText.text = rank.ToString();
+        pictureSong.sprite = baseRhythmManager.selectedSong.pictureSongParallelogram;
 
         if(baseRhythmManager.currentDifficulty == "Easy")
         {

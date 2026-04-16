@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E04\u0E07\u0E04\u0E32"
   artistName: "\u0E40\u0E2D\u0E27\u0E32\u0E23\u0E34\u0E19\u0E17\u0E23\u0E4C"
-  pictureSong: {fileID: 0}
-  pictureSongParallelogram: {fileID: 0}
+  pictureSong: {fileID: -2108707929989821735, guid: 471704f45ba965144bae2f58ef98f2b8, type: 3}
+  pictureSongParallelogram: {fileID: -7657543757582970897, guid: 434725dc13993c14cbb431dc72ce7b7e, type: 3}
   audioClip: {fileID: 8300000, guid: b475527e3479d834d8ea8c5fc5024c7c, type: 3}
   previewStartTime: 45
   easy:

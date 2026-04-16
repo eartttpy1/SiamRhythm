@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 59024770}
   - component: {fileID: 59024769}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: "Global Volume \u0E44\u0E21\u0E48\u0E1A\u0E2D\u0E01\u0E40\u0E18\u0E2D"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4025,7 +4025,7 @@ GameObject:
   - component: {fileID: 880099692}
   - component: {fileID: 880099691}
   m_Layer: 0
-  m_Name: Global Volume (1)
+  m_Name: "Global Volume \u0E04\u0E07\u0E04\u0E32"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4692,7 +4692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1037899269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11729,6 +11729,7 @@ MonoBehaviour:
   rankText: {fileID: 4707266180317120806}
   songStatusText: {fileID: 1215880682}
   handText: {fileID: 1449040804}
+  pictureSong: {fileID: 477906588}
   Difficulty: {fileID: 1442920477}
   easy: {fileID: 6626051464634953487, guid: 868a98e68a7f9ff4e8adea1791bb5b60, type: 3}
   medium: {fileID: -7590032424596528948, guid: 195c74e7cda5ae243bc3b633381ea940, type: 3}
