@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic; // อย่าลืมเพิ่มอันนี้เพื่อใช้ List
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Selected : MonoBehaviour
 {
@@ -18,11 +19,16 @@ public class Selected : MonoBehaviour
     [Header("Preview UI")]
     [SerializeField] private TextMeshProUGUI songNameText;
     [SerializeField] private TextMeshProUGUI artistNameText;
-    [SerializeField] private GameObject playButton;
+    [SerializeField] private Image playButton;
+    [SerializeField] private Sprite playButtonpicture;
+    [SerializeField] private Sprite lockButtonpicture;
     [SerializeField] private GameObject buyButton;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI rpBalanceText; // แสดงเงินปัจจุบัน
     [SerializeField] private TextMeshProUGUI levelText; // แสดงเลเวลปัจจุบัน
+    public Image[] menuGestureIcons = new Image[4];
+    [SerializeField] private GameObject bgImage;
+    [SerializeField] private Image bgImageParallelogram;
 
     void Start()
     {
@@ -36,6 +42,24 @@ public class Selected : MonoBehaviour
     {
         SelectedSong = song;
         UpdatePreviewUI();
+        UpdateMenuGestureIcons(song);
+    }
+    private void UpdateMenuGestureIcons(SongData song)
+    {
+        if (song == null || song.currentSongGestures == null) return;
+
+        for (int i = 0; i < menuGestureIcons.Length; i++)
+        {
+            if (i < song.currentSongGestures.Length && song.currentSongGestures[i].gestureIcon != null)
+            {
+                menuGestureIcons[i].sprite = song.currentSongGestures[i].gestureIcon;
+                menuGestureIcons[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                menuGestureIcons[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     // --- ฟังก์ชันที่หายไปและทำให้เกิด Error ---
@@ -52,9 +76,14 @@ public class Selected : MonoBehaviour
 
         songNameText.text = SelectedSong.songName;
         artistNameText.text = SelectedSong.artistName;
+        SpriteRenderer spriteRenderer = bgImage.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = SelectedSong.pictureSong;
+        bgImageParallelogram.sprite = SelectedSong.pictureSongParallelogram;
 
-        bool isUnlocked = CheckIfUnlocked(SelectedSong); 
-        playButton.SetActive(isUnlocked);
+
+        bool isUnlocked = CheckIfUnlocked(SelectedSong);
+        if (isUnlocked) playButton.sprite = playButtonpicture;
+        else playButton.sprite = lockButtonpicture;
         buyButton.SetActive(!isUnlocked);
         priceText.text = "100 RP";
     }

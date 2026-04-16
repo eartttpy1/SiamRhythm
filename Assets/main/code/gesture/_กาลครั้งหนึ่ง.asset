@@ -13,11 +13,22 @@ MonoBehaviour:
   m_Name: "_\u0E01\u0E32\u0E25\u0E04\u0E23\u0E31\u0E49\u0E07\u0E2B\u0E19\u0E36\u0E48\u0E07"
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E01\u0E32\u0E25\u0E04\u0E23\u0E31\u0E49\u0E07\u0E2B\u0E19\u0E36\u0E48\u0E07"
-  artistName: "[JUNENOM] - \u0E1B\u0E23\u0E32\u0E07 \u0E1B\u0E23\u0E32\u0E07\u0E17\u0E34\u0E1E\u0E22\u0E4C\u3010Cover\u3011"
+  artistName: "[JUNENOM] cover by \u0E1B\u0E23\u0E32\u0E07 \u0E1B\u0E23\u0E32\u0E07\u0E17\u0E34\u0E1E\u0E22\u0E4C"
+  pictureSong: {fileID: 0}
+  pictureSongParallelogram: {fileID: 0}
   audioClip: {fileID: 8300000, guid: 71199f5f5fd1dd84799310caf6e53f93, type: 3}
-  threshold: 0.01
-  noteSpeed: 6
-  spawnInterval: 3
+  easy:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  medium:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
+  hard:
+    threshold: 0
+    spawnInterval: 0
+    noteSpeed: 0
   currentSongGestures:
   - {fileID: 11400000, guid: 86660ab9c82cd2b4cb4e61c27790b4c8, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

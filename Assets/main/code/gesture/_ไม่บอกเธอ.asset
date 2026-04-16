@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: "_\u0E44\u0E21\u0E48\u0E1A\u0E2D\u0E01\u0E40\u0E18\u0E2D"
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E44\u0E21\u0E48\u0E1A\u0E2D\u0E01\u0E40\u0E18\u0E2D"
-  artistName: Bedroom Audio Ost.Hormones cover by Jannine Weigel
+  artistName: '[Bedroom] cover by Jannine Weigel'
+  pictureSong: {fileID: -8245196690606514903, guid: da05d50e9c17d9143beb5318bb155d32, type: 3}
+  pictureSongParallelogram: {fileID: -2315362796649885987, guid: 60637f059f1bd6c4ca4adb313611974b, type: 3}
   audioClip: {fileID: 8300000, guid: c36b1bbb44a350c4ebfb6c69d2b8f5d2, type: 3}
   easy:
     threshold: 0.01

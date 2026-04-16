@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine.UI;
 public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
 public abstract class BaseRhythmManager : MonoBehaviour
 {
@@ -19,8 +19,8 @@ public abstract class BaseRhythmManager : MonoBehaviour
     public TextMeshProUGUI handModeText;
     public TextMeshProUGUI ratingText;
     public TextMeshProUGUI comboText;
-    public UnityEngine.UI.Image[] gesturePreview = new UnityEngine.UI.Image[4];
-    public UnityEngine.UI.Image[] gesturePreviewStat = new UnityEngine.UI.Image[4];
+    public Image[] gesturePreview = new Image[4];
+    public Image[] gesturePreviewStat = new Image[4];
    
     [Header("Core Gameplay Variables")]
     public float threshold = 0.5f;
@@ -100,7 +100,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             musicSource.Play();
         }
     }
-    private void UpdateIconPreviews()
+    public void UpdateIconPreviews()
     {
         for (int i = 0; i < 4; i++)
         {
