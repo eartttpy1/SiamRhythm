@@ -79,11 +79,15 @@ public class GameStatusManager : MonoBehaviour
             totalSongTime = musicSource.clip.length;
             timeSlider.maxValue = totalSongTime;
 
-            if (songTitleText != null) 
-            {
-                songTitleText.text = musicSource.clip.name;
-                songStatusText.text = musicSource.clip.name;
-            }
+        }
+        if (songTitleText != null) 
+        {
+            songTitleText.text = Selected.SelectedSong.songName;
+            songStatusText.text = Selected.SelectedSong.songName;
+        }
+        else
+        {
+            Debug.Log("Nooooo songTitleText");
         }
         currentHP = 100f;
         hpSlider.maxValue = 100f;

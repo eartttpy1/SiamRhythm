@@ -14,10 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: GOAGAG
   artistName: GOA
+  pictureSong: {fileID: 0}
+  pictureSongParallelogram: {fileID: 0}
   audioClip: {fileID: 8300000, guid: fee93234b13921d47a5841905954be69, type: 3}
-  threshold: 0.01
-  noteSpeed: 7
-  spawnInterval: 1
+  previewStartTime: 0
+  easy:
+    threshold: 0.01
+    spawnInterval: 2
+    noteSpeed: 5
+  medium:
+    threshold: 0.01
+    spawnInterval: 1.5
+    noteSpeed: 6
+  hard:
+    threshold: 0.01
+    spawnInterval: 1
+    noteSpeed: 7
   currentSongGestures:
   - {fileID: 11400000, guid: ac8a6204b588eeb489e02812093974a2, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

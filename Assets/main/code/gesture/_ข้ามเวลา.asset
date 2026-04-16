@@ -19,17 +19,17 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: aef221944d1d9dd4d8afb826cbcd6ac6, type: 3}
   previewStartTime: 76
   easy:
-    threshold: 0
-    spawnInterval: 0
-    noteSpeed: 0
+    threshold: 0.01
+    spawnInterval: 2
+    noteSpeed: 5
   medium:
-    threshold: 0
-    spawnInterval: 0
-    noteSpeed: 0
+    threshold: 0.01
+    spawnInterval: 1.5
+    noteSpeed: 6
   hard:
-    threshold: 0
-    spawnInterval: 0
-    noteSpeed: 0
+    threshold: 0.01
+    spawnInterval: 1
+    noteSpeed: 7
   currentSongGestures:
   - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}
