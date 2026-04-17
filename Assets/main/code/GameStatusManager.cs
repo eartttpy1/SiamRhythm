@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class GameStatusManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentTimeText;
     [SerializeField] private TextMeshProUGUI endTimeText;
     [SerializeField] private AudioSource musicSource;
+
+    [Header("Post Processing")]
+    [SerializeField] private Volume globalVolume;
 
     [Header("HP System (100 HP)")]
     [SerializeField] private Slider hpSlider;
@@ -80,6 +84,13 @@ public class GameStatusManager : MonoBehaviour
             totalSongTime = musicSource.clip.length;
             timeSlider.maxValue = totalSongTime;
 
+        }
+        if (Selected.SelectedSong != null && globalVolume != null)
+        {
+            if (Selected.SelectedSong.songPostProcessProfile != null)
+            {
+                globalVolume.profile = Selected.SelectedSong.songPostProcessProfile;
+            }
         }
         if (songTitleText != null) 
         {
@@ -313,13 +324,14 @@ public class GameStatusManager : MonoBehaviour
         missText.text = missCount.ToString();
         maxComboText.text = maxCombo.ToString();
         rankText.text = rank.ToString();
-        pictureSong.sprite = baseRhythmManager.selectedSong.pictureSongParallelogram;
+        pictureSong.sprite = Selected.SelectedSong.pictureSongParallelogram;
 
-        if(baseRhythmManager.currentDifficulty == "Easy")
+        string currentDiff = Selected.SelectedDifficulty;
+        if(currentDiff == "Easy")
         {
             Difficulty.sprite = easy;
         }
-        else if(baseRhythmManager.currentDifficulty == "Medium")
+        else if(currentDiff == "Medium")
         {
             Difficulty.sprite = medium;
         }

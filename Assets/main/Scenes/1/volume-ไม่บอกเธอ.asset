@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1739294396198964013
+--- !u!114 &-7586334097247847457
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
---- !u!114 &-1274558706819773337
+--- !u!114 &-4654264633452383303
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,32 +49,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
-  m_Name: ShadowsMidtonesHighlights
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ShadowsMidtonesHighlights
+  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LiftGammaGain
   active: 1
-  shadows:
+  lift:
     m_OverrideState: 1
-    m_Value: {x: 0.884912, y: 0.9442691, z: 1, w: -0.03489637}
-  midtones:
+    m_Value: {x: 1, y: 0.89461, z: 0.973653, w: 0.00000016557256}
+  gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.8051997, y: 0.7251741, z: 1, w: 0.124318674}
-  highlights:
+    m_Value: {x: 1, y: 0.5917878, z: 0.6309936, w: 0}
+  gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9733189, z: 0.954976, w: -0.06979306}
-  shadowsStart:
-    m_OverrideState: 0
-    m_Value: 0
-  shadowsEnd:
-    m_OverrideState: 0
-    m_Value: 0.3
-  highlightsStart:
-    m_OverrideState: 1
-    m_Value: 1
-  highlightsEnd:
-    m_OverrideState: 0
-    m_Value: 1
---- !u!114 &-1006662554222718628
+    m_Value: {x: 1, y: 0.8597379, z: 0.9775329, w: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: "volume-\u0E44\u0E21\u0E48\u0E1A\u0E2D\u0E01\u0E40\u0E18\u0E2D"
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
+  components:
+  - {fileID: 6239756304504965495}
+  - {fileID: -4654264633452383303}
+  - {fileID: 3377213833803494199}
+  - {fileID: 2842823883675019365}
+  - {fileID: -7586334097247847457}
+--- !u!114 &2842823883675019365
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,29 +95,45 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -31
+    m_Value: -9
   tint:
     m_OverrideState: 1
-    m_Value: 30
---- !u!114 &11400000
+    m_Value: -4
+--- !u!114 &3377213833803494199
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Global Volume Profile
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
-  components:
-  - {fileID: 2482450502022887046}
-  - {fileID: 1969122280442514204}
-  - {fileID: -1274558706819773337}
-  - {fileID: -1006662554222718628}
-  - {fileID: -1739294396198964013}
---- !u!114 &1969122280442514204
+  m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
+  m_Name: ShadowsMidtonesHighlights
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ShadowsMidtonesHighlights
+  active: 1
+  shadows:
+    m_OverrideState: 1
+    m_Value: {x: 0.9682294, y: 0.8643679, z: 1, w: 0.00654297}
+  midtones:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.9764343, z: 0.9836746, w: -0.08505984}
+  highlights:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.90617895, z: 0.91687846, w: 0}
+  shadowsStart:
+    m_OverrideState: 0
+    m_Value: 0
+  shadowsEnd:
+    m_OverrideState: 0
+    m_Value: 0.3
+  highlightsStart:
+    m_OverrideState: 0
+    m_Value: 0.55
+  highlightsEnd:
+    m_OverrideState: 0
+    m_Value: 1
+--- !u!114 &6239756304504965495
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,22 +150,22 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   threshold:
-    m_OverrideState: 1
-    m_Value: 194.36
+    m_OverrideState: 0
+    m_Value: 11.6
   intensity:
-    m_OverrideState: 1
-    m_Value: 1.1
+    m_OverrideState: 0
+    m_Value: 0
   scatter:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0.7
   clamp:
     m_OverrideState: 0
     m_Value: 65472
   tint:
     m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   highQualityFiltering:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   filter:
     m_OverrideState: 1
@@ -159,27 +181,5 @@ MonoBehaviour:
     m_Value: {fileID: 0}
     dimension: 1
   dirtIntensity:
-    m_OverrideState: 1
-    m_Value: 1.33
---- !u!114 &2482450502022887046
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
-  m_Name: LiftGammaGain
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LiftGammaGain
-  active: 1
-  lift:
-    m_OverrideState: 1
-    m_Value: {x: 0.99211234, y: 1, z: 0.96420246, w: 0}
-  gamma:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.6920384, z: 0.8239018, w: 0.0021811542}
-  gain:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.8801363, z: 0.97430956, w: -0.0000000047887547}
+    m_OverrideState: 0
+    m_Value: 0

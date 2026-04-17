@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "NewSongData", menuName = "RhythmGame/SongData")]
 public class SongData : ScriptableObject
@@ -11,6 +12,7 @@ public class SongData : ScriptableObject
     public Sprite pictureSongParallelogram;
     public AudioClip audioClip;
     public float previewStartTime;
+    public VolumeProfile songPostProcessProfile;
     
     [System.Serializable]
     public struct DifficultySettings {
