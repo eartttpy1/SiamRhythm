@@ -2519,7 +2519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &907085169
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2662,7 +2662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf17b42f020f5414e889710a0ee555d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Selected
-  playerRP: 1000
   songNameText: {fileID: 5392571223455329298}
   artistNameText: {fileID: 871249071}
   playButton: {fileID: 865512640}
@@ -2686,6 +2685,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
   menuAudioSource: {fileID: 1077414171}
   firstSongButton: {fileID: 344904053}
+  bestScoreText: {fileID: 3536575624914188660}
+  bestAccText: {fileID: 8745728033257867677}
+  bestRankText: {fileID: 559621975405418098}
+  bgRank: {fileID: 1931112646}
 --- !u!4 &934255551
 Transform:
   m_ObjectHideFlags: 0
@@ -7379,7 +7382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 256.7, y: -230}
+  m_AnchoredPosition: {x: 248, y: -230}
   m_SizeDelta: {x: 329.906, y: 54.996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4247722927603279985
@@ -7692,7 +7695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6116343680925043464
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7706,8 +7709,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4010127502590966095}
-  - {fileID: 4064470818505026044}
   - {fileID: 4247722927603279985}
+  - {fileID: 4064470818505026044}
   - {fileID: 1931112645}
   m_Father: {fileID: 280535044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

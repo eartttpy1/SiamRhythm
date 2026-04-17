@@ -304,6 +304,9 @@ public class GameStatusManager : MonoBehaviour
 
         if (isWin)
         {
+            CalculateRewards(true);
+            Selected.SavePlayerData(); 
+
             StartCoroutine(EndGameSequence(winSFX));
             Invoke("DeactivateStatsCanvas", 3.0f);
         }
@@ -416,6 +419,46 @@ public class GameStatusManager : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+    private void CalculateRewards(bool isWin) 
+    {
+        if (!isWin) return;
+
+        float accMultiplier = accuracy / 100f;
+        int baseRP = 0;
+        
+        // 1. เช็คความยาก
+        string diff = Selected.SelectedDifficulty;
+        if (diff == "Easy") baseRP = 20;
+        else if (diff == "Medium") baseRP = 50;
+        else baseRP = 100;
+
+        // 2. คำนวณ RP และ EXP
+        float earnedRP = baseRP * accMultiplier;
+        float earnedExp = 100f * 1.2f; // ตามสูตร 1 level = 100 * 1.2
+
+        // 3. ตัวคูณ 2 มือ
+        if (Selected.PlayMode == "2Hand") {
+            earnedRP *= 1.5f;
+            earnedExp *= 1.5f;
+        }
+
+        // 4. บันทึกค่าลงใน Static
+        Selected.playerRP += Mathf.RoundToInt(earnedRP);
+        Selected.AddExp(earnedExp);
+        // ระบบ Level: สมมติว่าสะสม Exp ไปเรื่อยๆ
+        // คุณต้องสร้างตัวแปร static public float currentExp ใน Selected.cs เพิ่ม
+        // เมื่อ Exp ถึงจุดที่กำหนด ให้ playerLevel++;
+        
+        // 5. บันทึกสถิติที่ดีที่สุด
+        PlayerDataHandler.SaveResult(
+            Selected.SelectedSong.songName, 
+            diff, 
+            Selected.PlayMode, 
+            currentScore, 
+            accuracy, 
+            rank
+        );
     }
 
     public void HandleEventVisuals(int phase, int eventIndex) {

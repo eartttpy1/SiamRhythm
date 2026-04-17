@@ -27,6 +27,7 @@ public class SongInMenu : MonoBehaviour
         {
             songNameText.text = song.songName;
             artistNameText.text = song.artistName;
+            UpdatePriceDisplay();
             
         }
         SetUIAppearance(false);
