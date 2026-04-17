@@ -28,11 +28,16 @@ public class GestureReceiver : MonoBehaviour
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = client.Receive(ref anyIP);
                 string jsonString = Encoding.UTF8.GetString(data).Trim();
+                Debug.Log("Raw Data from Python: " + jsonString);
                 GestureData decoded = JsonUtility.FromJson<GestureData>(jsonString);
                 if (decoded != null) {
                     currentData = decoded;
                 }
-            } catch { }
+                Debug.Log($"Parsed Hand - L: {currentData.left}, R: {currentData.right}");
+            } catch (System.Exception e)
+            {
+                Debug.LogError("UDP Receive Error: " + e.Message);
+            }
         }
     }
      // ฟังก์ชันล้างค่า

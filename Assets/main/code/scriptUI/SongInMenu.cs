@@ -25,15 +25,23 @@ public class SongInMenu : MonoBehaviour
     {
         if (song != null)
         {
-            songNameText.text = song.songName;
-            artistNameText.text = song.artistName;
-            UpdatePriceDisplay();
+            Setup(song);
             
         }
         if (Selected.SelectedSong == song) {
             SetUIAppearance(true);
         } else {
             SetUIAppearance(false);
+        }
+    }
+    public void Setup(SongData songData)
+    {
+        song = songData;
+        if (song != null)
+        {
+            songNameText.text = song.songName;
+            artistNameText.text = song.artistName;
+            UpdatePriceDisplay(); // อัปเดตราคาเพลงทันที
         }
     }
 

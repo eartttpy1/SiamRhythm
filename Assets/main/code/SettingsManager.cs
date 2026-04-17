@@ -8,6 +8,8 @@ public class SettingsManager : MonoBehaviour
     public AudioMixer mainMixer; // ลาก MainMixer มาใส่
     public Slider musicSlider;   // ลาก UI Slider มาใส่
     public GameObject optionPanel;
+    public GameObject SelectedCanvas;
+    public GameObject PlaylistCanvas;
 
     public void SetMusicVolume(float value)
     {
@@ -18,10 +20,16 @@ public class SettingsManager : MonoBehaviour
         float dB = Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20;
         mainMixer.SetFloat("MusicVol", dB);
     }
-    public void GoBack()
+    public void GoBacktoPlaylist()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("PlayList"); // ใส่ชื่อซีนเมนูของคุณ
+        SelectedCanvas.SetActive(false);
+        PlaylistCanvas.SetActive(true);
+    }
+    public void GoBacktomainmenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
     
     public void Option()

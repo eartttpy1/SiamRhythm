@@ -83,25 +83,22 @@ public class DualHandManager : BaseRhythmManager
         }
 
         if (aiReceiver != null) {
-
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                // เช็คมือซ้าย
+                // เช็คมือซ้ายอิสระ
                 if (aiReceiver.currentData.left != "none" && 
                     aiReceiver.currentData.left == currentSongGestures[i].aiGestureLeft) {
-
-                    CheckHit((NoteType)i, targetLeft); 
-                    aiReceiver.ClearGesture(true, false); 
+                    CheckHit((NoteType)i, targetLeft);
+                    aiReceiver.ClearGesture(true, false);
                 }
-
-                // เช็คมือขวา
+                // เช็คมือขวาอิสระ
                 if (aiReceiver.currentData.right != "none" && 
                     aiReceiver.currentData.right == currentSongGestures[i].aiGestureRight) {
-
-                    CheckHit((NoteType)i, targetRight); 
+                    CheckHit((NoteType)i, targetRight);
                     aiReceiver.ClearGesture(false, true);
                 }
             }
         }
+
     }
 
     // ฟังก์ชันช่วยเช็คการกดแยกฝั่ง (Encapsulation)

@@ -65,26 +65,48 @@ public class SingleHandManager : BaseRhythmManager
         }
         // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
         if (aiReceiver != null) {
+            Debug.Log("Mooo");
+            // วนลูปเช็คโน้ตทุกชนิดที่อาจจะกดได้
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                // แยกเช็คทีละมือเพื่อความแม่นยำในการ Clear Gesture
-                bool leftMatch = aiReceiver.currentData.left != "none" && 
-                                aiReceiver.currentData.left == currentSongGestures[i].aiGestureLeft;
-                                
-                bool rightMatch = aiReceiver.currentData.right != "none" && 
-                                aiReceiver.currentData.right == currentSongGestures[i].aiGestureRight;
-
-                if (leftMatch || rightMatch) {
-                    // ส่ง NoteType และ Target (ในโหมดมือเดียวมักจะใช้ Target ตัวเดียวกัน)
-                    CheckHit((NoteType)i, targetLeft); 
-
-                    // เคลียร์ค่ามือนั้นๆ เพื่อไม่ให้เกิดการกดซ้ำในเฟรมถัดไป
-                    if (leftMatch) aiReceiver.ClearGesture(true, false);
-                    if (rightMatch) aiReceiver.ClearGesture(false, true);
-                    
-                    break; // เมื่อเจอท่าที่ตรงแล้วให้หยุด loop เพื่อป้องกันการกดโน้ตหลายตัวพร้อมกัน
+                string aiLeft = aiReceiver.currentData.left;
+                string aiRight = aiReceiver.currentData.right;
+                Debug.Log("Mooo1");
+                // เช็คว่ามือใดมือนึงทำท่าตรงกับโน้ตไหม
+                // 
+                if ((aiLeft == currentSongGestures[i].aiGestureLeft) ||
+                    (aiRight == currentSongGestures[i].aiGestureRight)) 
+                {
+                    Debug.Log("Mooo2");
+                    Debug.Log($"<color=green>Gesture Match!</color> Index: {i}, Hand: {aiLeft}, GestureName: {currentSongGestures[i].aiGestureLeft}");
+                    CheckHit((NoteType)i, targetLeft);
+                    // ลบค่าเฉพาะข้างที่ทำท่าตรง
+                    aiReceiver.ClearGesture(aiLeft == currentSongGestures[i].aiGestureLeft, 
+                                        aiRight == currentSongGestures[i].aiGestureRight);
                 }
             }
         }
+        // if (aiReceiver == null) return;
+
+        // string aiLeft = aiReceiver.currentData.right.ToLower().Trim();
+
+        // if (aiLeft != "none") {
+        //     for (int i = 0; i < currentSongGestures.Length; i++) {
+        //         string targetL = currentSongGestures[i].aiGestureLeft.ToLower().Trim();
+
+        //         // ใส่ Log เพื่อดูว่า "คำ" มันตรงกันจริงๆ ไหม
+        //         Debug.Log($"Comparing AI:[{aiLeft}] with Target:[{targetL}]");
+
+        //         if (aiLeft == targetL) {
+        //             Debug.Log("<color=yellow>MATCH FOUND!</color>");
+        //             CheckHit((NoteType)i, targetLeft);
+        //             aiReceiver.ClearGesture(true, false);
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("aiReceiver is missing!");
+        // }
     }
 
     protected override void CheckHit(NoteType type, Transform targetSide)

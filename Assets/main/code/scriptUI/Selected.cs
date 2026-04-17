@@ -43,6 +43,9 @@ public class Selected : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bestRankText;
     [SerializeField] private Image bgRank;
 
+    [Header("Playlist Settings")]
+    [SerializeField] private SongInMenu[] fixedButtons = new SongInMenu[4];
+
     void Start()
     {
         UpdateRPUI();
@@ -283,5 +286,34 @@ public class Selected : MonoBehaviour
 
     void Awake() {
         LoadPlayerData(); // โหลดข้อมูลทันทีที่เปิดหน้าเมนู
+    }
+
+    public void UpdatePlaylist(List<SongData> newSongs)
+    {
+        playlist = newSongs;
+
+        for (int i = 0; i < fixedButtons.Length; i++)
+        {
+            if (i < playlist.Count)
+            {
+                // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
+                fixedButtons[i].gameObject.SetActive(true);
+                fixedButtons[i].Setup(playlist[i]);
+                
+                // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
+                fixedButtons[i].SetUIAppearance(i == 0); 
+            }
+            else
+            {
+                // ถ้าใน Playlist นั้นมีเพลงไม่ถึง 4 เพลง ให้ซ่อนปุ่มที่เหลือ
+                fixedButtons[i].gameObject.SetActive(false);
+            }
+        }
+
+        // ตั้งค่าหน้า Preview เป็นเพลงแรกของกลุ่มใหม่
+        if (playlist.Count > 0)
+        {
+            SetPreviewSong(playlist[0]);
+        }
     }
 }
