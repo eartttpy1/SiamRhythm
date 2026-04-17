@@ -30,7 +30,11 @@ public class SongInMenu : MonoBehaviour
             UpdatePriceDisplay();
             
         }
-        SetUIAppearance(false);
+        if (Selected.SelectedSong == song) {
+            SetUIAppearance(true);
+        } else {
+            SetUIAppearance(false);
+        }
     }
 
     public void UpdatePriceDisplay()

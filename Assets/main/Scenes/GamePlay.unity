@@ -6968,7 +6968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1567203441
 SpriteRenderer:
   serializedVersion: 2
@@ -11602,6 +11602,9 @@ MonoBehaviour:
   rankText: {fileID: 4707266180317120806}
   songStatusText: {fileID: 1215880682}
   handText: {fileID: 1449040804}
+  RP: {fileID: 1318759562}
+  LV: {fileID: 333235861}
+  getRP: {fileID: 1792661660}
   pictureSong: {fileID: 477906588}
   Difficulty: {fileID: 1442920477}
   easy: {fileID: 6626051464634953487, guid: 868a98e68a7f9ff4e8adea1791bb5b60, type: 3}

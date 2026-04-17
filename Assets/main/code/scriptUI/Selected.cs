@@ -46,19 +46,28 @@ public class Selected : MonoBehaviour
     void Start()
     {
         UpdateRPUI();
-        if (playlist != null && playlist.Count > 0) {
+        // 1. ลองโหลดชื่อเพลงล่าสุดจากความจำ
+        string lastSongName = PlayerPrefs.GetString("LastPlayedSong", "");
+        SongData lastSong = null;
+
+        if (!string.IsNullOrEmpty(lastSongName)) {
+            // ค้นหาใน playlist ว่ามีชื่อเพลงนี้ไหม
+            lastSong = playlist.Find(s => s.songName == lastSongName);
+        }
+
+        // 2. ตัดสินใจว่าจะโชว์เพลงไหน
+        if (lastSong != null) {
+            // ถ้าเจอเพลงล่าสุดที่เคยเล่น ให้แสดงเพลงนั้น
+            SetPreviewSong(lastSong);
+        }
+        else if (playlist != null && playlist.Count > 0) {
+            // ถ้าไม่เจอเพลงล่าสุด (เช่น เล่นครั้งแรก) ให้แสดงเพลงแรกในลิสต์
             SetPreviewSong(playlist[0]);
-            // เพิ่ม: สั่งให้ปุ่มต่างๆ อัปเดตหน้าตาเพื่อให้ปุ่มแรกค้างสถานะ Selected
-            if (firstSongButton != null)
-            {
+            if (firstSongButton != null) {
                 firstSongButton.SetUIAppearance(true);
             }
         }
-        else if (SelectedSong != null) 
-        {
-            SetPreviewSong(SelectedSong);
-        }
-        DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
+            DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
         foreach (var btn in allBtns)
         {
             btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
@@ -240,6 +249,9 @@ public class Selected : MonoBehaviour
         PlayerPrefs.SetInt("PlayerRP", playerRP);
         PlayerPrefs.SetInt("PlayerLevel", playerLevel);
         PlayerPrefs.GetFloat("CurrentExp", currentExp);
+        if (SelectedSong != null) {
+            PlayerPrefs.SetString("LastPlayedSong", SelectedSong.songName);
+        }
         List<string> unlockedNames = new List<string>();
         foreach (var song in UnlockedSongs) {
             unlockedNames.Add(song.songName);

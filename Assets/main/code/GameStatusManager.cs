@@ -53,6 +53,9 @@ public class GameStatusManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rankText; 
     [SerializeField] private TextMeshProUGUI songStatusText;
     [SerializeField] private TextMeshProUGUI handText;
+    [SerializeField] private TextMeshProUGUI RP;
+    [SerializeField] private TextMeshProUGUI LV;
+    [SerializeField] private TextMeshProUGUI getRP;
     [SerializeField] private Image pictureSong;
     [SerializeField] private Image Difficulty;
     [SerializeField] private Sprite easy;
@@ -66,6 +69,7 @@ public class GameStatusManager : MonoBehaviour
     public int maxCombo = 0;
     private float accuracy;
     private string rank;
+    private float earnedRP;
 
     [Header("Phase System (Base on Time)")]
     public List<Animator> phaseAnimators = new List<Animator>();
@@ -330,6 +334,9 @@ public class GameStatusManager : MonoBehaviour
         maxComboText.text = maxCombo.ToString();
         rankText.text = rank.ToString();
         pictureSong.sprite = Selected.SelectedSong.pictureSongParallelogram;
+        RP.text = Selected.playerRP.ToString() + " RP";
+        LV.text = "LV." + Selected.playerLevel.ToString();
+        getRP.text = "get " + Mathf.RoundToInt(earnedRP).ToString() + " RP";
 
         string currentDiff = Selected.SelectedDifficulty;
         if(currentDiff == "Easy")
@@ -426,16 +433,27 @@ public class GameStatusManager : MonoBehaviour
 
         float accMultiplier = accuracy / 100f;
         int baseRP = 0;
+        int baseEXP = 0;
         
         // 1. เช็คความยาก
         string diff = Selected.SelectedDifficulty;
-        if (diff == "Easy") baseRP = 20;
-        else if (diff == "Medium") baseRP = 50;
-        else baseRP = 100;
-
+        if (diff == "Easy")
+        {
+            baseRP = 20;
+            baseEXP = 50;
+        } 
+        else if (diff == "Medium")
+        {
+            baseRP = 50;
+            baseEXP = 100;
+        }
+        else {
+            baseRP = 100;
+            baseEXP = 150;
+        }
         // 2. คำนวณ RP และ EXP
-        float earnedRP = baseRP * accMultiplier;
-        float earnedExp = 100f * 1.2f; // ตามสูตร 1 level = 100 * 1.2
+        earnedRP = baseRP * accMultiplier;
+        float earnedExp = baseEXP * accMultiplier; // ตามสูตร 1 level = 100 * 1.2
 
         // 3. ตัวคูณ 2 มือ
         if (Selected.PlayMode == "2Hand") {
