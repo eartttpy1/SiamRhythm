@@ -20,5 +20,6 @@ public class Playlist : MonoBehaviour
         // 2. สลับหน้าจอ
         playlistCanvas.SetActive(false);
         selectedCanvas.SetActive(true);
+        selectedScript.ForcePlayFirstSong();
     }
 }

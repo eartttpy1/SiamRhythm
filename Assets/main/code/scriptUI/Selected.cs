@@ -45,6 +45,8 @@ public class Selected : MonoBehaviour
 
     [Header("Playlist Settings")]
     [SerializeField] private SongInMenu[] fixedButtons = new SongInMenu[4];
+    public GameObject SelectedCanvas;
+    public GameObject PlaylistCanvas;
 
     void Start()
     {
@@ -91,11 +93,25 @@ public class Selected : MonoBehaviour
         if (song == null) return;
         SelectedSong = song;
         
-
         StopAllCoroutines(); // หยุดการ Fade เก่าถ้ามี
         StartCoroutine(PlayPreviewWithFade(song));
         UpdatePreviewUI();
         UpdateMenuGestureIcons(song);
+        if (menuAudioSource != null) 
+        {
+            StopAllCoroutines(); // หยุดการ Fade เดิมเพื่อไม่ให้เสียงตีกัน
+            
+            // เช็คว่าหน้าจอ Selected ต้องเปิดอยู่ถึงจะเล่นเพลง
+            if (SelectedCanvas.activeSelf)
+            {
+                // ใช้ Coroutine เพื่อให้เสียงค่อยๆ ดังขึ้น (Fade In) ตามที่คุณตั้งใจไว้
+                StartCoroutine(PlayPreviewWithFade(song)); 
+            }
+            else
+            {
+                menuAudioSource.Stop();
+            }
+        }
     }
     private IEnumerator PlayPreviewWithFade(SongData song)
     {
@@ -309,11 +325,24 @@ public class Selected : MonoBehaviour
                 fixedButtons[i].gameObject.SetActive(false);
             }
         }
+    }
 
-        // ตั้งค่าหน้า Preview เป็นเพลงแรกของกลุ่มใหม่
-        if (playlist.Count > 0)
+    public void ForcePlayFirstSong()
+    {
+        // เรียกใช้เพื่อบังคับให้เพลงแรกในลิสต์ปัจจุบันเริ่มเล่นทันทีที่หน้าจอเปิด
+        if (playlist != null && playlist.Count > 0)
         {
             SetPreviewSong(playlist[0]);
         }
+    }
+
+    public void GoBacktoPlaylist()
+    {
+        if (menuAudioSource != null && menuAudioSource.isPlaying)
+        {
+            menuAudioSource.Stop();
+        }
+        SelectedCanvas.SetActive(false);
+        PlaylistCanvas.SetActive(true);
     }
 }
