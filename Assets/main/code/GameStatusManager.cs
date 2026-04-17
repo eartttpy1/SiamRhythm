@@ -101,6 +101,7 @@ public class GameStatusManager : MonoBehaviour
         {
             Debug.Log("Nooooo songTitleText");
         }
+        SetCursorState(false);
         currentHP = 100f;
         hpSlider.maxValue = 100f;
         hpSlider.value = currentHP;
@@ -246,12 +247,13 @@ public class GameStatusManager : MonoBehaviour
         }
         if (!musicSource.isPlaying && totalNotesEncountered >= baseRhythmManager.totalNotesCount)
         {
-            Debug.Log("Mo1");
+            Debug.Log("pass1");
             
             if (currentHP > 0 && remainingNotes.Length < 1)
             {
-                Debug.Log("Mo2");
+                Debug.Log("pass2");
                 GameOver(true);
+                SetCursorState(true);
                 return;
             }
             // --- ระบบ Safety Timeout (ตัวช่วยจบเกม) ---
@@ -400,7 +402,24 @@ public class GameStatusManager : MonoBehaviour
         }
     }
 
+    public void SetCursorState(bool isVisible)
+    {
+        if (isVisible)
+        {
+            // ปรากฏเมาส์และปลดล็อกให้ออกนอกขอบจอได้
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            // ซ่อนเมาส์และล็อกไว้ที่กลางจอ
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     public void HandleEventVisuals(int phase, int eventIndex) {
         // รอเอาไว้ใส่ efx ตอนกด
     }
+
 }

@@ -35,10 +35,12 @@ public class PauseManager : MonoBehaviour
         pauseMenuPanel.SetActive(true);
         Time.timeScale = 0f; // หยุดเวลาในเกมทั้งหมด
         musicSource.Pause(); // หยุดเพลง
+        statusManager.SetCursorState(true);
     }
 
     public void ResumeGame()
     {
+        statusManager.SetCursorState(false);
         pauseMenuPanel.SetActive(false);
         StartCoroutine(CountdownToResume()); // เริ่มการนับถอยหลัง
     }
@@ -72,6 +74,7 @@ public class PauseManager : MonoBehaviour
 
     public void RestartGame()
     {
+        statusManager.SetCursorState(false);
         Time.timeScale = 1f; // ต้องคืนค่าเวลาก่อนโหลดฉากใหม่
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -81,4 +84,5 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MusicSelect"); // ใส่ชื่อซีนเมนูของคุณ
     }
+
 }
