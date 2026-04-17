@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 
 public class SingleHandManager : BaseRhythmManager
 {
@@ -65,16 +64,24 @@ public class SingleHandManager : BaseRhythmManager
             }
         }
         // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
-        if (aiReceiver != null && aiReceiver.lastGesture != "None") {
-            string aiInput = aiReceiver.lastGesture;
+        if (aiReceiver != null) {
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                Debug.Log($"Checking AI Gesture: {aiInput} against {currentSongGestures[i].aiGestureLeft} and {currentSongGestures[i].aiGestureRight}");
-                // เช็คว่าชื่อท่าที่ AI ส่งมา ตรงกับท่าในลิสต์เพลงไหม (ทั้งซ้ายและขวา)
-                if (aiInput == currentSongGestures[i].aiGestureLeft || 
-                    aiInput == currentSongGestures[i].aiGestureRight) {
-                    CheckHit((NoteType)i, targetLeft);
-                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
-                    break;
+                // แยกเช็คทีละมือเพื่อความแม่นยำในการ Clear Gesture
+                bool leftMatch = aiReceiver.currentData.left != "none" && 
+                                aiReceiver.currentData.left == currentSongGestures[i].aiGestureLeft;
+                                
+                bool rightMatch = aiReceiver.currentData.right != "none" && 
+                                aiReceiver.currentData.right == currentSongGestures[i].aiGestureRight;
+
+                if (leftMatch || rightMatch) {
+                    // ส่ง NoteType และ Target (ในโหมดมือเดียวมักจะใช้ Target ตัวเดียวกัน)
+                    CheckHit((NoteType)i, targetLeft); 
+
+                    // เคลียร์ค่ามือนั้นๆ เพื่อไม่ให้เกิดการกดซ้ำในเฟรมถัดไป
+                    if (leftMatch) aiReceiver.ClearGesture(true, false);
+                    if (rightMatch) aiReceiver.ClearGesture(false, true);
+                    
+                    break; // เมื่อเจอท่าที่ตรงแล้วให้หยุด loop เพื่อป้องกันการกดโน้ตหลายตัวพร้อมกัน
                 }
             }
         }

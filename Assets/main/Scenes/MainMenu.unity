@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5832c83c46db94c89f146dd21944b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mainmenu
-  nextSceneName: PlayList
+  nextSceneName: MusicSelect
 --- !u!4 &312326774
 Transform:
   m_ObjectHideFlags: 0

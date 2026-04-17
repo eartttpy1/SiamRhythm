@@ -36,7 +36,8 @@ public class DualHandManager : BaseRhythmManager
             else if (data.phase == 2) spawnPosition = phase2Positions[data.eventIndex];
             else spawnPosition = phase3Positions[data.eventIndex];
 
-            if (currentTarget != null) currentTarget.gameObject.SetActive(false);
+            if (targetLeft != null) targetLeft.gameObject.SetActive(false);
+            if (targetRight != null) targetRight.gameObject.SetActive(false);
             // 2. กำหนดชนิดโน้ตตามลำดับ 0, 1, 2, 3 เพื่อให้ผู้เล่นจำท่าได้
             noteTypeIndex = data.noteTypeIndex;
 
@@ -44,8 +45,11 @@ public class DualHandManager : BaseRhythmManager
             lastRightNoteIndex = noteTypeIndex;
         }
         else{
-            if (currentTarget != null && !currentTarget.gameObject.activeSelf) 
-            currentTarget.gameObject.SetActive(true);
+            if (currentTarget != null && !currentTarget.gameObject.activeSelf)
+            {
+                targetLeft.gameObject.SetActive(true);
+                targetRight.gameObject.SetActive(true);
+            }
             // คำนวณตำแหน่งตามช่วงมุมที่กำหนด
             float randomAngle = Random.Range(currentMinAngle, currentMaxAngle);
             float radian = randomAngle * Mathf.Deg2Rad;
@@ -78,18 +82,23 @@ public class DualHandManager : BaseRhythmManager
             }
         }
 
-        if (aiReceiver != null && aiReceiver.lastGesture != "None") {
-            string aiInput = aiReceiver.lastGesture;
+        if (aiReceiver != null) {
+
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                if (aiInput == currentSongGestures[i].aiGestureLeft) {
-                    CheckHit((NoteType)i, targetLeft);
-                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
-                    break;
+                // เช็คมือซ้าย
+                if (aiReceiver.currentData.left != "none" && 
+                    aiReceiver.currentData.left == currentSongGestures[i].aiGestureLeft) {
+
+                    CheckHit((NoteType)i, targetLeft); 
+                    aiReceiver.ClearGesture(true, false); 
                 }
-                if (aiInput == currentSongGestures[i].aiGestureRight) {
-                    CheckHit((NoteType)i, targetRight);
-                    aiReceiver.lastGesture = "None"; // ล้างค่าป้องกันการซ้ำ
-                    break;
+
+                // เช็คมือขวา
+                if (aiReceiver.currentData.right != "none" && 
+                    aiReceiver.currentData.right == currentSongGestures[i].aiGestureRight) {
+
+                    CheckHit((NoteType)i, targetRight); 
+                    aiReceiver.ClearGesture(false, true);
                 }
             }
         }

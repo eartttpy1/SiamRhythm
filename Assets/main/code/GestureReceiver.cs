@@ -3,13 +3,17 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-
+[System.Serializable]
+public class GestureData {
+    public string left;
+    public string right;
+}
 public class GestureReceiver : MonoBehaviour
 {
     UdpClient client;
     Thread receiveThread;
     public int port = 5052;
-    public string lastGesture = "None";
+    public GestureData currentData = new GestureData { left = "none", right = "none" };
 
     void Start() {
         receiveThread = new Thread(new ThreadStart(ReceiveData));
@@ -23,9 +27,18 @@ public class GestureReceiver : MonoBehaviour
             try {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = client.Receive(ref anyIP);
-                lastGesture = Encoding.UTF8.GetString(data).Trim();
+                string jsonString = Encoding.UTF8.GetString(data).Trim();
+                GestureData decoded = JsonUtility.FromJson<GestureData>(jsonString);
+                if (decoded != null) {
+                    currentData = decoded;
+                }
             } catch { }
         }
+    }
+     // ฟังก์ชันล้างค่า
+    public void ClearGesture(bool left, bool right) {
+        if (left) currentData.left = "none";
+        if (right) currentData.right = "none";
     }
 
     void OnApplicationQuit() {
