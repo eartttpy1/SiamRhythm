@@ -457,20 +457,4 @@ public abstract class BaseRhythmManager : MonoBehaviour
         currentNoteIndex = 0; // รีเซ็ตตัวชี้
         Debug.Log($"Total Notes: {totalNotesCount} | Score per Perfect: {1000000/(totalNotesCount)}");
     }
-
-    // public void SpawnCover(Vector3 position, bool isDark)
-    // {
-    //     GameObject cover = Instantiate(coverPrefab, position, Quaternion.identity);
-    //     SpriteRenderer sr = cover.GetComponent<SpriteRenderer>();
-        
-    //     if (sr != null)
-    //     {
-    //         // ปรับความโปร่งใสตามประเภท
-    //         sr.color = isDark ? Color.black : new Color(0, 0, 0, 0.6f); 
-    //     }
-        
-    //     activeCovers.Add(cover);
-    //     // สั่งทำลายแผ่นบังหลังจากจบ Event (เช่น 2 วินาที)
-    //     Destroy(cover, 2.0f); 
-    // }
 }
