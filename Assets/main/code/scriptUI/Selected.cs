@@ -7,8 +7,8 @@ using System.Collections;
 public class Selected : MonoBehaviour
 {
     public static SongData SelectedSong;
-    public static string SelectedDifficulty = "Easy";
-    public static string PlayMode = "1Hand";
+    public static string SelectedDifficulty;
+    public static string PlayMode;
 
     [Header("Player Stats")]
     public static int playerLevel = 1; // เริ่มต้นที่ Level 1
@@ -45,47 +45,62 @@ public class Selected : MonoBehaviour
 
     [Header("Playlist Settings")]
     [SerializeField] private SongInMenu[] fixedButtons = new SongInMenu[4];
+    public static List<SongData> LastCategorySongs;
     public GameObject SelectedCanvas;
     public GameObject PlaylistCanvas;
+
+    [Header("Hand Mode UI")]
+    [SerializeField] private SwitchToggle handModeToggle;
 
     void Start()
     {
         UpdateRPUI();
         // 1. ลองโหลดชื่อเพลงล่าสุดจากความจำ
         string lastSongName = PlayerPrefs.GetString("LastPlayedSong", "");
-        SongData lastSong = null;
-        if (SelectedSong != null)
+
+        // ตรวจสอบเพลงล่าสุดจาก PlayerPrefs ถ้า SelectedSong ยังว่างอยู่
+        if (SelectedSong == null)
+        {
+            if (!string.IsNullOrEmpty(lastSongName))
+            {
+                // พยายามหา SongData จาก playlist ปัจจุบัน
+                SelectedSong = playlist.Find(s => s.songName == lastSongName);
+            }
+        }
+        if (SelectedSong != null && LastCategorySongs != null)
         {
             // ปิดหน้าแรก และเปิดหน้าเลือกเพลงทันที
             PlaylistCanvas.SetActive(false);
             SelectedCanvas.SetActive(true);
+            UpdatePlaylist(LastCategorySongs);
             
-            // อัปเดตข้อมูลเพลงและเล่นเสียงพรีวิว
+            // // อัปเดตข้อมูลเพลงและเล่นเสียงพรีวิว
+            // SetPreviewSong(SelectedSong);
+        }
+        else if (playlist != null && playlist.Count > 0)
+        {
+            // กรณีเข้าเกมครั้งแรก
+            UpdatePlaylist(playlist);
+            // SetPreviewSong(playlist[0]);
+            // ถ้าหา SelectedSong จากข้อ 2 ไม่เจอจริงๆ ให้ Default ที่เพลงแรก
+            if (SelectedSong == null) SelectedSong = playlist[0];
+        }
+        if (SelectedSong != null)
+        {
+            // SelectedDifficulty = PlayerPrefs.GetString(SelectedSong.songName + "_LastDiff", "Easy");
+            // PlayMode = PlayerPrefs.GetString(SelectedSong.songName + "_LastHand", "1Hand");
+            // // ดึงโหมดล่าสุดมาตั้งค่า Toggle
+            // if (handModeToggle != null) 
+            //     handModeToggle.SetState(PlayMode == "2Hand");
+            // UpdatePreviewUI();
             SetPreviewSong(SelectedSong);
         }
 
-        if (!string.IsNullOrEmpty(lastSongName)) {
-            // ค้นหาใน playlist ว่ามีชื่อเพลงนี้ไหม
-            lastSong = playlist.Find(s => s.songName == lastSongName);
-        }
-
-        // 2. ตัดสินใจว่าจะโชว์เพลงไหน
-        if (lastSong != null) {
-            // ถ้าเจอเพลงล่าสุดที่เคยเล่น ให้แสดงเพลงนั้น
-            SetPreviewSong(lastSong);
-        }
-        else if (playlist != null && playlist.Count > 0) {
-            // ถ้าไม่เจอเพลงล่าสุด (เช่น เล่นครั้งแรก) ให้แสดงเพลงแรกในลิสต์
-            SetPreviewSong(playlist[0]);
-            if (firstSongButton != null) {
-                firstSongButton.SetUIAppearance(true);
-            }
-        }
-            DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
-        foreach (var btn in allBtns)
-        {
-            btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
-        }
+        // DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
+        // foreach (var btn in allBtns)
+        // {
+        //     btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
+        // }
     }
     void Update() {
         // ถ้ากดปุ่ม M ในหน้าเมนู ให้เพิ่มเงิน 1,000 RP ทันที
@@ -101,9 +116,25 @@ public class Selected : MonoBehaviour
     {
         if (song == null) return;
         SelectedSong = song;
+        string lastDiff = PlayerPrefs.GetString(song.songName + "_LastDiff", "Easy");
+        string lastHand = PlayerPrefs.GetString(song.songName + "_LastHand", "1Hand");
+
+        SelectedDifficulty = lastDiff;
+        PlayMode = lastHand;
+        if (handModeToggle != null)
+        {
+            // ถ้าเป็น 2Hand ให้ส่งค่า true (On), ถ้าเป็น 1Hand ให้ส่ง false (Off)
+            handModeToggle.SetState(PlayMode == "2Hand");
+        }
         
         UpdatePreviewUI();
         UpdateMenuGestureIcons(song);
+
+        // DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
+        // foreach (var btn in allBtns)
+        // {
+        //     btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
+        // }
         if (menuAudioSource != null) 
         {
             StopAllCoroutines(); // หยุดการ Fade เดิมเพื่อไม่ให้เสียงตีกัน
@@ -217,6 +248,7 @@ public class Selected : MonoBehaviour
         PlayMode = isDual ? "2Hand" : "1Hand";
         UpdatePreviewUI();
         DisplayBestStats();
+        SaveLastPlayedMode();
     }
     public void StartGame()
     {
@@ -317,6 +349,9 @@ public class Selected : MonoBehaviour
     public void UpdatePlaylist(List<SongData> newSongs)
     {
         playlist = newSongs;
+        LastCategorySongs = newSongs; // บันทึกไว้ว่าตอนนี้อยู่หมวดหมู่ไหน
+        bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
+        SongData songToShow = null;
 
         for (int i = 0; i < fixedButtons.Length; i++)
         {
@@ -324,17 +359,32 @@ public class Selected : MonoBehaviour
             if (i < playlist.Count)
             {
                 // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
-                fixedButtons[i].gameObject.SetActive(true);
                 fixedButtons[i].Setup(playlist[i]);
                 
                 // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
-                fixedButtons[i].SetUIAppearance(playlist[i] == SelectedSong); 
+                if (isCurrentSongInThisPlaylist)
+                {
+                    bool isSelected = (playlist[i] == SelectedSong);
+                    fixedButtons[i].SetUIAppearance(isSelected);
+                    if (isSelected) songToShow = playlist[i];
+                }
+                else
+                {
+                    bool isFirst = (i == 0);
+                    fixedButtons[i].SetUIAppearance(isFirst);
+                    if (isFirst) songToShow = playlist[0];
+                }
             }
             else
             {
                 fixedButtons[i].SetComingSoon(); 
                 fixedButtons[i].SetUIAppearance(false);
             }
+        }
+        // 3. อัปเดต Panel ด้านขวา (Preview) ให้ตรงกับปุ่มที่สว่าง
+        if (songToShow != null && songToShow != SelectedSong)
+        {
+            SetPreviewSong(songToShow);
         }
     }
 
@@ -357,5 +407,20 @@ public class Selected : MonoBehaviour
         }
         SelectedCanvas.SetActive(false);
         PlaylistCanvas.SetActive(true);
+    }
+    public static void SaveLastPlayedMode()
+    {
+        if (SelectedSong != null)
+        {
+            // บันทึกชื่อเพลงล่าสุด
+            PlayerPrefs.SetString("LastPlayedSong", SelectedSong.songName);
+            
+            // บันทึกความยากและโหมดมือ โดยใช้ชื่อเพลงเป็น Key เพื่อให้แยกกันแต่ละเพลง
+            PlayerPrefs.SetString(SelectedSong.songName + "_LastDiff", SelectedDifficulty);
+            PlayerPrefs.SetString(SelectedSong.songName + "_LastHand", PlayMode);
+            
+            PlayerPrefs.Save();
+            Debug.Log($"Saved: {SelectedSong.songName} | {SelectedDifficulty} | {PlayMode}");
+        }
     }
 }

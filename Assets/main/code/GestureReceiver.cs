@@ -14,6 +14,16 @@ public class GestureReceiver : MonoBehaviour
     Thread receiveThread;
     public int port = 5052;
     public GestureData currentData = new GestureData { left = "none", right = "none" };
+    public static GestureReceiver Instance;
+
+    void Awake() {
+        if (Instance == null) {
+            Instance = this;
+            // Optional: DontDestroyOnLoad(gameObject); // ถ้าอยากให้อยู่ยาวทุกซีน
+        } else {
+            Destroy(gameObject);
+        }
+    }
 
     void Start() {
         receiveThread = new Thread(new ThreadStart(ReceiveData));
@@ -47,7 +57,16 @@ public class GestureReceiver : MonoBehaviour
     }
 
     void OnApplicationQuit() {
-        if (receiveThread != null) receiveThread.Abort();
-        if (client != null) client.Close();
+        CloseConnection();
+    }
+    void OnDisable() {
+        CloseConnection();
+    }
+    private void CloseConnection() {
+        if (receiveThread != null && receiveThread.IsAlive) receiveThread.Abort();
+        if (client != null) {
+            client.Close();
+            client = null;
+        }
     }
 }

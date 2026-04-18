@@ -8,6 +8,19 @@ public class DifficultyButton : MonoBehaviour
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite selectedSprite;
 
+    void Start()
+    {
+        // ตรวจสอบทันทีที่ปุ่มถูกสร้างขึ้น
+        if (Selected.SelectedDifficulty == difficultyName)
+        {
+            SetUIAppearance(true); // แสดง selectedSprite
+        }
+        else
+        {
+            SetUIAppearance(false); // แสดง defaultSprite
+        }
+    }
+
     // ฟังก์ชันอัปเดตหน้าตาปุ่ม
     public void SetUIAppearance(bool isSelected)
     {

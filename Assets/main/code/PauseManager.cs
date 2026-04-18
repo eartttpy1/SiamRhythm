@@ -81,6 +81,7 @@ public class PauseManager : MonoBehaviour
 
     public void GoBack()
     {
+        Selected.SaveLastPlayedMode();
         Time.timeScale = 1f;
         SceneManager.LoadScene("MusicSelect"); // ใส่ชื่อซีนเมนูของคุณ
     }

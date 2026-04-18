@@ -82,19 +82,19 @@ public class DualHandManager : BaseRhythmManager
             }
         }
 
-        if (aiReceiver != null) {
+        if (GestureReceiver.Instance != null) {
             for (int i = 0; i < currentSongGestures.Length; i++) {
                 // เช็คมือซ้ายอิสระ
-                if (aiReceiver.currentData.left != "none" && 
-                    aiReceiver.currentData.left == currentSongGestures[i].aiGestureLeft) {
+                if (GestureReceiver.Instance.currentData.left != "none" && 
+                    GestureReceiver.Instance.currentData.left == currentSongGestures[i].aiGestureLeft) {
                     CheckHit((NoteType)i, targetLeft);
-                    aiReceiver.ClearGesture(true, false);
+                    GestureReceiver.Instance.ClearGesture(true, false);
                 }
                 // เช็คมือขวาอิสระ
-                if (aiReceiver.currentData.right != "none" && 
-                    aiReceiver.currentData.right == currentSongGestures[i].aiGestureRight) {
+                if (GestureReceiver.Instance.currentData.right != "none" && 
+                    GestureReceiver.Instance.currentData.right == currentSongGestures[i].aiGestureRight) {
                     CheckHit((NoteType)i, targetRight);
-                    aiReceiver.ClearGesture(false, true);
+                    GestureReceiver.Instance.ClearGesture(false, true);
                 }
             }
         }

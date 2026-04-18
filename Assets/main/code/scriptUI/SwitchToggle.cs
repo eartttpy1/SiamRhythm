@@ -65,4 +65,13 @@ public class SwitchToggle : MonoBehaviour
         stateText.text = isOn ? "2 Hands" : "1 Hand";
         stateText.color = isOn ? onColor : offColor;
     }
+    public void SetState(bool on)
+    {
+        isOn = on;
+        targetFillAmount = isOn ? 1f : 0f;
+        
+        // อัปเดตข้อความและสีทันที
+        UpdateStateText();
+        if (fillImage != null) fillImage.fillAmount = targetFillAmount; 
+    }
 }
