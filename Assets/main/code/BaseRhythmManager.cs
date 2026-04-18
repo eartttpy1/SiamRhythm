@@ -39,6 +39,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         public int eventIndex; // 0, 1, 2, 3
         public int noteTypeIndex;
         public int phase;      // 1, 2, 3
+        public bool isLeftHand;
     }
     protected List<NoteData> processedNotes = new List<NoteData>();
     public string currentDifficulty;
@@ -288,6 +289,11 @@ public abstract class BaseRhythmManager : MonoBehaviour
         int lastPhase = 0;      // ใช้จำว่าโน้ตตัวก่อนหน้าอยู่เฟสไหน
         int eventCounter = 0;   // ใช้ประทับตราโน้ต Event 4 ตัวแรกของแต่ละเฟส
 
+        int lastLeftPoseInScan = -1;
+        int lastRightPoseInScan = -1;
+        int lastSinglePoseInScan = -1; 
+        bool isDualMode = (this is DualHandManager);
+
         for (int i = 0; i < allSamples.Length; i += step)
         {
             float timeStamp = (float)i / (sampleRate * channels);
@@ -319,8 +325,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     // 2. กำหนดค่าการขยับลำดับ (Offset)
                     // ถ้าท่าแรกของ Event (e=0) ซ้ำกับท่าล่าสุด ให้เริ่มที่ 1 แทน หรือบวกเพิ่มไป
                     int startOffset = (lastNoteType == 0) ? 1 : 0;
-                    float setGap;
-                    float gap;
+                    float setGap, gap;
                     if (currentDifficulty == "Easy") {
                         gap = spawnInterval;
                         setGap = spawnInterval * 2.5f; 
@@ -341,7 +346,8 @@ public abstract class BaseRhythmManager : MonoBehaviour
                             isEventNote = true,
                             eventIndex = e, // 0, 1, 2, 3
                             noteTypeIndex = shiftedIndex, // ท่าทางจริง (Pose0 - Pose3)
-                            phase = currentPhase
+                            phase = currentPhase,
+                            isLeftHand = true
                         });
                     }
 
@@ -355,8 +361,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
                             isEventNote = true,
                             eventIndex = 3-e, 
                             noteTypeIndex = shiftedIndex,
-                            phase = currentPhase
+                            phase = currentPhase,
+                            isLeftHand = true
                         });
+                        // บันทึกท่าสุดท้ายของ Event ไว้เพื่อกันโน้ตปกติซ้ำ
+                        if (e == 3) {
+                            lastLeftPoseInScan = shiftedIndex;
+                            lastRightPoseInScan = shiftedIndex;
+                            lastSinglePoseInScan = shiftedIndex;
+                        }
                     }
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
@@ -392,8 +405,14 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         isEventNote = true,
                         eventIndex = eventCounter,
                         noteTypeIndex = eventCounter,
-                        phase = currentPhase 
+                        phase = currentPhase,
+                        isLeftHand = true
                     });
+                    // บันทึกท่าของ Event ตัวล่าสุดไว้เสมอ
+                    lastLeftPoseInScan = eventCounter;
+                    lastRightPoseInScan = eventCounter;
+                    lastSinglePoseInScan = eventCounter;
+
                     eventCounter++;
                     if (currentDifficulty == "Easy")
                     {
@@ -430,17 +449,39 @@ public abstract class BaseRhythmManager : MonoBehaviour
                 //ปกติ
                 else if (eventCounter >= 4 || (currentPhase > 1 && eventCounter >= 8))
                 {
-                    // ดึงท่าทางล่าสุดจาก List มาเช็ค
-                    int prevPose = (processedNotes.Count > 0) ? processedNotes[processedNotes.Count - 1].noteTypeIndex : -1;    
                     int simulatedType;
-                    do {
-                        simulatedType = Random.Range(0, Mathf.Min(4, currentSongGestures.Length));
-                    } while (simulatedType == prevPose && currentSongGestures.Length > 1);
+                    bool pickedLeft;
+
+                    if (isDualMode) 
+                    {
+                        // กรณี Dual Hand: สุ่มข้างและเช็คท่าซ้ำกับข้างนั้นๆ
+                        pickedLeft = Random.value > 0.5f;
+                        int prevPoseForSide = pickedLeft ? lastLeftPoseInScan : lastRightPoseInScan;
+
+                        do {
+                            simulatedType = Random.Range(0, Mathf.Min(4, currentSongGestures.Length));
+                        } while (simulatedType == prevPoseForSide && currentSongGestures.Length > 1);
+
+                        if (pickedLeft) lastLeftPoseInScan = simulatedType;
+                        else lastRightPoseInScan = simulatedType;
+                    }
+                    else 
+                    {
+                        // กรณี Single Hand: บังคับข้างเดียวและเช็คท่าซ้ำกับตัวก่อนหน้า
+                        pickedLeft = true;
+                        do {
+                            simulatedType = Random.Range(0, Mathf.Min(4, currentSongGestures.Length));
+                        } while (simulatedType == lastSinglePoseInScan && currentSongGestures.Length > 1);
+                        
+                        lastSinglePoseInScan = simulatedType;
+                    }
+
                     processedNotes.Add(new NoteData { 
                         timestamp = timeStamp, 
                         isEventNote = false,
                         noteTypeIndex = simulatedType,
-                        phase = currentPhase 
+                        phase = currentPhase,
+                        isLeftHand = pickedLeft // ล็อคข้างลงในข้อมูลโน้ต
                     });
                     lastScanSampleIndex = i;
                 }

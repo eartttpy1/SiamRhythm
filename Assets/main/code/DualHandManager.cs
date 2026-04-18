@@ -21,7 +21,7 @@ public class DualHandManager : BaseRhythmManager
     }
     protected override void SpawnNote(NoteData data)
     {   
-        bool isLeft = Random.value > 0.5f; // สุ่มฝั่ง
+        bool isLeft = data.isLeftHand;
 
             // เลือกเป้าหมายและรัศมีตามฝั่งที่สุ่มได้
         Transform currentTarget = isLeft ? targetLeft : targetRight;
