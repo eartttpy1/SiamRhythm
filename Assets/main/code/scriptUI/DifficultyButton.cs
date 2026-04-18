@@ -24,6 +24,7 @@ public class DifficultyButton : MonoBehaviour
         if (selected != null)
         {
             selected.SetDifficulty(difficultyName);
+            selected.UpdatePreviewUI();
             
             // สั่งให้ปุ่มความยากทุกอันในฉากอัปเดตหน้าตาใหม่ทั้งหมด
             DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);

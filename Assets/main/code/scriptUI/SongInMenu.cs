@@ -47,10 +47,10 @@ public class SongInMenu : MonoBehaviour
 
     public void UpdatePriceDisplay()
     {
-        if (song == null || priceText == null) return;
+        if (priceText == null) return;
 
         // เช็คว่าเพลงนี้อยู่ในลิสต์ที่ปลดล็อกแล้วของสคริปต์ Selected หรือไม่
-        if (Selected.UnlockedSongs.Contains(song))
+        if (Selected.UnlockedSongs.Contains(song) || song == null)
         {
             priceText.text = ""; // ถ้าปลดแล้วให้ว่างเปล่า
         }
@@ -62,6 +62,7 @@ public class SongInMenu : MonoBehaviour
 
     public void OnClick()
     {
+        if (song == null) return;
         if (selected != null)
         {
             selected.SetPreviewSong(song);
@@ -90,5 +91,12 @@ public class SongInMenu : MonoBehaviour
             // ถ้าเป็นตัวมันเองให้เป็นสีดำ ถ้าไม่ใช่ให้เป็นสีขาว
             item.SetUIAppearance(item == this);
         }
+    }
+    public void SetComingSoon()
+    {
+        song = null; // ล้างข้อมูลเพลงเดิม
+        if (songNameText != null) songNameText.text = "Coming Soon";
+        if (artistNameText != null) artistNameText.text = "";
+        if (priceText != null) priceText.text = "";
     }
 }

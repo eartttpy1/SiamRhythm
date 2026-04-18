@@ -3,7 +3,6 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
-using NUnit.Framework.Constraints;
 
 public class Selected : MonoBehaviour
 {
@@ -30,6 +29,7 @@ public class Selected : MonoBehaviour
     public Image[] menuGestureIcons = new Image[4];
     [SerializeField] private GameObject bgImage;
     [SerializeField] private Image bgImageParallelogram;
+    [SerializeField] private TextMeshProUGUI difficultyText;
 
     [Header("Song List")]
     [SerializeField] private List<SongData> playlist;
@@ -54,6 +54,15 @@ public class Selected : MonoBehaviour
         // 1. ลองโหลดชื่อเพลงล่าสุดจากความจำ
         string lastSongName = PlayerPrefs.GetString("LastPlayedSong", "");
         SongData lastSong = null;
+        if (SelectedSong != null)
+        {
+            // ปิดหน้าแรก และเปิดหน้าเลือกเพลงทันที
+            PlaylistCanvas.SetActive(false);
+            SelectedCanvas.SetActive(true);
+            
+            // อัปเดตข้อมูลเพลงและเล่นเสียงพรีวิว
+            SetPreviewSong(SelectedSong);
+        }
 
         if (!string.IsNullOrEmpty(lastSongName)) {
             // ค้นหาใน playlist ว่ามีชื่อเพลงนี้ไหม
@@ -93,8 +102,6 @@ public class Selected : MonoBehaviour
         if (song == null) return;
         SelectedSong = song;
         
-        StopAllCoroutines(); // หยุดการ Fade เก่าถ้ามี
-        StartCoroutine(PlayPreviewWithFade(song));
         UpdatePreviewUI();
         UpdateMenuGestureIcons(song);
         if (menuAudioSource != null) 
@@ -159,10 +166,13 @@ public class Selected : MonoBehaviour
         return UnlockedSongs.Contains(song); 
     }
 
-    private void UpdatePreviewUI()
+    public void UpdatePreviewUI()
     {
         if (SelectedSong == null) return;
-
+        if (difficultyText != null) 
+        {
+            difficultyText.text = SelectedDifficulty; 
+        }
         songNameText.text = SelectedSong.songName;
         artistNameText.text = SelectedSong.artistName;
         SpriteRenderer spriteRenderer = bgImage.GetComponent<SpriteRenderer>();
@@ -267,7 +277,7 @@ public class Selected : MonoBehaviour
     public static void SavePlayerData() {
         PlayerPrefs.SetInt("PlayerRP", playerRP);
         PlayerPrefs.SetInt("PlayerLevel", playerLevel);
-        PlayerPrefs.GetFloat("CurrentExp", currentExp);
+        PlayerPrefs.SetFloat("CurrentExp", currentExp);
         if (SelectedSong != null) {
             PlayerPrefs.SetString("LastPlayedSong", SelectedSong.songName);
         }
@@ -310,6 +320,7 @@ public class Selected : MonoBehaviour
 
         for (int i = 0; i < fixedButtons.Length; i++)
         {
+            fixedButtons[i].gameObject.SetActive(true);
             if (i < playlist.Count)
             {
                 // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
@@ -317,12 +328,12 @@ public class Selected : MonoBehaviour
                 fixedButtons[i].Setup(playlist[i]);
                 
                 // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
-                fixedButtons[i].SetUIAppearance(i == 0); 
+                fixedButtons[i].SetUIAppearance(playlist[i] == SelectedSong); 
             }
             else
             {
-                // ถ้าใน Playlist นั้นมีเพลงไม่ถึง 4 เพลง ให้ซ่อนปุ่มที่เหลือ
-                fixedButtons[i].gameObject.SetActive(false);
+                fixedButtons[i].SetComingSoon(); 
+                fixedButtons[i].SetUIAppearance(false);
             }
         }
     }
@@ -332,6 +343,8 @@ public class Selected : MonoBehaviour
         // เรียกใช้เพื่อบังคับให้เพลงแรกในลิสต์ปัจจุบันเริ่มเล่นทันทีที่หน้าจอเปิด
         if (playlist != null && playlist.Count > 0)
         {
+            SelectedCanvas.SetActive(true); 
+            PlaylistCanvas.SetActive(false);
             SetPreviewSong(playlist[0]);
         }
     }
