@@ -14,8 +14,7 @@ public class SoundEffectsManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // หากต้องการให้ Manager นี้อยู่ข้าม Scene ให้เปิดบรรทัดล่างนี้ครับ
-            // DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {

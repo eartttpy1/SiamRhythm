@@ -5,7 +5,6 @@ public class Mainmenu : MonoBehaviour
 {
     public string nextSceneName;
     [SerializeField] private AudioClip mainmenuAudioClip;
-    [SerializeField] private float fadeDuration = 0.5f;
 
     void Start()
     {
