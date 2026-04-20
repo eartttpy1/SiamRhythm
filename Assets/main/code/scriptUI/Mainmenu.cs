@@ -4,8 +4,13 @@ using UnityEngine.SceneManagement;
 public class Mainmenu : MonoBehaviour
 {
     public string nextSceneName;
+    [SerializeField] private AudioClip mainmenuAudioClip;
+    [SerializeField] private float fadeDuration = 0.5f;
 
-
+    void Start()
+    {
+        SoundEffectsManager.instance.PlayBackgroundMusic(mainmenuAudioClip, 1f);
+    }
     public void Play() 
     {
         SceneManager.LoadScene(nextSceneName);
@@ -23,5 +28,7 @@ public class Mainmenu : MonoBehaviour
 
         Debug.Log("Game is exiting...");
     }
+    
+    
 
 }

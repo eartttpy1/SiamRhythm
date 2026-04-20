@@ -34,6 +34,7 @@ public class GameStatusManager : MonoBehaviour
     [Header("End Game Settings")]
     [SerializeField] private AudioClip winSFX;        // ลากไฟล์เสียงชนะมาใส่
     [SerializeField] private AudioClip failSFX;
+    [SerializeField] private AudioClip statBGM;
     [SerializeField] private float fadeDuration = 2.0f; // ระยะเวลาในการเฟดเพลงให้เงียบลง (วินาที)
 
 
@@ -226,7 +227,7 @@ public class GameStatusManager : MonoBehaviour
         if (endSFX != null)
         {
             // ใช้ PlayClipAtPoint เพื่อให้เสียงเล่นจบแม้จะสั่ง Stop เพลงหลักไปแล้ว
-            AudioSource.PlayClipAtPoint(endSFX, Camera.main.transform.position);
+            SoundEffectsManager.instance.PlaySoundEffectsClip(endSFX, transform, 1f);
         }
 
         // ค่อยๆ ลดระดับเสียงเพลงหลักลง
@@ -323,7 +324,7 @@ public class GameStatusManager : MonoBehaviour
     }
     public void DeactivateStatsCanvas()
     {
-        statsCanvas.gameObject.SetActive(true);
+        ShowStatCanvas();
 
         totalScoreText.text = currentScore.ToString("N0");
         acc.text = accuracy.ToString("F2") + "%";
@@ -479,8 +480,16 @@ public class GameStatusManager : MonoBehaviour
         );
     }
 
+    public void ShowStatCanvas()
+    {
+        statsCanvas.gameObject.SetActive(true);
+        // สั่งเปลี่ยนเพลงเป็นเพลงหน้าสรุปคะแนน
+        SoundEffectsManager.instance.PlayBackgroundMusic(statBGM, 1f);
+    }
+
     public void HandleEventVisuals(int phase, int eventIndex) {
         // รอเอาไว้ใส่ efx ตอนกด
     }
+
 
 }

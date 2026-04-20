@@ -12,7 +12,6 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
     [Header("Audio Settings")]
     public AudioSource musicSource;
-    public AudioSource sfxSource; // ตัวเล่นเสียง Effect
     public AudioClip perfectSound, greatSound;
 
     [Header("Common UI")]
@@ -260,10 +259,10 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
     void PlayHitSound(AudioClip clip, float volume)
     {
-        if (sfxSource != null && clip != null)
+        if (clip != null)
         {
-            sfxSource.pitch = Random.Range(0.9f, 1.1f);
-            sfxSource.PlayOneShot(clip, volume);
+            float randomPitch = Random.Range(0.9f, 1.1f);
+            SoundEffectsManager.instance.PlaySoundHitClip(clip, transform, 1f, randomPitch);
         }
     }
     void HideRating()

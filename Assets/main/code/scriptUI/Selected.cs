@@ -34,6 +34,7 @@ public class Selected : MonoBehaviour
     [Header("Song List")]
     [SerializeField] private List<SongData> playlist;
     [SerializeField] private AudioSource menuAudioSource;
+    [SerializeField] private AudioClip playlistBGM;
 
     [Header("First Button Reference")]
     [SerializeField] private SongInMenu firstSongButton;
@@ -101,6 +102,14 @@ public class Selected : MonoBehaviour
         // {
         //     btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
         // }
+    }
+    void OnEnable()
+    {
+        // เมื่อ Canvas ถูกเปิด (Active) ให้สั่งเล่นเพลงทันที
+        if (SoundEffectsManager.instance != null && playlistBGM != null)
+        {
+            SoundEffectsManager.instance.PlayBackgroundMusic(playlistBGM, 1f);
+        }
     }
     void Update() {
         // ถ้ากดปุ่ม M ในหน้าเมนู ให้เพิ่มเงิน 1,000 RP ทันที
@@ -406,7 +415,8 @@ public class Selected : MonoBehaviour
             menuAudioSource.Stop();
         }
         SelectedCanvas.SetActive(false);
-        PlaylistCanvas.SetActive(true);
+        OpenPlaylist();
+        
     }
     public static void SaveLastPlayedMode()
     {
@@ -423,4 +433,11 @@ public class Selected : MonoBehaviour
             Debug.Log($"Saved: {SelectedSong.songName} | {SelectedDifficulty} | {PlayMode}");
         }
     }
+    public void OpenPlaylist()
+    {
+        PlaylistCanvas.SetActive(true);
+        // สั่งเปลี่ยนเป็นเพลง Playlist ทันที ระบบจะ Fade เพลง MainMenu ออกให้เอง
+        SoundEffectsManager.instance.PlayBackgroundMusic(playlistBGM, 0.5f);
+    }
+
 }
