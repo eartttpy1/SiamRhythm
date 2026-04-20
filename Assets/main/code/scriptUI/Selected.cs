@@ -162,23 +162,20 @@ public class Selected : MonoBehaviour
     }
     private IEnumerator PlayPreviewWithFade(SongData song)
     {
-        float targetVolume = 0.3f;
-
-        menuAudioSource.Stop();
-        menuAudioSource.volume = 0;
-        menuAudioSource.clip = song.audioClip;
-        menuAudioSource.time = song.previewStartTime;
-        menuAudioSource.Play();
-
-        float duration = 1.0f; // ระยะเวลา Fade-in 1 วินาที
-        float currentTime = 0;
-        while (currentTime < duration)
+        if (song == null || song.audioClip == null) yield break;
+        float previewFadeTime = 1f;
+        if (SoundEffectsManager.instance != null)
         {
-            currentTime += Time.deltaTime;
-            menuAudioSource.volume = Mathf.Lerp(0, targetVolume, currentTime / duration);
-            yield return null;
+            // เรียกใช้ Manager โดยส่ง audioClip และ previewStartTime ไป
+            // ไม่ต้องเขียน loop Lerp เองแล้ว เพราะ Manager จัดการให้แบบ Crossfade
+            SoundEffectsManager.instance.PlayBackgroundMusic(
+                song.audioClip, 
+                previewFadeTime, 
+                song.previewStartTime
+            );
         }
-        menuAudioSource.volume = targetVolume;
+
+        yield return null;
     }
     private void UpdateMenuGestureIcons(SongData song)
     {
@@ -262,7 +259,10 @@ public class Selected : MonoBehaviour
     public void StartGame()
     {
         if (SelectedSong != null && CheckIfUnlocked(SelectedSong))
+        {
+            SoundEffectsManager.instance.StopBackgroundMusic(0.8f);
             UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
+        }
     }
     public void SetDifficulty(string difficulty)
     {
@@ -410,9 +410,9 @@ public class Selected : MonoBehaviour
 
     public void GoBacktoPlaylist()
     {
-        if (menuAudioSource != null && menuAudioSource.isPlaying)
+        if (SoundEffectsManager.instance != null)
         {
-            menuAudioSource.Stop();
+            SoundEffectsManager.instance.StopBackgroundMusic(0.5f);
         }
         SelectedCanvas.SetActive(false);
         OpenPlaylist();

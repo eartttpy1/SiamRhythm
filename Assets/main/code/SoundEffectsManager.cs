@@ -61,12 +61,12 @@ public class SoundEffectsManager : MonoBehaviour
         // ปรับเวลาทำลายตาม Pitch (ถ้า Pitch ต่ำ เสียงจะยาวขึ้น)
         Destroy(audioSource.gameObject, clipLength / pitch);
     }
-    public void PlayBackgroundMusic(AudioClip newClip, float fadeDuration = 1f)
+    public void PlayBackgroundMusic(AudioClip newClip, float fadeDuration = 1f, float startTime = 0f)
     {
-        StartCoroutine(CrossfadeMusic(newClip, fadeDuration));
+        StartCoroutine(CrossfadeMusic(newClip, fadeDuration, startTime));
     }
 
-    private IEnumerator CrossfadeMusic(AudioClip newClip, float duration)
+    private IEnumerator CrossfadeMusic(AudioClip newClip, float duration, float startTime)
     {
         // 1. ถ้ายังไม่มี musicSource ให้สร้างขึ้นมาใหม่
         if (musicSource == null)
@@ -78,7 +78,7 @@ public class SoundEffectsManager : MonoBehaviour
         }
 
         // 2. ถ้าเป็นเพลงเดิมที่เล่นอยู่แล้ว ไม่ต้องทำอะไร
-        if (musicSource.clip == newClip) yield break;
+        if (musicSource.clip == newClip && Mathf.Abs(musicSource.time - startTime) < 0.1f) yield break;
 
         float startVolume = musicSource.volume;
 
@@ -94,6 +94,7 @@ public class SoundEffectsManager : MonoBehaviour
 
         // 4. เปลี่ยนเพลงและ Fade In เพลงใหม่
         musicSource.clip = newClip;
+        musicSource.time = startTime;
         musicSource.Play();
 
         for (float t = 0; t < duration; t += Time.deltaTime)
@@ -101,6 +102,31 @@ public class SoundEffectsManager : MonoBehaviour
             musicSource.volume = Mathf.Lerp(0, 1f, t / duration); // 1f คือดังเต็มที่ของ Source แล้วไปคุมที่ Mixer ต่อ
             yield return null;
         }
+        musicSource.volume = 1f;
+    }
+    public void StopBackgroundMusic(float fadeDuration = 1f)
+    {
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            StartCoroutine(FadeOutMusic(fadeDuration));
+        }
+    }
+
+    // ระบบลดระดับเสียงอย่างนุ่มนวล
+    private IEnumerator FadeOutMusic(float duration)
+    {
+        float startVolume = musicSource.volume;
+
+        // ค่อยๆ ลด Volume ลงตามเวลาที่กำหนด
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            musicSource.volume = Mathf.Lerp(startVolume, 0, t / duration);
+            yield return null;
+        }
+
+        musicSource.Stop();
+        musicSource.clip = null; // เคลียร์คลิปเสียงออกเพื่อให้พร้อมสำหรับเพลงใหม่
+        musicSource.volume = startVolume; // คืนค่า Volume เริ่มต้นไว้สำหรับเพลงถัดไป
     }
     
 }

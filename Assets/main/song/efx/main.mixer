@@ -98,6 +98,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 9549930799fdafb4fb16d45df8a07bfc
     name: HitVol
+  - guid: 554babb098fe2444cb52118f178e8cd8
+    name: MasterVol
   - guid: e2e5d12e608e4c44f8ba71d841bddc8e
     name: MusicVol
   - guid: 1dce70452b68c2d45b6b91e49fe5e7e0

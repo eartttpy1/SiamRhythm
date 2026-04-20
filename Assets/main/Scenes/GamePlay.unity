@@ -10817,6 +10817,7 @@ MonoBehaviour:
   totalScoreText: {fileID: 182118434}
   winSFX: {fileID: 8300000, guid: b3e2bcfe64af2774d9c24230657b95ce, type: 3}
   failSFX: {fileID: 8300000, guid: a8dc37a735495be4bab2167b1a4929d0, type: 3}
+  statBGM: {fileID: 8300000, guid: 44a13f571ff40774b82ed4fe53a3c5a0, type: 3}
   fadeDuration: 2
   accuracyText: {fileID: 3602342155478994884}
   acc: {fileID: 874854884}
