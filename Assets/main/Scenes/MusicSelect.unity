@@ -4480,7 +4480,15 @@ MonoBehaviour:
   - {fileID: 997600952}
   SelectedCanvas: {fileID: 363990919}
   PlaylistCanvas: {fileID: 2052548338}
-  currentCategoryName: originalThai
+  originalThaiList:
+  - {fileID: 11400000, guid: bb75a581359e1b34c97503c73f54b2d8, type: 2}
+  - {fileID: 11400000, guid: 45a6dda1ec19d484e9cbea97c10fc29d, type: 2}
+  - {fileID: 11400000, guid: f920638710ae79b4994c9435444999aa, type: 2}
+  - {fileID: 11400000, guid: d517195449739584f866ed14daf09544, type: 2}
+  loveSongList:
+  - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
+  - {fileID: 11400000, guid: 542dd946581721f4ba5f8549eb100a45, type: 2}
+  - {fileID: 11400000, guid: 5b264d0d1700a6d48ae92c7c3fb7854d, type: 2}
   handModeToggle: {fileID: 1014777061}
 --- !u!4 &934255551
 Transform:

@@ -50,7 +50,9 @@ public class Selected : MonoBehaviour
     public static List<SongData> LastCategorySongs;
     public GameObject SelectedCanvas;
     public GameObject PlaylistCanvas;
-    public string currentCategoryName = "originalThai";
+    public static string currentCategoryName = "originalThai";
+    public List<SongData> originalThaiList; 
+    public List<SongData> loveSongList;
 
     [Header("Hand Mode UI")]
     [SerializeField] private SwitchToggle handModeToggle;
@@ -59,8 +61,10 @@ public class Selected : MonoBehaviour
     {
         UpdateRPUI();
         // 1. ลองโหลดชื่อเพลงล่าสุดจากความจำ
-        string lastSongName = PlayerPrefs.GetString("LastPlayedSong", "");
+        currentCategoryName = PlayerPrefs.GetString("LastCategoryUsed", "originalThai");
+        playlist = GetListByCategory(currentCategoryName);
 
+        string lastSongName = PlayerPrefs.GetString("LastPlayedSong", "");
         // ตรวจสอบเพลงล่าสุดจาก PlayerPrefs ถ้า SelectedSong ยังว่างอยู่
         if (SelectedSong == null)
         {
@@ -79,7 +83,6 @@ public class Selected : MonoBehaviour
             // กรณี: กลับมาจากหน้า Gameplay
             PlaylistCanvas.SetActive(false);
             SelectedCanvas.SetActive(true);
-
             if (LastCategorySongs != null) UpdatePlaylist(LastCategorySongs, currentCategoryName);
             isReturningFromGame = false;
         }
@@ -104,6 +107,15 @@ public class Selected : MonoBehaviour
         }
 
         StartCoroutine(ReadyToUpdateUI());
+    }
+    private List<SongData> GetListByCategory(string categoryName)
+    {
+        switch (categoryName)
+        {
+            case "originalThai": return originalThaiList; // ลากลิสต์เพลงไทยมาใส่ใน Inspector
+            case "loveSong": return loveSongList;       // ลากลิสต์เพลงรักมาใส่ใน Inspector
+            default: return playlist;                   // ลิสต์พื้นฐาน
+        }
     }
     void OnEnable()
     {
@@ -448,6 +460,9 @@ public class Selected : MonoBehaviour
         playlist = newSongs;
         LastCategorySongs = newSongs; 
         currentCategoryName = categoryName;
+
+        PlayerPrefs.SetString("LastCategoryUsed", currentCategoryName);
+        PlayerPrefs.Save();
         // 1. ดึงชื่อเพลงล่าสุดของ "เฉพาะหมวดนี้" จากความจำ
         string saveKey = "LastPlayed_" + currentCategoryName;
         string lastSongName = PlayerPrefs.GetString(saveKey, "");
@@ -465,7 +480,10 @@ public class Selected : MonoBehaviour
         else if (playlist.Count > 0)
         {
             // ถ้าไม่เจอ (เช่น เพิ่งเปิดหมวดนี้ครั้งแรก) ให้เลือกเพลงแรกเป็น Default
-            SelectedSong = playlist[0];
+            if (!playlist.Contains(SelectedSong))
+            {
+                SelectedSong = playlist[0];
+            }
         }
 
         // อัปเดตหน้าจอ Preview ด้านขวาให้ตรงกับ SelectedSong ที่เราหามาได้
@@ -525,7 +543,7 @@ public class Selected : MonoBehaviour
         {
             // บันทึกชื่อเพลงล่าสุด
             PlayerPrefs.SetString("LastPlayedSong", SelectedSong.songName);
-            
+            PlayerPrefs.SetString("LastCategoryUsed", currentCategoryName);
             // บันทึกความยากและโหมดมือ โดยใช้ชื่อเพลงเป็น Key เพื่อให้แยกกันแต่ละเพลง
             PlayerPrefs.SetString(SelectedSong.songName + "_LastDiff", SelectedDifficulty);
             PlayerPrefs.SetString(SelectedSong.songName + "_LastHand", PlayMode);

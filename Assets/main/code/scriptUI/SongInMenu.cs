@@ -69,7 +69,7 @@ public class SongInMenu : MonoBehaviour
         if (song == null) return;
         if (selected != null)
         {
-            string key = "LastPlayed_" + selected.currentCategoryName;
+            string key = "LastPlayed_" + Selected.currentCategoryName;
             PlayerPrefs.SetString(key, song.songName);
             PlayerPrefs.Save();
             selected.SetPreviewSong(song);
@@ -96,7 +96,7 @@ public class SongInMenu : MonoBehaviour
         foreach (var item in allItems)
         {
             // ถ้าเป็นตัวมันเองให้เป็นสีดำ ถ้าไม่ใช่ให้เป็นสีขาว
-            item.SetUIAppearance(item == this);
+            item.SetUIAppearance(item.song == Selected.SelectedSong);
         }
     }
     public void SetComingSoon()
