@@ -4480,6 +4480,7 @@ MonoBehaviour:
   - {fileID: 997600952}
   SelectedCanvas: {fileID: 363990919}
   PlaylistCanvas: {fileID: 2052548338}
+  currentCategoryName: originalThai
   handModeToggle: {fileID: 1014777061}
 --- !u!4 &934255551
 Transform:
@@ -5481,7 +5482,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -14.746407, y: 0}
-  m_SizeDelta: {x: 2559.4067, y: 591.18}
+  m_SizeDelta: {x: 0, y: 591.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1167516577
 MonoBehaviour:
@@ -6783,9 +6784,9 @@ RectTransform:
   - {fileID: 862622674}
   m_Father: {fileID: 1167516576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1279.7034, y: -295.59}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 786.4689, y: 506.7241}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1429039316
@@ -6803,6 +6804,8 @@ MonoBehaviour:
   categoryName: LoveSong
   songsInThisCategory:
   - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
+  - {fileID: 11400000, guid: 542dd946581721f4ba5f8549eb100a45, type: 2}
+  - {fileID: 11400000, guid: 5b264d0d1700a6d48ae92c7c3fb7854d, type: 2}
   selectedScript: {fileID: 934255550}
   playlistCanvas: {fileID: 2052548338}
   selectedCanvas: {fileID: 363990919}
@@ -8200,9 +8203,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1167516576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2066.172, y: -295.59}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 786.4689, y: 506.7241}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1754530713
@@ -10298,7 +10301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2052548339
 Transform:
   m_ObjectHideFlags: 0
@@ -10352,9 +10355,9 @@ RectTransform:
   - {fileID: 2012748977}
   m_Father: {fileID: 1167516576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 493.23444, y: -295.59}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 786.4689, y: 506.7241}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070021461
@@ -10369,7 +10372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed6bb6eabfc5d645afa5689eb3d88dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Playlist
-  categoryName: "\u0E14\u0E19\u0E15\u0E23\u0E35\u0E44\u0E17\u0E22\u0E23\u0E48\u0E27\u0E21\u0E2A\u0E21\u0E31\u0E22"
+  categoryName: originalThai
   songsInThisCategory:
   - {fileID: 11400000, guid: bb75a581359e1b34c97503c73f54b2d8, type: 2}
   - {fileID: 11400000, guid: 45a6dda1ec19d484e9cbea97c10fc29d, type: 2}

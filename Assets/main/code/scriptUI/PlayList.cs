@@ -15,7 +15,7 @@ public class Playlist : MonoBehaviour
     public void OpenThisCategory()
     {
         // 1. ส่ง List เพลงในหมวดนี้ไปให้สคริปต์ Selected
-        selectedScript.UpdatePlaylist(songsInThisCategory);
+        selectedScript.UpdatePlaylist(songsInThisCategory, categoryName);
 
         // 2. สลับหน้าจอ
         playlistCanvas.SetActive(false);

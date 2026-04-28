@@ -83,6 +83,7 @@ public class PauseManager : MonoBehaviour
     {
         Selected.SaveLastPlayedMode();
         Time.timeScale = 1f;
+        Selected.isReturningFromGame = true;
         SceneManager.LoadScene("MusicSelect"); // ใส่ชื่อซีนเมนูของคุณ
     }
 

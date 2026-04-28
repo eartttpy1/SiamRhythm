@@ -366,6 +366,7 @@ public class GameStatusManager : MonoBehaviour
     public void DeactivateFailCanvas()
     {
         failCanvas.gameObject.SetActive(true);
+        SetCursorState(true);
     }
 
     public void UpdateAccuracy(float scoreWeight)

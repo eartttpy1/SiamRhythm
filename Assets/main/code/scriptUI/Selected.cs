@@ -9,6 +9,7 @@ public class Selected : MonoBehaviour
     public static SongData SelectedSong;
     public static string SelectedDifficulty;
     public static string PlayMode;
+    public static bool isReturningFromGame = false;
 
     [Header("Player Stats")]
     public static int playerLevel = 1; // เริ่มต้นที่ Level 1
@@ -49,6 +50,7 @@ public class Selected : MonoBehaviour
     public static List<SongData> LastCategorySongs;
     public GameObject SelectedCanvas;
     public GameObject PlaylistCanvas;
+    public string currentCategoryName = "originalThai";
 
     [Header("Hand Mode UI")]
     [SerializeField] private SwitchToggle handModeToggle;
@@ -68,43 +70,44 @@ public class Selected : MonoBehaviour
                 SelectedSong = playlist.Find(s => s.songName == lastSongName);
             }
         }
-        if (SelectedSong != null && LastCategorySongs != null)
+        if (SelectedSong == null && playlist != null && playlist.Count > 0)
         {
-            // ปิดหน้าแรก และเปิดหน้าเลือกเพลงทันที
+            SelectedSong = playlist[0];
+        }
+        if (isReturningFromGame && SelectedSong != null)
+        {
+            // กรณี: กลับมาจากหน้า Gameplay
             PlaylistCanvas.SetActive(false);
             SelectedCanvas.SetActive(true);
-            UpdatePlaylist(LastCategorySongs);
-            
-            // // อัปเดตข้อมูลเพลงและเล่นเสียงพรีวิว
-            // SetPreviewSong(SelectedSong);
+
+            if (LastCategorySongs != null) UpdatePlaylist(LastCategorySongs, currentCategoryName);
+            isReturningFromGame = false;
         }
-        else if (playlist != null && playlist.Count > 0)
+        else
         {
-            // กรณีเข้าเกมครั้งแรก
-            UpdatePlaylist(playlist);
-            // SetPreviewSong(playlist[0]);
-            // ถ้าหา SelectedSong จากข้อ 2 ไม่เจอจริงๆ ให้ Default ที่เพลงแรก
-            if (SelectedSong == null) SelectedSong = playlist[0];
+            // กรณี: เปิดเกมตามปกติ หรือกรณีอื่นๆ
+            PlaylistCanvas.SetActive(true);
+            SelectedCanvas.SetActive(false);
+            if (LastCategorySongs != null)
+            {
+                UpdatePlaylist(LastCategorySongs, currentCategoryName);
+            }
+            else
+            {
+                // ถ้าไม่มีเลย (เข้าเกมครั้งแรกสุด) ให้ใช้ลิสต์เริ่มต้น
+                UpdatePlaylist(playlist, "originalThai"); 
+            }
         }
         if (SelectedSong != null)
         {
-            // SelectedDifficulty = PlayerPrefs.GetString(SelectedSong.songName + "_LastDiff", "Easy");
-            // PlayMode = PlayerPrefs.GetString(SelectedSong.songName + "_LastHand", "1Hand");
-            // // ดึงโหมดล่าสุดมาตั้งค่า Toggle
-            // if (handModeToggle != null) 
-            //     handModeToggle.SetState(PlayMode == "2Hand");
-            // UpdatePreviewUI();
             SetPreviewSong(SelectedSong);
         }
 
-        // DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
-        // foreach (var btn in allBtns)
-        // {
-        //     btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
-        // }
+        StartCoroutine(ReadyToUpdateUI());
     }
     void OnEnable()
     {
+        
         // เมื่อ Canvas ถูกเปิด (Active) ให้สั่งเล่นเพลงทันที
         if (SoundEffectsManager.instance != null && playlistBGM != null)
         {
@@ -135,15 +138,13 @@ public class Selected : MonoBehaviour
             // ถ้าเป็น 2Hand ให้ส่งค่า true (On), ถ้าเป็น 1Hand ให้ส่ง false (Off)
             handModeToggle.SetState(PlayMode == "2Hand");
         }
-        
-        UpdatePreviewUI();
-        UpdateMenuGestureIcons(song);
+        string saveKey = "LastPlayed_" + currentCategoryName;
+        PlayerPrefs.SetString(saveKey, song.songName);
+        PlayerPrefs.Save();
 
-        // DifficultyButton[] allBtns = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
-        // foreach (var btn in allBtns)
-        // {
-        //     btn.SetUIAppearance(btn.difficultyName == SelectedDifficulty);
-        // }
+        UpdatePreviewUI();
+        UpdatePlaylistUI();
+        UpdateMenuGestureIcons(song);
         if (menuAudioSource != null) 
         {
             StopAllCoroutines(); // หยุดการ Fade เดิมเพื่อไม่ให้เสียงตีกัน
@@ -222,6 +223,14 @@ public class Selected : MonoBehaviour
         else playButton.sprite = lockButtonpicture;
         buyButton.SetActive(!isUnlocked);
         DisplayBestStats();
+
+        DifficultyButton[] allDifficultyButtons = FindObjectsByType<DifficultyButton>(FindObjectsSortMode.None);
+        foreach (var btn in allDifficultyButtons)
+        {
+            // ตรวจสอบว่าชื่อความยากของปุ่ม ตรงกับค่าปัจจุบันที่ระบบถืออยู่หรือไม่
+            bool isThisButtonSelected = (btn.difficultyName == SelectedDifficulty);
+            btn.SetUIAppearance(isThisButtonSelected);
+        }
     }
 
     public void BuySong()
@@ -271,32 +280,34 @@ public class Selected : MonoBehaviour
     private void DisplayBestStats() 
     {
         if (SelectedSong == null) return;
+        bool isUnlocked = UnlockedSongs.Contains(SelectedSong);
 
         // ตรวจสอบว่าปลดล็อกหรือยัง
-        if (UnlockedSongs.Contains(SelectedSong)) {
+        if (isUnlocked) {
             SongStatistics stats = PlayerDataHandler.GetStats(
                 SelectedSong.songName, 
                 SelectedDifficulty, 
                 PlayMode
             );
 
-            if (stats != null) {
+            if (stats != null && !string.IsNullOrEmpty(stats.bestRank)) {
                 bestScoreText.text = stats.highScore.ToString("0000000");
                 bestAccText.text = stats.bestAccuracy.ToString("F2") + "%";
                 bestRankText.text = stats.bestRank;
+                if (bgRank != null) bgRank.gameObject.SetActive(true);
             } else {
                 // ยังไม่มีประวัติการเล่นในโหมดนี้
                 bestScoreText.text = "0000000";
                 bestAccText.text = "00.00%";
                 bestRankText.text = "-";
-                bgRank.enabled = true;
+                if (bgRank != null) bgRank.gameObject.SetActive(true);
             }
         } else {
             // ยังไม่ปลดล็อกเพลง ให้ซ่อนสถิติ
             bestScoreText.text = "";
             bestAccText.text = "";
             bestRankText.text = "";
-            bgRank.enabled = false;
+            if (bgRank != null) bgRank.gameObject.SetActive(false);
         }
     }
     public static void AddExp(float amount)
@@ -324,7 +335,7 @@ public class Selected : MonoBehaviour
         }
         List<string> unlockedNames = new List<string>();
         foreach (var song in UnlockedSongs) {
-            unlockedNames.Add(song.songName);
+            unlockedNames.Add(song.name);
         }
         string allNames = string.Join(",", unlockedNames); // ตัวอย่าง: "SiamBeat,SongA,SongB"
         PlayerPrefs.SetString("UnlockedSongsList", allNames);
@@ -342,7 +353,7 @@ public class Selected : MonoBehaviour
             foreach (string name in names)
             {
                 // ค้นหา SongData ใน playlist ที่มีชื่อตรงกับที่เซฟไว้
-                SongData found = playlist.Find(s => s.songName == name);
+                SongData found = Resources.Load<SongData>(name);
                 if (found != null && !UnlockedSongs.Contains(found))
                 {
                     UnlockedSongs.Add(found);
@@ -355,34 +366,122 @@ public class Selected : MonoBehaviour
         LoadPlayerData(); // โหลดข้อมูลทันทีที่เปิดหน้าเมนู
     }
 
-    public void UpdatePlaylist(List<SongData> newSongs)
+    // public void UpdatePlaylist(List<SongData> newSongs)
+    // {
+    //     playlist = newSongs;
+    //     LastCategorySongs = newSongs; // บันทึกไว้ว่าตอนนี้อยู่หมวดหมู่ไหน
+    //     bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
+    //     SongData songToShow = null;
+
+    //     for (int i = 0; i < fixedButtons.Length; i++)
+    //     {
+    //         fixedButtons[i].gameObject.SetActive(true);
+    //         if (i < playlist.Count)
+    //         {
+    //             // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
+    //             fixedButtons[i].Setup(playlist[i]);
+                
+    //             // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
+    //             if (isCurrentSongInThisPlaylist)
+    //             {
+    //                 bool isSelected = (playlist[i] == SelectedSong);
+    //                 fixedButtons[i].SetUIAppearance(isSelected);
+    //                 if (isSelected) songToShow = playlist[i];
+    //             }
+    //             else
+    //             {
+    //                 bool isFirst = (i == 0);
+    //                 fixedButtons[i].SetUIAppearance(isFirst);
+    //                 if (isFirst) songToShow = playlist[0];
+    //             }
+    //         }
+    //         else
+    //         {
+    //             fixedButtons[i].SetComingSoon(); 
+    //             fixedButtons[i].SetUIAppearance(false);
+    //         }
+    //     }
+    //     // 3. อัปเดต Panel ด้านขวา (Preview) ให้ตรงกับปุ่มที่สว่าง
+    //     if (songToShow != null && songToShow != SelectedSong)
+    //     {
+    //         SetPreviewSong(songToShow);
+    //     }
+    // }
+    // public void UpdatePlaylist(List<SongData> newSongs)
+    // {
+    //     playlist = newSongs;
+    //     LastCategorySongs = newSongs; 
+        
+
+    //     // 1. ตรวจสอบว่า SelectedSong ปัจจุบัน อยู่ใน Playlist ใหม่นี้หรือไม่
+    //     bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
+
+    //     // 2. ถ้าเพลงล่าสุดไม่ได้อยู่ในหมวดนี้ และเราต้องการให้ "มีเพลงถูกเลือกเสมอ"
+    //     // ให้เราอัปเดต SelectedSong เป็นเพลงแรกของหมวดใหม่ไปเลย (เพื่อความ Sync)
+    //     if (!isCurrentSongInThisPlaylist && playlist.Count > 0)
+    //     {
+    //         SelectedSong = playlist[0]; 
+    //         SetPreviewSong(SelectedSong); // อัปเดต Panel ขวาให้ตรงกับเพลงแรกของหมวดใหม่
+    //     }
+
+    //     // 3. วนลูปอัปเดตปุ่มทางซ้าย
+    //     for (int i = 0; i < fixedButtons.Length; i++)
+    //     {
+    //         fixedButtons[i].gameObject.SetActive(true);
+    //         if (i < playlist.Count)
+    //         {
+    //             fixedButtons[i].Setup(playlist[i]);
+                
+    //             // เช็คว่าปุ่มนี้คือ SelectedSong หรือไม่ (ซึ่งตอนนี้มัน Sync กับ Panel ขวาแล้ว)
+    //             bool isSelected = (playlist[i] == SelectedSong);
+    //             fixedButtons[i].SetUIAppearance(isSelected);
+    //         }
+    //         else
+    //         {
+    //             fixedButtons[i].SetComingSoon(); 
+    //             fixedButtons[i].SetUIAppearance(false);
+    //         }
+    //     }
+    // }
+    public void UpdatePlaylist(List<SongData> newSongs, string categoryName)
     {
         playlist = newSongs;
-        LastCategorySongs = newSongs; // บันทึกไว้ว่าตอนนี้อยู่หมวดหมู่ไหน
-        bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
-        SongData songToShow = null;
+        LastCategorySongs = newSongs; 
+        currentCategoryName = categoryName;
+        // 1. ดึงชื่อเพลงล่าสุดของ "เฉพาะหมวดนี้" จากความจำ
+        string saveKey = "LastPlayed_" + currentCategoryName;
+        string lastSongName = PlayerPrefs.GetString(saveKey, "");
 
+        // 2. ค้นหาเพลงนั้นในลิสต์ที่เพิ่งโหลดมา
+        SongData foundSong = playlist.Find(s => s.songName == lastSongName);
+
+        // 2. ถ้าเพลงล่าสุดไม่ได้อยู่ในหมวดนี้ และเราต้องการให้ "มีเพลงถูกเลือกเสมอ"
+        // ให้เราอัปเดต SelectedSong เป็นเพลงแรกของหมวดใหม่ไปเลย (เพื่อความ Sync)
+        if (foundSong != null)
+        {
+            // ถ้าเจอเพลงที่เคยเลือกค้างไว้ในหมวดนี้ ให้เลือกเพลงนั้น
+            SelectedSong = foundSong;
+        }
+        else if (playlist.Count > 0)
+        {
+            // ถ้าไม่เจอ (เช่น เพิ่งเปิดหมวดนี้ครั้งแรก) ให้เลือกเพลงแรกเป็น Default
+            SelectedSong = playlist[0];
+        }
+
+        // อัปเดตหน้าจอ Preview ด้านขวาให้ตรงกับ SelectedSong ที่เราหามาได้
+        SetPreviewSong(SelectedSong);
+
+        // 3. วนลูปอัปเดตปุ่มทางซ้าย
         for (int i = 0; i < fixedButtons.Length; i++)
         {
             fixedButtons[i].gameObject.SetActive(true);
             if (i < playlist.Count)
             {
-                // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
                 fixedButtons[i].Setup(playlist[i]);
                 
-                // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
-                if (isCurrentSongInThisPlaylist)
-                {
-                    bool isSelected = (playlist[i] == SelectedSong);
-                    fixedButtons[i].SetUIAppearance(isSelected);
-                    if (isSelected) songToShow = playlist[i];
-                }
-                else
-                {
-                    bool isFirst = (i == 0);
-                    fixedButtons[i].SetUIAppearance(isFirst);
-                    if (isFirst) songToShow = playlist[0];
-                }
+                // เช็คว่าปุ่มนี้คือ SelectedSong หรือไม่ (ซึ่งตอนนี้มัน Sync กับ Panel ขวาแล้ว)
+                bool isSelected = (playlist[i] == SelectedSong);
+                fixedButtons[i].SetUIAppearance(isSelected);
             }
             else
             {
@@ -390,13 +489,7 @@ public class Selected : MonoBehaviour
                 fixedButtons[i].SetUIAppearance(false);
             }
         }
-        // 3. อัปเดต Panel ด้านขวา (Preview) ให้ตรงกับปุ่มที่สว่าง
-        if (songToShow != null && songToShow != SelectedSong)
-        {
-            SetPreviewSong(songToShow);
-        }
     }
-
     public void ForcePlayFirstSong()
     {
         // เรียกใช้เพื่อบังคับให้เพลงแรกในลิสต์ปัจจุบันเริ่มเล่นทันทีที่หน้าจอเปิด
@@ -404,7 +497,15 @@ public class Selected : MonoBehaviour
         {
             SelectedCanvas.SetActive(true); 
             PlaylistCanvas.SetActive(false);
-            SetPreviewSong(playlist[0]);
+            if (SelectedSong != null && playlist.Contains(SelectedSong))
+            {
+                SetPreviewSong(SelectedSong);
+            }
+            else
+            {
+                // ถ้าไม่มี (เช่น เพิ่งเข้าหมวดนี้ครั้งแรก) ให้ใช้เพลงแรกสุด
+                SetPreviewSong(playlist[0]);
+            }
         }
     }
 
@@ -433,11 +534,45 @@ public class Selected : MonoBehaviour
             Debug.Log($"Saved: {SelectedSong.songName} | {SelectedDifficulty} | {PlayMode}");
         }
     }
+
+    public void SaveLastSongInCategory(SongData song)
+    {
+        // ใช้ชื่อหมวดหมู่ผสมกับ Key เพื่อให้แยกกันเด็ดขาด
+        // ผลลัพธ์จะเป็น "LastPlayed_Thai", "LastPlayed_Inter"
+        PlayerPrefs.SetString("LastPlayed_" + currentCategoryName, song.songName);
+        PlayerPrefs.Save();
+    }
     public void OpenPlaylist()
     {
         PlaylistCanvas.SetActive(true);
-        // สั่งเปลี่ยนเป็นเพลง Playlist ทันที ระบบจะ Fade เพลง MainMenu ออกให้เอง
-        SoundEffectsManager.instance.PlayBackgroundMusic(playlistBGM, 0.5f);
+        // ตรวจสอบว่ามีเพลงที่เคยเลือกไว้ (SelectedSong) และเพลงนั้นอยู่ใน Playlist ปัจจุบันหรือไม่
+        if (SelectedSong != null && playlist.Contains(SelectedSong))
+        {
+            // ถ้ามีเพลงล่าสุดที่เลือกไว้ ให้โชว์เพลงนั้น
+            SetPreviewSong(SelectedSong);
+        }
+        else if (playlist != null && playlist.Count > 0)
+        {
+            // ถ้าไม่มี (เช่น เพิ่งเปิดเกมครั้งแรก) ให้โชว์เพลงแรกตามปกติ
+            SetPreviewSong(playlist[0]);
+        }
+        StartCoroutine(ReadyToUpdateUI());
+    }
+    private IEnumerator ReadyToUpdateUI()
+    {
+        yield return null; // รอ 1 Frame ให้ UI สร้างปุ่มเสร็จ
+        UpdatePlaylistUI();
+    }
+
+    public void UpdatePlaylistUI()
+    {
+        // หาปุ่มเพลงทั้งหมดในลิสต์ปัจจุบัน
+        SongInMenu[] allSongs = GetComponentsInChildren<SongInMenu>(true);
+        foreach (var item in allSongs)
+        {
+            // ถ้าปุ่มไหนมีข้อมูล Song ตรงกับที่ระบบเลือกไว้ ให้แสดงสถานะ Selected
+            item.SetUIAppearance(item.song == SelectedSong);
+        }
     }
 
 }

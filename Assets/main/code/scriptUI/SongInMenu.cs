@@ -25,13 +25,17 @@ public class SongInMenu : MonoBehaviour
     {
         if (song != null)
         {
+            
             Setup(song);
             
         }
-        if (Selected.SelectedSong == song) {
-            SetUIAppearance(true);
-        } else {
-            SetUIAppearance(false);
+    }
+    private void OnEnable()
+    {
+        if (song != null)
+        {
+            // ตรวจสอบสถานะตัวเองกับค่า Static ใน Selected
+            SetUIAppearance(Selected.SelectedSong == song);
         }
     }
     public void Setup(SongData songData)
@@ -65,6 +69,9 @@ public class SongInMenu : MonoBehaviour
         if (song == null) return;
         if (selected != null)
         {
+            string key = "LastPlayed_" + selected.currentCategoryName;
+            PlayerPrefs.SetString(key, song.songName);
+            PlayerPrefs.Save();
             selected.SetPreviewSong(song);
             UpdateAllItemsInList(); // แจ้งให้ Controller ทราบว่า Item นี้ถูกเลือก เพื่อไปรีเซ็ตอันอื่น
         }
