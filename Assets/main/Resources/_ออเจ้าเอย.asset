@@ -18,6 +18,7 @@ MonoBehaviour:
   pictureSongParallelogram: {fileID: 7608004383065208429, guid: 3bf28f2287315854b883306f847e1baf, type: 3}
   audioClip: {fileID: 8300000, guid: 09026f41539e29e46b943b69285dac4e, type: 3}
   previewStartTime: 53
+  songPostProcessProfile: {fileID: 11400000, guid: 6f15fea079607d742a4fcf255d17b370, type: 2}
   easy:
     threshold: 0.01
     spawnInterval: 2
@@ -36,8 +37,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e9e4af45d2d6f54ba876050f3b31bf9, type: 2}
   - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   phaseAnimatorControllers:
-  - {fileID: 22100000, guid: 03d06c9d8a47f4a4cb67698ed27151f6, type: 2}
-  - {fileID: 22100000, guid: 1475e02b655249742918b229039cad56, type: 2}
-  - {fileID: 22100000, guid: fa0183283d4424c47a62a16494974db7, type: 2}
+  - {fileID: 22100000, guid: 012b20443b5293043a9eff7160dec8fc, type: 2}
+  - {fileID: 22100000, guid: e8c7b20a5cbffdc4baa28ca2d8042875, type: 2}
   loopAnimatorControllers:
-  - {fileID: 9100000, guid: 3b46fd1c90ea6db47854b76ff5f712f9, type: 2}
+  - {fileID: 9100000, guid: e80d51a1b3132904995a12c5150a9482, type: 2}
+  - {fileID: 9100000, guid: 01060bbc07c307a4c8357432d894630a, type: 2}

@@ -1,0 +1,1118 @@
+fileFormatVersion: 2
+guid: 68dd12fb76e3b4340ac3eb1dc3952286
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1721304553434661711
+    second: SadEnd_0
+  - first:
+      213: 3713474045944000302
+    second: SadEnd_1
+  - first:
+      213: -7590903694596236577
+    second: SadEnd_2
+  - first:
+      213: 1162810302657065345
+    second: SadEnd_3
+  - first:
+      213: 6730130219836042751
+    second: SadEnd_4
+  - first:
+      213: -1312479199221550276
+    second: SadEnd_5
+  - first:
+      213: -7718880803146927073
+    second: SadEnd_6
+  - first:
+      213: -2960282394817126743
+    second: SadEnd_7
+  - first:
+      213: 7203196791909344991
+    second: SadEnd_8
+  - first:
+      213: 2679563124728935406
+    second: SadEnd_9
+  - first:
+      213: 1146481666283588815
+    second: SadEnd_10
+  - first:
+      213: 1865074627090905504
+    second: SadEnd_11
+  - first:
+      213: -4366336083739578692
+    second: SadEnd_12
+  - first:
+      213: 2040124183493184336
+    second: SadEnd_13
+  - first:
+      213: 1849964728797912616
+    second: SadEnd_14
+  - first:
+      213: 1598413427300043958
+    second: SadEnd_15
+  - first:
+      213: -2071129978316839974
+    second: SadEnd_16
+  - first:
+      213: -1471985087491104687
+    second: SadEnd_17
+  - first:
+      213: -4587306178512176189
+    second: SadEnd_18
+  - first:
+      213: -8378974564290626215
+    second: SadEnd_19
+  - first:
+      213: 2232129817840474584
+    second: SadEnd_20
+  - first:
+      213: -315176624312149153
+    second: SadEnd_21
+  - first:
+      213: 6240446880510315031
+    second: SadEnd_22
+  - first:
+      213: -4148415492845165496
+    second: SadEnd_23
+  - first:
+      213: -3867516015544913865
+    second: SadEnd_24
+  - first:
+      213: 7500777726118253763
+    second: SadEnd_25
+  - first:
+      213: 8480021772765427978
+    second: SadEnd_26
+  - first:
+      213: -6341168931337992695
+    second: SadEnd_27
+  - first:
+      213: 7899364104585408512
+    second: SadEnd_28
+  - first:
+      213: 946515642073998795
+    second: SadEnd_29
+  - first:
+      213: 1040872499427198678
+    second: SadEnd_30
+  - first:
+      213: -4114181587095759931
+    second: SadEnd_31
+  - first:
+      213: -4730357044513523429
+    second: SadEnd_32
+  - first:
+      213: 4182787279832947665
+    second: SadEnd_33
+  - first:
+      213: -4376210871864386556
+    second: SadEnd_34
+  - first:
+      213: -4948158350338527077
+    second: SadEnd_35
+  - first:
+      213: 2141747359622116860
+    second: SadEnd_36
+  - first:
+      213: 641039486733888876
+    second: SadEnd_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SadEnd_0
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 453
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f434cb91f5d43e710800000000000000
+      internalID: 1721304553434661711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_1
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 374
+        width: 52
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2fef1f48f8e88330800000000000000
+      internalID: 3713474045944000302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_2
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 457
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda146fde41b7a690800000000000000
+      internalID: -7590903694596236577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_3
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 455
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 181f9073fc1232010800000000000000
+      internalID: 1162810302657065345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_4
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 367
+        width: 86
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffde275f6c9366d50800000000000000
+      internalID: 6730130219836042751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_5
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 375
+        width: 57
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c337f434f1329cde0800000000000000
+      internalID: -1312479199221550276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_6
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 377
+        width: 70
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1478d05ec601e490800000000000000
+      internalID: -7718880803146927073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_7
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 419
+        width: 14
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ae151e98d6fae6d0800000000000000
+      internalID: -2960282394817126743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_8
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 367
+        width: 30
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd66dfc6155e6f360800000000000000
+      internalID: 7203196791909344991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_9
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 438
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee334ba0778bf2520800000000000000
+      internalID: 2679563124728935406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_10
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 436
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fccc45c400f19ef00800000000000000
+      internalID: 1146481666283588815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_11
+      rect:
+        serializedVersion: 2
+        x: 728
+        y: 441
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a9f853ed7312e910800000000000000
+      internalID: 1865074627090905504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_12
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 367
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbe6bb63778a763c0800000000000000
+      internalID: -4366336083739578692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_13
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 424
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05b8bc6c22aff4c10800000000000000
+      internalID: 2040124183493184336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_14
+      rect:
+        serializedVersion: 2
+        x: 1113
+        y: 367
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82e500b8e156ca910800000000000000
+      internalID: 1849964728797912616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_15
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 421
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bc0f6a1b84be2610800000000000000
+      internalID: 1598413427300043958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_16
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 423
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad323ce024ed143e0800000000000000
+      internalID: -2071129978316839974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_17
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 408
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 150ab61ac55729be0800000000000000
+      internalID: -1471985087491104687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_18
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 405
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cbb3d1d55d9650c0800000000000000
+      internalID: -4587306178512176189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_19
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 405
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95d7c690707e7bb80800000000000000
+      internalID: -8378974564290626215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_20
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 244
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d950f43e3e1afe10800000000000000
+      internalID: 2232129817840474584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_21
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 197
+        width: 62
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5b1e52b78440abf0800000000000000
+      internalID: -315176624312149153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_22
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 261
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71a0380ef558a9650800000000000000
+      internalID: 6240446880510315031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_23
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 187
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 844ac38a61edd66c0800000000000000
+      internalID: -4148415492845165496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_24
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 197
+        width: 67
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 730bf42cca2d35ac0800000000000000
+      internalID: -3867516015544913865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_25
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 187
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c4d070e99d181860800000000000000
+      internalID: 7500777726118253763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_26
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 197
+        width: 68
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a09f24d8fd61fa570800000000000000
+      internalID: 8480021772765427978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_27
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 187
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9060bd23474aff7a0800000000000000
+      internalID: -6341168931337992695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_28
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 212
+        width: 39
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 000f84deccd20ad60800000000000000
+      internalID: 7899364104585408512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_29
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 260
+        width: 35
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc5eb2c26f2b22d00800000000000000
+      internalID: 946515642073998795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_30
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 258
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d6c4d0060ce17e00800000000000000
+      internalID: 1040872499427198678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_31
+      rect:
+        serializedVersion: 2
+        x: 1113
+        y: 187
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c354b7f4ad77e6c0800000000000000
+      internalID: -4114181587095759931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_32
+      rect:
+        serializedVersion: 2
+        x: 1099
+        y: 244
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19310d94556a5eb0800000000000000
+      internalID: -4730357044513523429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_33
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 229
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1db1771aede3c0a30800000000000000
+      internalID: 4182787279832947665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_34
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 197
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40c1250f5639443c0800000000000000
+      internalID: -4376210871864386556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_35
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 201
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9070b3623c945bb0800000000000000
+      internalID: -4948158350338527077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_36
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 7
+        width: 35
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf538e840e309bd10800000000000000
+      internalID: 2141747359622116860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SadEnd_37
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 7
+        width: 30
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6da5cd440e65e800800000000000000
+      internalID: 641039486733888876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SadEnd_0: 1721304553434661711
+      SadEnd_1: 3713474045944000302
+      SadEnd_10: 1146481666283588815
+      SadEnd_11: 1865074627090905504
+      SadEnd_12: -4366336083739578692
+      SadEnd_13: 2040124183493184336
+      SadEnd_14: 1849964728797912616
+      SadEnd_15: 1598413427300043958
+      SadEnd_16: -2071129978316839974
+      SadEnd_17: -1471985087491104687
+      SadEnd_18: -4587306178512176189
+      SadEnd_19: -8378974564290626215
+      SadEnd_2: -7590903694596236577
+      SadEnd_20: 2232129817840474584
+      SadEnd_21: -315176624312149153
+      SadEnd_22: 6240446880510315031
+      SadEnd_23: -4148415492845165496
+      SadEnd_24: -3867516015544913865
+      SadEnd_25: 7500777726118253763
+      SadEnd_26: 8480021772765427978
+      SadEnd_27: -6341168931337992695
+      SadEnd_28: 7899364104585408512
+      SadEnd_29: 946515642073998795
+      SadEnd_3: 1162810302657065345
+      SadEnd_30: 1040872499427198678
+      SadEnd_31: -4114181587095759931
+      SadEnd_32: -4730357044513523429
+      SadEnd_33: 4182787279832947665
+      SadEnd_34: -4376210871864386556
+      SadEnd_35: -4948158350338527077
+      SadEnd_36: 2141747359622116860
+      SadEnd_37: 641039486733888876
+      SadEnd_4: 6730130219836042751
+      SadEnd_5: -1312479199221550276
+      SadEnd_6: -7718880803146927073
+      SadEnd_7: -2960282394817126743
+      SadEnd_8: 7203196791909344991
+      SadEnd_9: 2679563124728935406
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
