@@ -316,6 +316,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
                 // --- ส่วนที่แก้ไข: จัดการเฟส 2 และ 3 ให้เล่น 2 รอบ ---
                 if ((currentPhase == 2 || currentPhase == 3) && eventCounter == 0) 
                 {
+                    if (processedNotes.Count > 0) {
+                        float lastNoteTimeStamp = processedNotes[processedNotes.Count - 1].timestamp;
+                        
+                        // ถ้าเวลาของ Event ตัวแรก ห่างจากโน้ตปกติล่าสุดน้อยกว่า 2 วินาที 
+                        // ให้เลื่อนเวลาเริ่ม Event ออกไป เพื่อให้โน้ตปกติมีเวลาวิ่งจนจบ
+                        if (timeStamp - lastNoteTimeStamp < 2.0f) {
+                            timeStamp = lastNoteTimeStamp + 2.0f; 
+                        }
+                    }
                     int lastNoteType = -1;
                     if (processedNotes.Count > 0) {
                         lastNoteType = processedNotes[processedNotes.Count - 1].noteTypeIndex;
@@ -386,6 +395,9 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     {
                         if (eventCounter == 8) {
                             lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*4); 
+                        }
+                        else if(eventCounter == 1) {
+                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*3); 
                         }
                         else
                         {
@@ -483,6 +495,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
                         isLeftHand = pickedLeft // ล็อคข้างลงในข้อมูลโน้ต
                     });
                     lastScanSampleIndex = i;
+                    // if (currentDifficulty == "Easy" || currentDifficulty == "Medium")
+                    // {
+                    //         lastScanSampleIndex = i;
+                    // }
+                    // else
+                    // {
+                    //         lastScanSampleIndex = i + intervalInSamples/2;
+                    // }
+                
                 }
                 else 
                 {

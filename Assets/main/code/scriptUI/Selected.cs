@@ -34,7 +34,6 @@ public class Selected : MonoBehaviour
 
     [Header("Song List")]
     [SerializeField] private List<SongData> playlist;
-    [SerializeField] private AudioSource menuAudioSource;
     [SerializeField] private AudioClip playlistBGM;
 
     [Header("First Button Reference")]
@@ -157,20 +156,13 @@ public class Selected : MonoBehaviour
         UpdatePreviewUI();
         UpdatePlaylistUI();
         UpdateMenuGestureIcons(song);
-        if (menuAudioSource != null) 
+        StopAllCoroutines(); // หยุดการ Fade เดิมเพื่อไม่ให้เสียงตีกัน
+        
+        // เช็คว่าหน้าจอ Selected ต้องเปิดอยู่ถึงจะเล่นเพลง
+        if (SelectedCanvas.activeSelf)
         {
-            StopAllCoroutines(); // หยุดการ Fade เดิมเพื่อไม่ให้เสียงตีกัน
-            
-            // เช็คว่าหน้าจอ Selected ต้องเปิดอยู่ถึงจะเล่นเพลง
-            if (SelectedCanvas.activeSelf)
-            {
-                // ใช้ Coroutine เพื่อให้เสียงค่อยๆ ดังขึ้น (Fade In) ตามที่คุณตั้งใจไว้
-                StartCoroutine(PlayPreviewWithFade(song)); 
-            }
-            else
-            {
-                menuAudioSource.Stop();
-            }
+            // ใช้ Coroutine เพื่อให้เสียงค่อยๆ ดังขึ้น (Fade In) ตามที่คุณตั้งใจไว้
+            StartCoroutine(PlayPreviewWithFade(song)); 
         }
     }
     private IEnumerator PlayPreviewWithFade(SongData song)
@@ -378,83 +370,6 @@ public class Selected : MonoBehaviour
         LoadPlayerData(); // โหลดข้อมูลทันทีที่เปิดหน้าเมนู
     }
 
-    // public void UpdatePlaylist(List<SongData> newSongs)
-    // {
-    //     playlist = newSongs;
-    //     LastCategorySongs = newSongs; // บันทึกไว้ว่าตอนนี้อยู่หมวดหมู่ไหน
-    //     bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
-    //     SongData songToShow = null;
-
-    //     for (int i = 0; i < fixedButtons.Length; i++)
-    //     {
-    //         fixedButtons[i].gameObject.SetActive(true);
-    //         if (i < playlist.Count)
-    //         {
-    //             // ถ้ามีข้อมูลเพลง ให้แสดงปุ่มและอัปเดตข้อมูล
-    //             fixedButtons[i].Setup(playlist[i]);
-                
-    //             // รีเซ็ตสีปุ่มให้เป็นปกติ (ยกเว้นปุ่มแรก)
-    //             if (isCurrentSongInThisPlaylist)
-    //             {
-    //                 bool isSelected = (playlist[i] == SelectedSong);
-    //                 fixedButtons[i].SetUIAppearance(isSelected);
-    //                 if (isSelected) songToShow = playlist[i];
-    //             }
-    //             else
-    //             {
-    //                 bool isFirst = (i == 0);
-    //                 fixedButtons[i].SetUIAppearance(isFirst);
-    //                 if (isFirst) songToShow = playlist[0];
-    //             }
-    //         }
-    //         else
-    //         {
-    //             fixedButtons[i].SetComingSoon(); 
-    //             fixedButtons[i].SetUIAppearance(false);
-    //         }
-    //     }
-    //     // 3. อัปเดต Panel ด้านขวา (Preview) ให้ตรงกับปุ่มที่สว่าง
-    //     if (songToShow != null && songToShow != SelectedSong)
-    //     {
-    //         SetPreviewSong(songToShow);
-    //     }
-    // }
-    // public void UpdatePlaylist(List<SongData> newSongs)
-    // {
-    //     playlist = newSongs;
-    //     LastCategorySongs = newSongs; 
-        
-
-    //     // 1. ตรวจสอบว่า SelectedSong ปัจจุบัน อยู่ใน Playlist ใหม่นี้หรือไม่
-    //     bool isCurrentSongInThisPlaylist = playlist.Contains(SelectedSong);
-
-    //     // 2. ถ้าเพลงล่าสุดไม่ได้อยู่ในหมวดนี้ และเราต้องการให้ "มีเพลงถูกเลือกเสมอ"
-    //     // ให้เราอัปเดต SelectedSong เป็นเพลงแรกของหมวดใหม่ไปเลย (เพื่อความ Sync)
-    //     if (!isCurrentSongInThisPlaylist && playlist.Count > 0)
-    //     {
-    //         SelectedSong = playlist[0]; 
-    //         SetPreviewSong(SelectedSong); // อัปเดต Panel ขวาให้ตรงกับเพลงแรกของหมวดใหม่
-    //     }
-
-    //     // 3. วนลูปอัปเดตปุ่มทางซ้าย
-    //     for (int i = 0; i < fixedButtons.Length; i++)
-    //     {
-    //         fixedButtons[i].gameObject.SetActive(true);
-    //         if (i < playlist.Count)
-    //         {
-    //             fixedButtons[i].Setup(playlist[i]);
-                
-    //             // เช็คว่าปุ่มนี้คือ SelectedSong หรือไม่ (ซึ่งตอนนี้มัน Sync กับ Panel ขวาแล้ว)
-    //             bool isSelected = (playlist[i] == SelectedSong);
-    //             fixedButtons[i].SetUIAppearance(isSelected);
-    //         }
-    //         else
-    //         {
-    //             fixedButtons[i].SetComingSoon(); 
-    //             fixedButtons[i].SetUIAppearance(false);
-    //         }
-    //     }
-    // }
     public void UpdatePlaylist(List<SongData> newSongs, string categoryName)
     {
         playlist = newSongs;

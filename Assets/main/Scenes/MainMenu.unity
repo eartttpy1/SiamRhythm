@@ -391,6 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Mainmenu
   nextSceneName: MusicSelect
   mainmenuAudioClip: {fileID: 8300000, guid: 44a13f571ff40774b82ed4fe53a3c5a0, type: 3}
+  audioMixer: {fileID: 24100000, guid: 9a5cfb2dbfdeed5459e5371330f8fac2, type: 2}
 --- !u!4 &312326774
 Transform:
   m_ObjectHideFlags: 0
