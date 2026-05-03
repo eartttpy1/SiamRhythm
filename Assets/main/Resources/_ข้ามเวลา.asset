@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E02\u0E49\u0E32\u0E21\u0E40\u0E27\u0E25\u0E32"
   artistName: Violette Wautier
-  pictureSong: {fileID: 0}
-  pictureSongParallelogram: {fileID: 0}
+  pictureSong: {fileID: 7184703163868852057, guid: fc63c1026c7417145ae3a0b63b9c084b, type: 3}
+  pictureSongParallelogram: {fileID: -855298285791758126, guid: de19e924b3c1ca34ab1328da2fe8a8cd, type: 3}
   audioClip: {fileID: 8300000, guid: aef221944d1d9dd4d8afb826cbcd6ac6, type: 3}
   previewStartTime: 76
+  songPostProcessProfile: {fileID: 11400000, guid: bfcadc40605cd8746805290df03de43b, type: 2}
   easy:
     threshold: 0.01
     spawnInterval: 2
@@ -36,8 +37,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56b729b65eb1bfe4283c7c2c07d9030c, type: 2}
   - {fileID: 11400000, guid: ee71f20c9a21e204ab939e2741348c4c, type: 2}
   phaseAnimatorControllers:
-  - {fileID: 22100000, guid: 03d06c9d8a47f4a4cb67698ed27151f6, type: 2}
-  - {fileID: 22100000, guid: 1475e02b655249742918b229039cad56, type: 2}
-  - {fileID: 22100000, guid: fa0183283d4424c47a62a16494974db7, type: 2}
+  - {fileID: 22100000, guid: 80e331d5db8311640842f03f8e879123, type: 2}
   loopAnimatorControllers:
-  - {fileID: 9100000, guid: 3b46fd1c90ea6db47854b76ff5f712f9, type: 2}
+  - {fileID: 9100000, guid: 87319479bc89cc24192a3f49b7d3349a, type: 2}

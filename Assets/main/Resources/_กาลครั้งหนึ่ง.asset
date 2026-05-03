@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E01\u0E32\u0E25\u0E04\u0E23\u0E31\u0E49\u0E07\u0E2B\u0E19\u0E36\u0E48\u0E07"
   artistName: "[JUNENOM] cover by \u0E1B\u0E23\u0E32\u0E07 \u0E1B\u0E23\u0E32\u0E07\u0E17\u0E34\u0E1E\u0E22\u0E4C"
-  pictureSong: {fileID: 0}
-  pictureSongParallelogram: {fileID: 0}
+  pictureSong: {fileID: 21300000, guid: d6db5b0f1bd90c2479d8fd4cc73f1d82, type: 3}
+  pictureSongParallelogram: {fileID: 21300000, guid: d97188766575b5a4d9cbc26d1f18c821, type: 3}
   audioClip: {fileID: 8300000, guid: 71199f5f5fd1dd84799310caf6e53f93, type: 3}
   previewStartTime: 2
-  songPostProcessProfile: {fileID: 0}
+  songPostProcessProfile: {fileID: 11400000, guid: 6f15fea079607d742a4fcf255d17b370, type: 2}
   easy:
     threshold: 0.01
     spawnInterval: 2

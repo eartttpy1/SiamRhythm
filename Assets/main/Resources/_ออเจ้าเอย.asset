@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: "\u0E2D\u0E2D\u0E40\u0E08\u0E49\u0E32\u0E40\u0E2D\u0E22"
   artistName: "\u0E1E\u0E35\u0E17 \u0E1E\u0E25"
-  pictureSong: {fileID: -6032596148678175637, guid: a5f70f2d63d890344bbb530b772147ad, type: 3}
-  pictureSongParallelogram: {fileID: 7608004383065208429, guid: 3bf28f2287315854b883306f847e1baf, type: 3}
+  pictureSong: {fileID: 21300000, guid: b49a67cf5ea3caf4b924b90033e35ab8, type: 3}
+  pictureSongParallelogram: {fileID: 21300000, guid: ef7fab2d849ed5b49a52abff2b601618, type: 3}
   audioClip: {fileID: 8300000, guid: 09026f41539e29e46b943b69285dac4e, type: 3}
   previewStartTime: 53
-  songPostProcessProfile: {fileID: 11400000, guid: 6f15fea079607d742a4fcf255d17b370, type: 2}
+  songPostProcessProfile: {fileID: 11400000, guid: 2def5c9fa834fb54487e55c4b464b3db, type: 2}
   easy:
     threshold: 0.01
     spawnInterval: 2
@@ -34,7 +34,7 @@ MonoBehaviour:
   currentSongGestures:
   - {fileID: 11400000, guid: 86660ab9c82cd2b4cb4e61c27790b4c8, type: 2}
   - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}
-  - {fileID: 11400000, guid: 0e9e4af45d2d6f54ba876050f3b31bf9, type: 2}
+  - {fileID: 11400000, guid: ee71f20c9a21e204ab939e2741348c4c, type: 2}
   - {fileID: 11400000, guid: 6cf6ff19e23ef54498ca588fe6fc2c9b, type: 2}
   phaseAnimatorControllers:
   - {fileID: 22100000, guid: 012b20443b5293043a9eff7160dec8fc, type: 2}
