@@ -83,18 +83,30 @@ public class DualHandManager : BaseRhythmManager
         }
 
         if (GestureReceiver.Instance != null) {
+            // ดึงค่ามาพักไว้ก่อนเพื่อลดการเข้าถึง Instance ซ้ำๆ
+
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                // เช็คมือซ้ายอิสระ
-                if (GestureReceiver.Instance.currentData.left != "none" && 
-                    GestureReceiver.Instance.currentData.left == currentSongGestures[i].aiGestureLeft) {
+                string aiLeft = GestureReceiver.Instance.currentData.left;
+                string aiRight = GestureReceiver.Instance.currentData.right;
+
+                // 1. เช็คมือซ้าย: ท่าต้องตรง และต้องไม่เป็น "none"
+                if (aiRight == currentSongGestures[i].aiGestureLeft) {
+                    // ส่ง targetLeft ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งซ้าย
                     CheckHit((NoteType)i, targetLeft);
+                    
+                    // สำคัญ: ลบเฉพาะค่ามือซ้าย เพื่อไม่ให้กดซ้ำใน Frame ถัดไป
                     GestureReceiver.Instance.ClearGesture(true, false);
+                    // Debug.Log($"<color=cyan>Dual-Left Match!</color> Gesture: {aiLeft}");
                 }
-                // เช็คมือขวาอิสระ
-                if (GestureReceiver.Instance.currentData.right != "none" && 
-                    GestureReceiver.Instance.currentData.right == currentSongGestures[i].aiGestureRight) {
+
+                // 2. เช็คมือขวา: ท่าต้องตรง และต้องไม่เป็น "none"
+                if (aiLeft == currentSongGestures[i].aiGestureRight) {
+                    // ส่ง targetRight ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งขวา
                     CheckHit((NoteType)i, targetRight);
+                    
+                    // สำคัญ: ลบเฉพาะค่ามือขวา
                     GestureReceiver.Instance.ClearGesture(false, true);
+                    // Debug.Log($"<color=magenta>Dual-Right Match!</color> Gesture: {aiRight}");
                 }
             }
         }

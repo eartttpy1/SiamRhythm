@@ -82,34 +82,8 @@ public class SingleHandManager : BaseRhythmManager
                     GestureReceiver.Instance.ClearGesture(aiLeft == currentSongGestures[i].aiGestureLeft, 
                                         aiRight == currentSongGestures[i].aiGestureRight);
                 }
-                else
-                {
-                    Debug.Log($"No Match. AI Left: {aiLeft}, AI Right: {aiRight}, Target Left: {currentSongGestures[i].aiGestureLeft}, Target Right: {currentSongGestures[i].aiGestureRight}");
-                }
             }
         }
-        // if (aiReceiver == null) return;
-
-        // string aiLeft = aiReceiver.currentData.right.ToLower().Trim();
-
-        // if (aiLeft != "none") {
-        //     for (int i = 0; i < currentSongGestures.Length; i++) {
-        //         string targetL = currentSongGestures[i].aiGestureLeft.ToLower().Trim();
-
-        //         // ใส่ Log เพื่อดูว่า "คำ" มันตรงกันจริงๆ ไหม
-        //         Debug.Log($"Comparing AI:[{aiLeft}] with Target:[{targetL}]");
-
-        //         if (aiLeft == targetL) {
-        //             Debug.Log("<color=yellow>MATCH FOUND!</color>");
-        //             CheckHit((NoteType)i, targetLeft);
-        //             aiReceiver.ClearGesture(true, false);
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("aiReceiver is missing!");
-        // }
     }
 
     protected override void CheckHit(NoteType type, Transform targetSide)

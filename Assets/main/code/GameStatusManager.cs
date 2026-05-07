@@ -114,6 +114,7 @@ public class GameStatusManager : MonoBehaviour
 
     void Update()
     {
+        if (baseRhythmManager != null && !BaseRhythmManager.isGameStarted) return; 
         if (isGameOver) return;
         
         UpdateTimer();
@@ -247,8 +248,7 @@ public class GameStatusManager : MonoBehaviour
         // currentTime > (totalSongTime * 0.9f)
         //totalNotesEncountered == rhythmManager.totalNotesCount
         if (!musicSource.isPlaying) {
-            // Debug.Log("Music Ended. Remaining Notes: " + remainingNotes.Length);
-            // foreach(GameObject n in remainingNotes) Debug.Log("Stuck Note Name: " + n.name);
+            Debug.Log("Music Ended." + baseRhythmManager.totalNotesCount + " | " + totalNotesEncountered);
         }
         if (!musicSource.isPlaying && totalNotesEncountered >= baseRhythmManager.totalNotesCount)
         {

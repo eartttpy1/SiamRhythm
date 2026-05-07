@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
 public abstract class BaseRhythmManager : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public abstract class BaseRhythmManager : MonoBehaviour
     public Vector3[] phase2Positions = new Vector3[4]; // กระจาย
     public Vector3[] phase3Positions = new Vector3[4]; // ขวาไปซ้าย
 
+    [Header("Loading UI")]
+    public GameObject LoadingAICanvas;
+    public static bool isGameStarted = false;
+
 
     // [Header("Phase Event Visuals")]
     // public GameObject coverPrefab; // แผ่นบัง (เช่น Sprite วงกลมสีดำ)
@@ -60,6 +65,11 @@ public abstract class BaseRhythmManager : MonoBehaviour
     protected abstract void CheckHit(NoteType type, Transform targetSide);
     protected abstract void HandModeTextUpdate();
     protected abstract void OnDrawGizmosSelected();
+
+    public void Awake()
+    {
+        BaseRhythmManager.isGameStarted = false;
+    }
     
     public void LoadSongData(SongData data, string difficulty)
     {
@@ -99,8 +109,29 @@ public abstract class BaseRhythmManager : MonoBehaviour
             statusManager.SetupAllControllers(data.phaseAnimatorControllers, data.loopAnimatorControllers);
         }
 
-        if (musicSource.clip != null) {
+        StartCoroutine(WaitForAIAndStartMusic());
+    }
+    private IEnumerator WaitForAIAndStartMusic()
+    {
+        if (LoadingAICanvas != null) LoadingAICanvas.SetActive(true);
+        // แสดง UI "Waiting for AI..." หรือ Loading ถ้าคุณมี
+        if (ratingText != null) ratingText.text = "WAITING FOR AI...";
+
+        // รอจนกว่า GestureReceiver จะได้รับภาพแรกจาก Python
+        while (GestureReceiver.Instance == null || !GestureReceiver.Instance.isAIReady)
+        {
+            yield return null; 
+        }
+        if (LoadingAICanvas != null) LoadingAICanvas.SetActive(false);
+        // เมื่อ AI พร้อมแล้ว ค่อยเริ่มเล่นเพลงและปล่อยโน้ต
+        if (ratingText != null) ratingText.text = "READY!";
+        yield return new WaitForSeconds(1f); // พักหายใจ 1 วินาทีก่อนเริ่ม
+        
+        if (musicSource != null && musicSource.clip != null)
+        {
             musicSource.Play();
+            BaseRhythmManager.isGameStarted = true;
+            Debug.Log("Music Started." + BaseRhythmManager.isGameStarted);
         }
     }
     public void UpdateIconPreviews()
