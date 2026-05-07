@@ -228,7 +228,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             ratingText.text = "BAD";
             combo = 0;
             statusManager.AddScore(0.4f);
-            statusManager.UpdateHP(-20f);
+            statusManager.UpdateHP(-10f);
             statusManager.UpdateAccuracy(0f);
         }
         statusManager.RegisterHit(rating, combo + 1);

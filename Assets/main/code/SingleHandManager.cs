@@ -65,16 +65,15 @@ public class SingleHandManager : BaseRhythmManager
         }
         // 2. ตรวจสอบจาก AI (สมมติว่า AI ส่ง String มาเก็บในตัวแปร aiInput จากภายนอก)
         if (GestureReceiver.Instance != null) {
-            Debug.Log("Mooo");
             // วนลูปเช็คโน้ตทุกชนิดที่อาจจะกดได้
             for (int i = 0; i < currentSongGestures.Length; i++) {
                 string aiLeft = GestureReceiver.Instance.currentData.left;
                 string aiRight = GestureReceiver.Instance.currentData.right;
-                Debug.Log("Mooo1");
                 // เช็คว่ามือใดมือนึงทำท่าตรงกับโน้ตไหม
                 // 
                 if ((aiLeft == currentSongGestures[i].aiGestureLeft) ||
-                    (aiRight == currentSongGestures[i].aiGestureRight)) 
+                    (aiRight == currentSongGestures[i].aiGestureRight) ||(aiLeft == currentSongGestures[i].aiGestureRight) ||
+                    (aiRight == currentSongGestures[i].aiGestureLeft)) 
                 {
                     Debug.Log("Mooo2");
                     Debug.Log($"<color=green>Gesture Match!</color> Index: {i}, Hand: {aiLeft}, GestureName: {currentSongGestures[i].aiGestureLeft}");
@@ -82,6 +81,10 @@ public class SingleHandManager : BaseRhythmManager
                     // ลบค่าเฉพาะข้างที่ทำท่าตรง
                     GestureReceiver.Instance.ClearGesture(aiLeft == currentSongGestures[i].aiGestureLeft, 
                                         aiRight == currentSongGestures[i].aiGestureRight);
+                }
+                else
+                {
+                    Debug.Log($"No Match. AI Left: {aiLeft}, AI Right: {aiRight}, Target Left: {currentSongGestures[i].aiGestureLeft}, Target Right: {currentSongGestures[i].aiGestureRight}");
                 }
             }
         }
