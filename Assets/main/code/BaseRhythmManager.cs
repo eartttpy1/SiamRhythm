@@ -281,7 +281,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         ratingText.text = "MISS"; 
         statusManager.RegisterHit("MISS", 0);
         statusManager.AddScore(0f);
-        statusManager.UpdateHP(100f);
+        statusManager.UpdateHP(-20f);
         statusManager.UpdateAccuracy(0f);
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
