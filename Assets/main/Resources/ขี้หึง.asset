@@ -22,7 +22,7 @@ MonoBehaviour:
   easy:
     threshold: 0.01
     spawnInterval: 2
-    noteSpeed: 4
+    noteSpeed: 5
   medium:
     threshold: 0.01
     spawnInterval: 1.5
