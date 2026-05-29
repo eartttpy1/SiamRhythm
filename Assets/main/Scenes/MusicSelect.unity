@@ -4466,7 +4466,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f920638710ae79b4994c9435444999aa, type: 2}
   - {fileID: 11400000, guid: d517195449739584f866ed14daf09544, type: 2}
   - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
-  menuAudioSource: {fileID: 1077414171}
   playlistBGM: {fileID: 8300000, guid: 1d17c57a58a82f74bb45debd0a125f22, type: 3}
   firstSongButton: {fileID: 344904053}
   bestScoreText: {fileID: 3536575624914188660}
@@ -6815,6 +6814,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
   - {fileID: 11400000, guid: 542dd946581721f4ba5f8549eb100a45, type: 2}
   - {fileID: 11400000, guid: 5b264d0d1700a6d48ae92c7c3fb7854d, type: 2}
+  - {fileID: 11400000, guid: 4af72834db47b90409d86a2cce558e13, type: 2}
   selectedScript: {fileID: 934255550}
   playlistCanvas: {fileID: 2052548338}
   selectedCanvas: {fileID: 363990919}

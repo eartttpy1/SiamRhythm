@@ -259,7 +259,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             ratingText.text = "BAD";
             combo = 0;
             statusManager.AddScore(0.4f);
-            statusManager.UpdateHP(-10f);
+            statusManager.UpdateHP(-2f);
             statusManager.UpdateAccuracy(0f);
         }
         statusManager.RegisterHit(rating, combo + 1);
@@ -281,7 +281,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         ratingText.text = "MISS"; 
         statusManager.RegisterHit("MISS", 0);
         statusManager.AddScore(0f);
-        statusManager.UpdateHP(-20f);
+        statusManager.UpdateHP(-2f);
         statusManager.UpdateAccuracy(0f);
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
