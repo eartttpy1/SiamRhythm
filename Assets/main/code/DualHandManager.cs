@@ -84,32 +84,56 @@ public class DualHandManager : BaseRhythmManager
 
         if (GestureReceiver.Instance != null) {
             // ดึงค่ามาพักไว้ก่อนเพื่อลดการเข้าถึง Instance ซ้ำๆ
+            string aiLeft = GestureReceiver.Instance.currentData.left;
+            string aiRight = GestureReceiver.Instance.currentData.right;
 
             for (int i = 0; i < currentSongGestures.Length; i++) {
-                string aiLeft = GestureReceiver.Instance.currentData.left;
-                string aiRight = GestureReceiver.Instance.currentData.right;
-
-                // 1. เช็คมือซ้าย: ท่าต้องตรง และต้องไม่เป็น "none"
-                if (aiLeft == currentSongGestures[i].aiGestureLeft) {
-                    // ส่ง targetLeft ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งซ้าย
-                    CheckHit((NoteType)i, targetLeft);
-                    
-                    // สำคัญ: ลบเฉพาะค่ามือซ้าย เพื่อไม่ให้กดซ้ำใน Frame ถัดไป
-                    GestureReceiver.Instance.ClearGesture(true, false);
-                    // Debug.Log($"<color=cyan>Dual-Left Match!</color> Gesture: {aiLeft}");
+                // ตรวจสอบว่ามี EventNote (static event) ของท่านี้แสดงอยู่หรือไม่
+                bool isEventNoteActive = false;
+                foreach (var note in activeNotes)
+                {
+                    if (note != null && note.type == (NoteType)i && note.isStaticEvent)
+                    {
+                        isEventNoteActive = true;
+                        break;
+                    }
                 }
 
-                // 2. เช็คมือขวา: ท่าต้องตรง และต้องไม่เป็น "none"
-                if (aiRight == currentSongGestures[i].aiGestureRight) {
-                    // ส่ง targetRight ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งขวา
-                    CheckHit((NoteType)i, targetRight);
-                    
-                    // สำคัญ: ลบเฉพาะค่ามือขวา
-                    GestureReceiver.Instance.ClearGesture(false, true);
-                    // Debug.Log($"<color=magenta>Dual-Right Match!</color> Gesture: {aiRight}");
+                if (isEventNoteActive)
+                {
+                    // โหมด 2 มือสำหรับ EventNote: ต้องทำทั้ง 2 มือเหมือนกัน
+                    if (aiLeft == currentSongGestures[i].aiGestureLeft && aiRight == currentSongGestures[i].aiGestureRight)
+                    {
+                        CheckHit((NoteType)i, null);
+                        GestureReceiver.Instance.ClearGesture(true, true);
+                    }
+                }
+                else
+                {
+                    // โหมดปกติแยกมือซ้าย-ขวา
+                    // 1. เช็คมือซ้าย: ท่าต้องตรง
+                    if (aiLeft == currentSongGestures[i].aiGestureLeft) {
+                        // ส่ง targetLeft ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งซ้าย
+                        CheckHit((NoteType)i, targetLeft);
+                        
+                        // สำคัญ: ลบเฉพาะค่ามือซ้าย เพื่อไม่ให้กดซ้ำใน Frame ถัดไป
+                        GestureReceiver.Instance.ClearGesture(true, false);
+                        // Debug.Log($"<color=cyan>Dual-Left Match!</color> Gesture: {aiLeft}");
+                    }
+
+                    // 2. เช็คมือขวา: ท่าต้องตรง
+                    if (aiRight == currentSongGestures[i].aiGestureRight) {
+                        // ส่ง targetRight ไปเพื่อให้ CheckHit รู้ว่าต้องเช็คโน้ตที่วิ่งมาฝั่งขวา
+                        CheckHit((NoteType)i, targetRight);
+                        
+                        // สำคัญ: ลบเฉพาะค่ามือขวา
+                        GestureReceiver.Instance.ClearGesture(false, true);
+                        // Debug.Log($"<color=magenta>Dual-Right Match!</color> Gesture: {aiRight}");
+                    }
                 }
             }
         }
+
 
     }
 

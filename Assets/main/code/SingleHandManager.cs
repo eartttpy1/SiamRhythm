@@ -72,8 +72,7 @@ public class SingleHandManager : BaseRhythmManager
                 // เช็คว่ามือใดมือนึงทำท่าตรงกับโน้ตไหม
                 // 
                 if ((aiLeft == currentSongGestures[i].aiGestureLeft) ||
-                    (aiRight == currentSongGestures[i].aiGestureRight) ||(aiLeft == currentSongGestures[i].aiGestureRight) ||
-                    (aiRight == currentSongGestures[i].aiGestureLeft)) 
+                    (aiRight == currentSongGestures[i].aiGestureRight)) 
                 {
                     Debug.Log("Mooo2");
                     Debug.Log($"<color=green>Gesture Match!</color> Index: {i}, Hand: {aiLeft}, GestureName: {currentSongGestures[i].aiGestureLeft}");
