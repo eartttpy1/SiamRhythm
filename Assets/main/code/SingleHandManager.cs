@@ -74,7 +74,6 @@ public class SingleHandManager : BaseRhythmManager
                 if ((aiLeft == currentSongGestures[i].aiGestureLeft) ||
                     (aiRight == currentSongGestures[i].aiGestureRight)) 
                 {
-                    Debug.Log("Mooo2");
                     Debug.Log($"<color=green>Gesture Match!</color> Index: {i}, Hand: {aiLeft}, GestureName: {currentSongGestures[i].aiGestureLeft}");
                     CheckHit((NoteType)i, targetLeft);
                     // ลบค่าเฉพาะข้างที่ทำท่าตรง

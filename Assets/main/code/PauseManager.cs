@@ -74,6 +74,10 @@ public class PauseManager : MonoBehaviour
 
     public void RestartGame()
     {
+        if (SoundEffectsManager.instance != null)
+        {
+            SoundEffectsManager.instance.StopBackgroundMusic(0f);
+        }
         statusManager.SetCursorState(false);
         Time.timeScale = 1f; // ต้องคืนค่าเวลาก่อนโหลดฉากใหม่
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

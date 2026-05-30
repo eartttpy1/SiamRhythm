@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
-public enum NoteType { Pose0, Pose1, Pose2, Pose3, Pose4, Pose5, Pose6, Pose7, Pose8 }
+public enum NoteType { Pose0, Pose1, Pose2, Pose3}
 public abstract class BaseRhythmManager : MonoBehaviour
 {
     [Header("Data Loading")]
@@ -53,11 +53,6 @@ public abstract class BaseRhythmManager : MonoBehaviour
     [Header("Loading UI")]
     public GameObject LoadingAICanvas;
     public static bool isGameStarted = false;
-
-
-    // [Header("Phase Event Visuals")]
-    // public GameObject coverPrefab; // แผ่นบัง (เช่น Sprite วงกลมสีดำ)
-    // private List<GameObject> activeCovers = new List<GameObject>();
 
 
     protected abstract void SpawnNote(NoteData data);
@@ -251,16 +246,16 @@ public abstract class BaseRhythmManager : MonoBehaviour
             PlayHitSound(greatSound, 0.5f);
             statusManager.AddScore(0.7f);
             statusManager.UpdateHP(2f);
-            statusManager.UpdateAccuracy(0.5f);
+            statusManager.UpdateAccuracy(0.7f);
         }
-        // Bad: Score x0.4, HP -20
+        // Bad: Score x0.4, HP -2
         else {
             rating = "BAD";
             ratingText.text = "BAD";
             combo = 0;
             statusManager.AddScore(0.4f);
             statusManager.UpdateHP(-2f);
-            statusManager.UpdateAccuracy(0f);
+            statusManager.UpdateAccuracy(0.4f);
         }
         statusManager.RegisterHit(rating, combo + 1);
         comboText.text = "Combo x " + combo;
@@ -274,7 +269,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
     protected void NoteMissed()
     {
-        // Miss: Score x0, HP -30
+        // Miss: Score x0, HP -2
         combo = 0;
         comboText.text = "Combo: " + combo;
         ratingText.gameObject.SetActive(true);
