@@ -42,7 +42,7 @@ public class PythonManager : MonoBehaviour
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = path;
-
+            startInfo.WorkingDirectory = Path.GetDirectoryName(path);
             // ตั้งค่าให้รันแบบ "เบื้องหลัง"
             startInfo.CreateNoWindow = false;    // ไม่แสดงหน้าต่าง Console สีดำ
             startInfo.UseShellExecute = false;  // จำเป็นต้องเป็น false เพื่อใช้ CreateNoWindow
