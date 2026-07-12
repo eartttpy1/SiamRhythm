@@ -988,10 +988,10 @@ MonoBehaviour:
   targetLeft: {fileID: 2981989479038114114}
   targetRight: {fileID: 8691774760874592430}
   radius: 6.5
-  minAngleLeft: -90
-  maxAngleLeft: 90
-  minAngleRight: 90
-  maxAngleRight: 270
+  minAngleLeft: -45
+  maxAngleLeft: 45
+  minAngleRight: 135
+  maxAngleRight: 225
 --- !u!1 &333235859
 GameObject:
   m_ObjectHideFlags: 0
