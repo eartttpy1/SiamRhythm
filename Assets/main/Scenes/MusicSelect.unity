@@ -6660,9 +6660,13 @@ MonoBehaviour:
   categoryName: LoveSong
   songsInThisCategory:
   - {fileID: 11400000, guid: b6c0f927edc04ab4b937046b3fdc0c66, type: 2}
+  - {fileID: 11400000, guid: 5b264d0d1700a6d48ae92c7c3fb7854d, type: 2}
+  - {fileID: 11400000, guid: 542dd946581721f4ba5f8549eb100a45, type: 2}
+  - {fileID: 11400000, guid: 4af72834db47b90409d86a2cce558e13, type: 2}
   selectedScript: {fileID: 934255550}
   playlistCanvas: {fileID: 2052548338}
   selectedCanvas: {fileID: 363990919}
+  songCountText: {fileID: 538165736}
 --- !u!114 &1429039317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8119,6 +8123,7 @@ MonoBehaviour:
   selectedScript: {fileID: 934255550}
   playlistCanvas: {fileID: 2052548338}
   selectedCanvas: {fileID: 363990919}
+  songCountText: {fileID: 0}
 --- !u!114 &1754530714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10333,6 +10338,7 @@ MonoBehaviour:
   selectedScript: {fileID: 934255550}
   playlistCanvas: {fileID: 2052548338}
   selectedCanvas: {fileID: 363990919}
+  songCountText: {fileID: 406628286}
 --- !u!114 &2070021462
 MonoBehaviour:
   m_ObjectHideFlags: 0
