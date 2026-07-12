@@ -18,19 +18,19 @@ MonoBehaviour:
   pictureSongParallelogram: {fileID: 21300000, guid: d97188766575b5a4d9cbc26d1f18c821, type: 3}
   audioClip: {fileID: 8300000, guid: 71199f5f5fd1dd84799310caf6e53f93, type: 3}
   previewStartTime: 2
-  songPostProcessProfile: {fileID: 11400000, guid: 6f15fea079607d742a4fcf255d17b370, type: 2}
+  songPostProcessProfile: {fileID: 11400000, guid: c92b0c5f0ab743f4eacf9714367e61ab, type: 2}
   easy:
-    threshold: 0.01
-    spawnInterval: 2
-    noteSpeed: 5
-  medium:
-    threshold: 0.01
-    spawnInterval: 1.5
-    noteSpeed: 6
-  hard:
     threshold: 0.01
     spawnInterval: 1
     noteSpeed: 7
+  medium:
+    threshold: 0.01
+    spawnInterval: 0.75
+    noteSpeed: 9
+  hard:
+    threshold: 0.01
+    spawnInterval: 0.5
+    noteSpeed: 11
   currentSongGestures:
   - {fileID: 11400000, guid: 86660ab9c82cd2b4cb4e61c27790b4c8, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

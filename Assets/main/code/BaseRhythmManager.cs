@@ -362,15 +362,15 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     float setGap, gap;
                     if (currentDifficulty == "Easy") {
                         gap = spawnInterval;
-                        setGap = spawnInterval * 2.5f; 
+                        setGap = spawnInterval * 4.5f;
                     } 
                     else if (currentDifficulty == "Medium") {
                         gap = spawnInterval;
-                        setGap = spawnInterval * 3.0f;
+                        setGap = spawnInterval * 6.2f;
                     } 
                     else {
-                        gap = spawnInterval * 1.5f;
-                        setGap = spawnInterval * 4.5f;
+                        gap = spawnInterval;
+                        setGap = spawnInterval * 9.0f;
                     }
                     // รอบที่ 1: ลำดับ 0 -> 1 -> 2 -> 3 (ซ้ายไปขวา)
                     for (int e = 0; e < 4; e++) {
@@ -408,31 +408,20 @@ public abstract class BaseRhythmManager : MonoBehaviour
 
                     eventCounter = 8; // นับว่าทำ Event ครบแล้ว (8 ตัว)
                     float lastNoteTime = secondRoundStart + (3 * gap);
-                    if(currentDifficulty == "Easy" || currentDifficulty == "Medium"){
-                        if (eventCounter == 8) {
-                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
-                        }
-                        else
-                        {
-                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples); 
-                        }
+                    if (currentDifficulty == "Easy")
+                    {
+                        lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples * 4.5f); // 3.0s
+                    }
+                    else if (currentDifficulty == "Medium")
+                    {
+                        lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples * 5.5f);
                     }
                     else
                     {
-                        if (eventCounter == 8) {
-                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*4); 
-                        }
-                        else if(eventCounter == 1) {
-                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*3); 
-                        }
-                        else
-                        {
-                            lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples*2); 
-                        }
+                        lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels) + intervalInSamples * 9.7f); // 1.5s
                     }
                     // เลื่อนดัชนีการสแกนไปข้างหน้าเพื่อไม่ให้โน้ตปกติมาเกิดทับช่วง Event
-                    // lastScanSampleIndex = (int)((lastNoteTime * sampleRate * channels));
-                    // i = lastScanSampleIndex;
+                    i = lastScanSampleIndex;
                 }
                 // --- เฟส 1 หรือโน้ตปกติ ---
                 else if (eventCounter < 4 && currentPhase == 1) 
@@ -454,31 +443,34 @@ public abstract class BaseRhythmManager : MonoBehaviour
                     if (currentDifficulty == "Easy")
                     {
                         if (eventCounter == 4) {
-                            lastScanSampleIndex = i + intervalInSamples*2; 
+                            lastScanSampleIndex = i + intervalInSamples * 4; // 3.0s
+                            i = lastScanSampleIndex;
                         }
                         else
                         {
-                            lastScanSampleIndex = i;
+                            lastScanSampleIndex = i + intervalInSamples / 2;
                         } 
                     }
                     else if(currentDifficulty == "Medium")
                     {
                         if (eventCounter == 4) {
-                            lastScanSampleIndex = i + intervalInSamples*3; 
+                            lastScanSampleIndex = i + intervalInSamples * 5; // 2.25s
+                            i = lastScanSampleIndex;
                         }
                         else
                         {
-                            lastScanSampleIndex = i;
+                            lastScanSampleIndex = i + intervalInSamples / 2;
                         } 
                     }
                     else
                     {
                         if (eventCounter == 4) {
-                            lastScanSampleIndex = i + intervalInSamples*4; 
+                            lastScanSampleIndex = i + intervalInSamples * 8; // 1.5s
+                            i = lastScanSampleIndex;
                         }
                         else
                         {
-                            lastScanSampleIndex = i + intervalInSamples/2;
+                            lastScanSampleIndex = i + intervalInSamples / 2;
                         } 
                     }
                     Debug.Log(intervalInSamples);

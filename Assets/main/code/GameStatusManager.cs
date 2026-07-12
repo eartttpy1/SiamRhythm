@@ -386,10 +386,11 @@ public class GameStatusManager : MonoBehaviour
     {
         rank = " ";
         if (acc == 100) rank = "K";
-        else if (acc >= 90) rank = "S";
-        else if (acc >= 85) rank = "A";
-        else if (acc >= 75) rank = "B";
-        else if (acc >= 60) rank = "C";
+        else if (acc >= 85) rank = "S";
+        else if (acc >= 75) rank = "A";
+        else if (acc >= 65) rank = "B";
+        else if (acc >= 55) rank = "C";
+        else if (acc >= 45) rank = "D";
         else rank = "F";
     }
 

@@ -21,16 +21,16 @@ MonoBehaviour:
   songPostProcessProfile: {fileID: 11400000, guid: bfcadc40605cd8746805290df03de43b, type: 2}
   easy:
     threshold: 0.01
-    spawnInterval: 2
-    noteSpeed: 5
-  medium:
-    threshold: 0.01
-    spawnInterval: 1.5
-    noteSpeed: 6
-  hard:
-    threshold: 0.01
     spawnInterval: 1
     noteSpeed: 7
+  medium:
+    threshold: 0.01
+    spawnInterval: 0.75
+    noteSpeed: 9
+  hard:
+    threshold: 0.01
+    spawnInterval: 0.5
+    noteSpeed: 11
   currentSongGestures:
   - {fileID: 11400000, guid: 765955ee4e077324e974221f4afac047, type: 2}
   - {fileID: 11400000, guid: 754485c0ce9f00d4aa8a80a566a2a90a, type: 2}

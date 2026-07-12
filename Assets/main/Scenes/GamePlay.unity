@@ -986,7 +986,7 @@ MonoBehaviour:
   LoadingAICanvas: {fileID: 666303518}
   targetLeft: {fileID: 2981989479038114114}
   targetRight: {fileID: 8691774760874592430}
-  radius: 5
+  radius: 6.5
   minAngleLeft: -90
   maxAngleLeft: 90
   minAngleRight: 90
