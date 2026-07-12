@@ -21,6 +21,7 @@ public class NoteController : MonoBehaviour
     public float perfectWindowTime; // ระยะเวลาที่วงกลมจะใช้หดจนเท่าตัวโน้ตพอดี (1 วินาที)
     public int eventIndex;
 
+    private Vector3 moveDirection;
     private bool isInitialized = false; // ตัวแปรตรวจสอบว่าโน้ตถูกตั้งค่าแล้วหรือยัง
     
 
@@ -36,6 +37,7 @@ public class NoteController : MonoBehaviour
         {
             this.spawnPosition = transform.position;
             this.totalDistance = Vector2.Distance(spawnPosition, targetPoint.position);
+            this.moveDirection = (targetPoint.position - spawnPosition).normalized;
         }
         else
         {
@@ -62,32 +64,6 @@ public class NoteController : MonoBehaviour
             initialCircleScale = new Vector3(0.07f, 0.07f, 0f);
             approachCircle.transform.localScale = initialCircleScale;
         }
-        // if (myCover != null)
-        // {
-        //     myCover.SetActive(false); // ปิดไว้ก่อนเป็นค่าเริ่มต้น
-        //     SpriteRenderer coverRenderer = myCover.GetComponent<SpriteRenderer>();
-        //     if (isStatic && coverRenderer != null)
-        //     {
-        //         if (phase == 2 && eventIndex >= 1) 
-        //         {
-        //             myCover.SetActive(true); // เปิดแผ่นบัง (ตั้งสีโปร่งแสงใน Prefab)
-        //             coverRenderer.color = new Color(0, 0, 0, 0.6f);
-        //         }
-        //         else if (phase == 3) 
-        //         {
-        //             if (eventIndex == 1) // ตัวที่ 2 ของเฟส
-        //             {
-        //                 myCover.SetActive(true);
-        //                 coverRenderer.color = new Color(0, 0, 0, 0.6f); // สีดำจาง
-        //             }
-        //             else if (eventIndex >= 2) // ตัวที่ 3 และ 4 ของเฟส
-        //             {
-        //                 myCover.SetActive(true);
-        //                 coverRenderer.color = Color.black; // สีดำทึบ (Alpha = 1.0f)
-        //             }
-        //         }
-        //     }
-        // }
 
         isInitialized = true; // ตั้งค่าสถานะว่าโน้ตถูกตั้งค่าเรียบร้อยแล้ว
     }
@@ -101,38 +77,71 @@ public class NoteController : MonoBehaviour
         {
             float currentMusicTime = manager.musicSource.time;
             if (currentMusicTime < startTime) return;
+            
+            // สำหรับโน้ต Event แบบ Static: หดวงกลมลงตามเวลาที่ผ่านไป
+            float elapsed = currentMusicTime - startTime - perfectWindowTime;
+            float t = Mathf.Clamp01(elapsed / perfectWindowTime); // 0 ถึง 1 ตามเวลาที่ผ่านไป
+            Vector3 targetScale = new Vector3(0.03f, 0.03f, 1f);
             if (approachCircle != null)
             {
-                // สำหรับโน้ต Event แบบ Static: หดวงกลมลงตามเวลาที่ผ่านไป
-                float elapsed = currentMusicTime - startTime - perfectWindowTime;
-                float t = Mathf.Clamp01(elapsed / perfectWindowTime); // 0 ถึง 1 ตามเวลาที่ผ่านไป
-                Vector3 targetScale = new Vector3(0.03f, 0.03f, 1f);
                 approachCircle.transform.localScale = Vector3.Lerp(initialCircleScale, targetScale, t);
+            }
 
-                // Debug.Log($"Event Note {eventIndex} Elapsed: {elapsed:F2}s, Scale: {perfectWindowTime:F2}, startTime: {startTime:F2}, currentMusicTime: {currentMusicTime:F2}");
-                // ถ้าเวลาผ่านไปเกิน perfect window แล้วถือว่าเป็นพลาด
-                if (elapsed > perfectWindowTime && !isMissed)
-                {
-                    isMissed = true;
-                    Invoke("CallNoteMissed", 0.1f);
-                    Destroy(gameObject, 0.1f);
-                }
+            // คำนวณความจาง (Fade Out) ตามสัดส่วนของ Late Hit Window (0.3 วินาที)
+            if (elapsed > perfectWindowTime)
+            {
+                float overshootTime = elapsed - perfectWindowTime;
+                float alpha = Mathf.Clamp01(1.0f - (overshootTime / 0.3f));
+                SetAlpha(alpha);
+            }
+
+            // ยอมให้กดช้า (Late Hit Window) ได้อีก 0.3 วินาที หลังจากที่หดเสร็จแล้ว
+            if (elapsed > (perfectWindowTime + 0.3f) && !isMissed)
+            {
+                isMissed = true;
+                Invoke("CallNoteMissed", 0.1f);
+                Destroy(gameObject, 0.1f);
             }
         }
         else
         {
-            // เคลื่อนที่เข้าหาเป้าหมาย
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            // ถ้าโน้ตเลยจุดกลางไปแล้ว (พลาด) ให้ทำลายทิ้ง
-            if (Vector2.Distance(transform.position, target.position) < 0.01f && !isMissed)
+            // เคลื่อนที่ต่อไปในทิศทางของเป้าหมาย (บินผ่านไปเลย)
+            transform.position += moveDirection * speed * Time.deltaTime;
+            
+            float distanceTraveled = Vector2.Distance(spawnPosition, transform.position);
+            
+            // ถ้าบินเลยเป้าหมาย ให้ค่อยๆ จางหายไปตามระยะทาง (สูงสุด 1.2 หน่วย)
+            if (distanceTraveled > totalDistance)
+            {
+                float overshootDistance = distanceTraveled - totalDistance;
+                float alpha = Mathf.Clamp01(1.0f - (overshootDistance / 1.2f));
+                SetAlpha(alpha);
+            }
+
+            // เช็คว่าบินเลยระยะทางทั้งหมด + ระยะทางของหน้าต่างกดช้า (1.2f) หรือยัง
+            if (distanceTraveled > (totalDistance + 1.2f) && !isMissed)
             {
                 isMissed = true;
-                // สามารถเพิ่ม Logic ลดเลือดหรือรีเซ็ต Combo ตรงนี้ได้
                 Invoke("CallNoteMissed", 0.1f);
-                Destroy(gameObject, 0.1f); // ทำลายโน้ตหลังจากพลาดแล้วเล็กน้อยเพื่อให้เห็นว่าโดนทำลาย
+                Destroy(gameObject, 0.1f); // ทำลายโน้ตหลังจากพลาดแล้ว
             }
         }
     }
+
+    private void SetAlpha(float alpha)
+    {
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (var r in renderers)
+        {
+            if (r != null)
+            {
+                Color col = r.color;
+                col.a = alpha;
+                r.color = col;
+            }
+        }
+    }
+
     public void Hit()
     {
         isMissed = true; // ล็อคไว้ไม่ให้ฟังก์ชัน CallNoteMissed ทำงานได้อีก
