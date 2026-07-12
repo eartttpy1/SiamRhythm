@@ -136,7 +136,7 @@ public class SingleHandManager : BaseRhythmManager
                 if (minScaleDiff < 0.02f) 
                 {
                     // ส่งค่าความต่างของ Scale ไปคำนวณเกรด Perfect/Good/Bad
-                    UpdateRating(scaleDiff: minScaleDiff); 
+                    UpdateRating(targetNote.transform.position, scaleDiff: minScaleDiff); 
                     RemoveNote(targetNote);
                 }
             }
@@ -145,7 +145,7 @@ public class SingleHandManager : BaseRhythmManager
                 // โหมดปกติ เช็คระยะห่าง 1.2f ตามเดิม
                 if (minDistance < 1.2f)
                 {
-                    UpdateRating(distance: minDistance);
+                    UpdateRating(targetSide.position, distance: minDistance);
                     RemoveNote(targetNote);
                 }
             }

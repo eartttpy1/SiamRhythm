@@ -54,6 +54,9 @@ public abstract class BaseRhythmManager : MonoBehaviour
     public GameObject LoadingAICanvas;
     public static bool isGameStarted = false;
 
+    [Header("Hit Effects")]
+    public GameObject hitEffectPrefab;
+
 
     protected abstract void SpawnNote(NoteData data);
     protected abstract void HandleInput();
@@ -224,7 +227,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         activeNotes.Add(note);
     }
 
-    protected void UpdateRating(float distance = 99f, float scaleDiff = 99f)
+    protected void UpdateRating(Vector3 effectPosition, float distance = 99f, float scaleDiff = 99f)
     {
         ratingText.gameObject.SetActive(true);
         string rating = "";
@@ -237,6 +240,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             statusManager.AddScore(1.0f);
             statusManager.UpdateHP(10f);
             statusManager.UpdateAccuracy(1.0f);
+            SpawnHitEffect(effectPosition, rating);
         }
         // Good: Score x0.7, HP +2
         else if (distance < 0.7f || scaleDiff <= 0.012f) {
@@ -247,6 +251,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
             statusManager.AddScore(0.7f);
             statusManager.UpdateHP(2f);
             statusManager.UpdateAccuracy(0.7f);
+            SpawnHitEffect(effectPosition, rating);
         }
         // Bad: Score x0.4, HP -2
         else {
@@ -261,6 +266,24 @@ public abstract class BaseRhythmManager : MonoBehaviour
         comboText.text = "Combo x " + combo;
         CancelInvoke("HideRating");
         Invoke("HideRating", 0.5f);
+    }
+
+    private void SpawnHitEffect(Vector3 spawnPosition, string rating)
+    {
+        if (hitEffectPrefab == null) return;
+        GameObject effect = Instantiate(hitEffectPrefab, spawnPosition, Quaternion.identity);
+        Animator anim = effect.GetComponent<Animator>();
+        if (anim != null)
+        {
+            if (rating == "PERFECT")
+            {
+                anim.SetTrigger("triggerPerfect");
+            }
+            else if (rating == "GOOD")
+            {
+                anim.SetTrigger("triggerGood");
+            }
+        }
     }
     public void TriggerNoteMissed() { 
         if (statusManager != null && statusManager.isGameOver) return;

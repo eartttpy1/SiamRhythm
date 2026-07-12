@@ -984,6 +984,7 @@ MonoBehaviour:
   - {x: 2, y: 1, z: 0}
   - {x: 6, y: -2, z: 0}
   LoadingAICanvas: {fileID: 666303518}
+  hitEffectPrefab: {fileID: 0}
   targetLeft: {fileID: 2981989479038114114}
   targetRight: {fileID: 8691774760874592430}
   radius: 6.5
@@ -1396,6 +1397,7 @@ MonoBehaviour:
   - {x: 2, y: 1, z: 0}
   - {x: 6, y: -2, z: 0}
   LoadingAICanvas: {fileID: 666303518}
+  hitEffectPrefab: {fileID: 0}
   targetLeft: {fileID: 1124343207792086164}
   radius: 7
   minAngleLeft: 0
@@ -3917,6 +3919,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875072021}
   m_CullTransparentMesh: 1
+--- !u!1 &900065941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900065943}
+  - component: {fileID: 900065942}
+  m_Layer: 0
+  m_Name: vfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &900065942
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900065941}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &900065943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900065941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 685.8407, y: 502.97482, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &912020561
 GameObject:
   m_ObjectHideFlags: 0
@@ -11141,3 +11197,4 @@ SceneRoots:
   - {fileID: 59024770}
   - {fileID: 1272353758191877887}
   - {fileID: 1229862089}
+  - {fileID: 900065943}
