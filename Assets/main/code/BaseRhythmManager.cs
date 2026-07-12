@@ -232,7 +232,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
         ratingText.gameObject.SetActive(true);
         string rating = "";
         // Perfect: Score x1.0, HP +10
-        if (distance < 0.1f || scaleDiff <= 0.005f) {
+        if (distance < 0.3f || scaleDiff <= 0.005f) {
             rating = "PERFECT";
             ratingText.text = "PERFECT";
             combo++;
