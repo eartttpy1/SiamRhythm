@@ -284,6 +284,7 @@ public abstract class BaseRhythmManager : MonoBehaviour
                 anim.SetTrigger("triggerGood");
             }
         }
+        Destroy(effect, 0.5f);
     }
     public void TriggerNoteMissed() { 
         if (statusManager != null && statusManager.isGameOver) return;
